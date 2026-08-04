@@ -18,10 +18,10 @@ func fakeRPC() *httptest.Server {
 		_ = json.NewDecoder(r.Body).Decode(&req)
 		w.Header().Set("content-type", "application/json")
 		switch req.Method {
-		case "mneme.add_episode":
+		case "mnemovela.add_episode":
 			json.NewEncoder(w).Encode(map[string]any{"jsonrpc": "2.0", "id": req.ID,
 				"result": map[string]any{"commit_id": "mem_1", "branch_name": req.Params["branch_name"]}})
-		case "mneme.list_branches":
+		case "mnemovela.list_branches":
 			json.NewEncoder(w).Encode(map[string]any{"jsonrpc": "2.0", "id": req.ID,
 				"result": []any{map[string]any{"branch_name": "main"}}})
 		default:

@@ -1,7 +1,7 @@
 {
-  "name": "@axisrobo/mneme-client",
+  "name": "@axisrobo/mnemovela-client",
   "version": "0.1.0",
-  "description": "Thin TypeScript client for the Mneme cognition runtime (JSON-RPC over HTTP)",
+  "description": "Thin TypeScript client for the Mnemovela cognition runtime (JSON-RPC over HTTP)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

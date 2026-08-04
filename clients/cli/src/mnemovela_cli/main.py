@@ -5,7 +5,7 @@ import json
 import sys
 from typing import Any
 
-from mneme_client import AsyncMnemeHttpClient, MnemeClient, MnemeError, MnemeHttpClient  # noqa: F401
+from mnemovela_client import AsyncMnemeHttpClient, MnemeClient, MnemeError, MnemeHttpClient  # noqa: F401
 
 
 def _print(obj: Any) -> None:
@@ -23,28 +23,28 @@ def _identity(args) -> dict[str, str]:
 
 # command -> JSON-RPC method (used by the HTTP transport and to document the surface)
 _COMMAND_RPC = {
-    "add-episode": "mneme.add_episode",
-    "add-fact": "mneme.add_fact",
-    "commit": "mneme.commit_memory",
-    "invalidate-fact": "mneme.invalidate_fact",
-    "upsert-subject": "mneme.upsert_subject",
-    "upsert-entity": "mneme.upsert_entity",
-    "search": "mneme.search_memory",
-    "query-memories": "mneme.query_memories",
-    "query-facts": "mneme.query_facts",
-    "resolve-entity": "mneme.resolve_entity",
-    "resolve-entity-explained": "mneme.resolve_entity_explained",
-    "extract-episode": "mneme.extract_episode",
-    "create-branch": "mneme.create_branch",
-    "merge-branch": "mneme.merge_branch",
-    "list-branches": "mneme.list_branches",
-    "set-retention-state": "mneme.set_retention_state",
-    "verify-index": "mneme.verify_commit_index",
+    "add-episode": "mnemovela.add_episode",
+    "add-fact": "mnemovela.add_fact",
+    "commit": "mnemovela.commit_memory",
+    "invalidate-fact": "mnemovela.invalidate_fact",
+    "upsert-subject": "mnemovela.upsert_subject",
+    "upsert-entity": "mnemovela.upsert_entity",
+    "search": "mnemovela.search_memory",
+    "query-memories": "mnemovela.query_memories",
+    "query-facts": "mnemovela.query_facts",
+    "resolve-entity": "mnemovela.resolve_entity",
+    "resolve-entity-explained": "mnemovela.resolve_entity_explained",
+    "extract-episode": "mnemovela.extract_episode",
+    "create-branch": "mnemovela.create_branch",
+    "merge-branch": "mnemovela.merge_branch",
+    "list-branches": "mnemovela.list_branches",
+    "set-retention-state": "mnemovela.set_retention_state",
+    "verify-index": "mnemovela.verify_commit_index",
 }
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="mneme", description="Mneme command-line client (gRPC or JSON-RPC/HTTP)")
+    p = argparse.ArgumentParser(prog="mnemovela", description="Mnemovela command-line client (gRPC or JSON-RPC/HTTP)")
     p.add_argument("--transport", choices=["grpc", "http"], default="grpc")
     p.add_argument("--address", default="", help="server address (default localhost:9090 grpc, http://localhost:8080 http)")
     p.add_argument("--tenant", default="")
@@ -92,7 +92,7 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("verify-index"); s.add_argument("--commit", default="")
 
     s = sub.add_parser("call", help="invoke any JSON-RPC method (HTTP transport; full surface)")
-    s.add_argument("method", help="e.g. mneme.build_context")
+    s.add_argument("method", help="e.g. mnemovela.build_context")
     s.add_argument("--param", action="append", default=[], metavar="K=V", help="repeatable; value parsed as JSON, else string")
     return p
 

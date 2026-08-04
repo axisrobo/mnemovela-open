@@ -1,4 +1,4 @@
-package mnemeclient
+package mnemovela
 
 import (
 	"context"
@@ -18,10 +18,10 @@ func fakeRPCServer() *httptest.Server {
 		_ = json.NewDecoder(r.Body).Decode(&req)
 		w.Header().Set("content-type", "application/json")
 		switch req.Method {
-		case "mneme.add_episode":
+		case "mnemovela.add_episode":
 			json.NewEncoder(w).Encode(map[string]any{"jsonrpc": "2.0", "id": req.ID,
 				"result": map[string]any{"commit_id": "mem_1", "branch_name": req.Params["branch_name"]}})
-		case "mneme.search_memory":
+		case "mnemovela.search_memory":
 			json.NewEncoder(w).Encode(map[string]any{"jsonrpc": "2.0", "id": req.ID,
 				"result": []any{map[string]any{"score": 0.9}, map[string]any{"score": 0.5}}})
 		default:
@@ -52,7 +52,7 @@ func TestJSONRPCUnknownMethodError(t *testing.T) {
 	defer srv.Close()
 	c := New(NewJSONRPCTransport(srv.URL))
 	defer c.Close()
-	_, err := c.Invoke(context.Background(), "mneme.nope", nil)
+	_, err := c.Invoke(context.Background(), "mnemovela.nope", nil)
 	me, ok := err.(*MnemeError)
 	if !ok || me.Code != -32601 {
 		t.Fatalf("expected -32601 MnemeError, got %v", err)

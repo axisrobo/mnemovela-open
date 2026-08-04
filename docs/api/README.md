@@ -23,7 +23,7 @@ or **JSON-RPC** (simplest cross-language contract).
 Every surface maps onto the same core operations: write typed memory (episodes,
 facts, and fourteen cognitive frame types), retrieve via hybrid search, assemble
 task context, resolve/evolve entities, and manage Git-like branches, retention,
-and forgetting. The JSON-RPC method names (`mneme.*`), the MCP tool names, the
+and forgetting. The JSON-RPC method names (`mnemovela.*`), the MCP tool names, the
 REST routes, and the gRPC RPCs all correspond to the same engine methods
 documented in the Python and Go SDK references.
 
@@ -32,14 +32,14 @@ The authoritative machine-readable definitions live in
 
 | Contract | Surface |
 |----------|---------|
-| `mneme.jsonrpc.v1.schema.json` | JSON-RPC envelope + methods |
-| `mneme.mcp.v1.schema.json` | MCP tools |
-| `mneme.rest.v1-draft.openapi.json` | REST (OpenAPI 3.1) |
-| `mneme.v1.proto` | gRPC service |
-| `mneme.memory_frames.v1.schema.json` | The fourteen typed memory frames |
-| `mneme.memory.v1.schema.json` | Memory-operation semantics (shared fixtures) |
-| `mneme.context.v1-draft.schema.json` | `build_context` response |
-| `mneme.event.v1-draft.schema.json` | Event envelope |
+| `mnemovela.jsonrpc.v1.schema.json` | JSON-RPC envelope + methods |
+| `mnemovela.mcp.v1.schema.json` | MCP tools |
+| `mnemovela.rest.v1-draft.openapi.json` | REST (OpenAPI 3.1) |
+| `mnemovela.v1.proto` | gRPC service |
+| `mnemovela.memory_frames.v1.schema.json` | The fourteen typed memory frames |
+| `mnemovela.memory.v1.schema.json` | Memory-operation semantics (shared fixtures) |
+| `mnemovela.context.v1-draft.schema.json` | `build_context` response |
+| `mnemovela.event.v1-draft.schema.json` | Event envelope |
 
 Contracts tagged `v1` are frozen; `v1-draft` contracts are still evolving.
 
@@ -47,7 +47,7 @@ Contracts tagged `v1` are frozen; `v1-draft` contracts are still evolving.
 
 Mneme is open core. Every surface above ships in the **open-source core**
 (AGPL-3.0), but some operations depend on implementations provided by the
-proprietary **Enterprise Edition** (`axisrobo-mneme-ee`), which registers into
+proprietary **Enterprise Edition** (`axisrobo-mnemovela-ee`), which registers into
 the same APIs at startup:
 
 | Capability reachable through the APIs | OSS core | Enterprise Edition |
@@ -67,15 +67,15 @@ surface reference calls out the EE-dependent operations.
 EE rerankers and extractors register into the same APIs at startup and are now
 invoked automatically once selected:
 
-- **Reranking:** set `MNEME_RERANKER` to a registered reranker name to apply it
+- **Reranking:** set `MNEMOVELA_RERANKER` to a registered reranker name to apply it
   to `search_memory`. Unset or `none` keeps the baseline ordering. The EE
   registers `llm` (its `graph`/`neighborhood` capabilities are EE utilities, not
   auto-applied `Reranker`s).
 - **Extraction:** the `extract_episode` `provider` parameter selects the
   extractor. `offline` (rule-based) ships in the OSS core; the EE adds `llm` and
   `openai`. Requesting an unregistered provider returns an error.
-- **LLM credentials:** EE LLM providers read `MNEME_LLM_API_KEY`,
-  `MNEME_LLM_BASE_URL`, and `MNEME_LLM_MODEL`.
+- **LLM credentials:** EE LLM providers read `MNEMOVELA_LLM_API_KEY`,
+  `MNEMOVELA_LLM_BASE_URL`, and `MNEMOVELA_LLM_MODEL`.
 
 With none of these set, behavior is identical to the OSS baseline (the no-op
 reranker is never applied and `offline` is the default extractor).

@@ -1,17 +1,17 @@
-# Mneme Python Client
+# Mnemovela Python Client
 
-`mneme-client` is a thin sync + async Python gRPC client for the
-[Mneme](https://github.com/axisrobo/mneme) cognition runtime. It ships
-self-contained gRPC stubs generated from `contracts/mneme.v1.proto`
-(`service mneme.v1.Mneme`, 17 RPCs) and wraps them with an ergonomic surface
+`mnemovela-client` is a thin sync + async Python gRPC client for the
+[Mnemovela](https://github.com/axisrobo/mnemovela) cognition runtime. It ships
+self-contained gRPC stubs generated from `contracts/mnemovela.v1.proto`
+(`service mnemovela.v1.Mneme`, 17 RPCs) and wraps them with an ergonomic surface
 that returns plain dicts.
 
-Published to `Mneme-open` under Apache-2.0.
+Published to `Mnemovela-open` under Apache-2.0.
 
 ## Install
 
 ```powershell
-py -3.13 -m pip install mneme-client
+py -3.13 -m pip install mnemovela-client
 ```
 
 From a source checkout (with dev tooling to regenerate stubs):
@@ -22,11 +22,11 @@ py -3.13 -m pip install -e "clients/python[dev]"
 
 ## Quickstart
 
-Connect to a running Mneme gRPC server (default `localhost:9090`), write an
+Connect to a running Mnemovela gRPC server (default `localhost:9090`), write an
 episode, and search memory:
 
 ```python
-from mneme_client import MnemeClient
+from mnemovela_client import MnemeClient
 
 with MnemeClient("localhost:9090") as client:
     commit = client.add_episode(branch_name="main", content="shipped the client")
@@ -41,7 +41,7 @@ Async usage mirrors the sync surface:
 
 ```python
 import asyncio
-from mneme_client import AsyncMnemeClient
+from mnemovela_client import AsyncMnemeClient
 
 async def main():
     client = AsyncMnemeClient("localhost:9090")
@@ -55,7 +55,7 @@ asyncio.run(main())
 ## Surface
 
 The client exposes one method per gRPC RPC. The full surface is the 17
-`mneme.v1.Mneme` RPCs: `commit_memory`, `add_episode`, `add_fact`,
+`mnemovela.v1.Mneme` RPCs: `commit_memory`, `add_episode`, `add_fact`,
 `invalidate_fact`, `upsert_subject`, `upsert_entity`, `search_memory`,
 `query_memories`, `query_facts`, `resolve_entity`, `resolve_entity_explained`,
 `extract_episode`, `create_branch`, `merge_branch`, `list_branches`,
@@ -72,7 +72,7 @@ operations not on the typed gRPC client, such as `build_context`, `get_context`,
 is called as `client.<name>(**params)` and returns the JSON-RPC `result`.
 
 ```python
-from mneme_client import MnemeHttpClient
+from mnemovela_client import MnemeHttpClient
 
 client = MnemeHttpClient("http://localhost:8000")
 commit = client.add_episode(branch_name="main", content="shipped the client")
@@ -86,7 +86,7 @@ Async usage mirrors the sync surface:
 
 ```python
 import asyncio
-from mneme_client import AsyncMnemeHttpClient
+from mnemovela_client import AsyncMnemeHttpClient
 
 async def main():
     client = AsyncMnemeHttpClient("http://localhost:8000")
@@ -100,7 +100,7 @@ The gRPC `MnemeClient`/`AsyncMnemeClient` remain for the typed 17-RPC surface.
 
 ## Regenerating stubs
 
-The generated stubs under `src/mneme_client/_generated/` are committed. To
+The generated stubs under `src/mnemovela_client/_generated/` are committed. To
 regenerate them from the shared contract:
 
 ```powershell

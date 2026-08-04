@@ -1,10 +1,10 @@
-# Mneme Go Client (`mnemeclient`)
+# Mnemovela Go Client (`mnemovela`)
 
-A standalone Go client for a running [Mneme](https://github.com/axisrobo/mneme-open) server.
+A standalone Go client for a running [Mnemovela](https://github.com/axisrobo/mnemovela-open) server.
 It speaks BOTH transports behind a single `Transport` interface:
 
 - **JSON-RPC over HTTP** (`JSONRPCTransport`) — full method surface, posts to `/api/v1/jsonrpc`.
-- **gRPC** (`GRPCTransport`) — the 17 typed RPCs from the public `mneme.v1` contract, with
+- **gRPC** (`GRPCTransport`) — the 17 typed RPCs from the public `mnemovela.v1` contract, with
   generic param<->protobuf conversion via `protojson`.
 
 `Client` wraps a transport with typed convenience methods; every method returns the raw JSON
@@ -13,7 +13,7 @@ result so callers unmarshal into their own shapes.
 ## Install
 
 ```
-go get github.com/axisrobo/mneme-open/clients/go
+go get github.com/axisrobo/mnemovela-open/clients/go
 ```
 
 ## Quickstart (JSON-RPC over HTTP)
@@ -26,17 +26,17 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/axisrobo/mneme-open/clients/go/mnemeclient"
+	"github.com/axisrobo/mnemovela-open/clients/go/mnemovela"
 )
 
 func main() {
-	c := mnemeclient.New(mnemeclient.NewJSONRPCTransport("http://localhost:8080"))
+	c := mnemovela.New(mnemovela.NewJSONRPCTransport("http://localhost:8080"))
 	defer c.Close()
 
 	ctx := context.Background()
 
 	// Write an episode.
-	raw, err := c.AddEpisode(ctx, mnemeclient.P{
+	raw, err := c.AddEpisode(ctx, mnemovela.P{
 		"branch_name": "main",
 		"content":     "the deploy went out at 5pm",
 	})
@@ -48,7 +48,7 @@ func main() {
 	fmt.Println("commit:", added)
 
 	// Search memory.
-	raw, err = c.SearchMemory(ctx, mnemeclient.P{
+	raw, err = c.SearchMemory(ctx, mnemovela.P{
 		"branch_name": "main",
 		"query":       "deploy",
 		"top_k":       5,
@@ -63,31 +63,31 @@ func main() {
 ## gRPC transport
 
 ```go
-tr, err := mnemeclient.NewGRPCTransport("localhost:50051")
+tr, err := mnemovela.NewGRPCTransport("localhost:50051")
 if err != nil {
 	panic(err)
 }
-c := mnemeclient.New(tr)
+c := mnemovela.New(tr)
 defer c.Close()
 ```
 
-The gRPC transport supports the 17 RPCs defined in `contracts/mneme.v1.proto`. Methods not
-present in the proto (e.g. `mneme.build_context`) return a `*MnemeError` when invoked over gRPC;
+The gRPC transport supports the 17 RPCs defined in `contracts/mnemovela.v1.proto`. Methods not
+present in the proto (e.g. `mnemovela.build_context`) return a `*MnemeError` when invoked over gRPC;
 use the JSON-RPC transport for the full surface.
 
-## CLI (`cmd/mneme`)
+## CLI (`cmd/mnemovela`)
 
-A `mneme` command-line binary ships in this module. It talks to a running server over either
+A `mnemovela` command-line binary ships in this module. It talks to a running server over either
 transport (`--transport grpc|http`), exposes the core operations as named subcommands, and
 provides a generic `call` for the full method surface.
 
 ### Build
 
 ```
-go build ./cmd/mneme
+go build ./cmd/mnemovela
 ```
 
-This produces a `mneme` (or `mneme.exe` on Windows) binary in the current directory.
+This produces a `mnemovela` (or `mnemovela.exe` on Windows) binary in the current directory.
 
 ### Global flags
 
@@ -99,13 +99,13 @@ This produces a `mneme` (or `mneme.exe` on Windows) binary in the current direct
 
 ```
 # Write an episode over HTTP.
-mneme --transport http --address http://localhost:8080 add-episode --branch-name main --content "hi"
+mnemovela --transport http --address http://localhost:8080 add-episode --branch-name main --content "hi"
 
 # List branches over gRPC (the default transport).
-mneme --address localhost:9090 list-branches
+mnemovela --address localhost:9090 list-branches
 
 # Search memory.
-mneme --transport http search --branch-name main --query "deploy" --top-k 5
+mnemovela --transport http search --branch-name main --query "deploy" --top-k 5
 ```
 
 Named subcommands map kebab-case flags to snake_case JSON-RPC params (e.g. `--top-k` → `top_k`),
@@ -114,11 +114,11 @@ and only flags you actually set are sent.
 ### Generic `call`
 
 `--transport http` reaches the full method surface — including methods without a named subcommand
-(e.g. `mneme.build_context`) — via `call`. Repeatable `--param k=v` values are parsed as JSON when
+(e.g. `mnemovela.build_context`) — via `call`. Repeatable `--param k=v` values are parsed as JSON when
 possible, otherwise treated as a string:
 
 ```
-mneme --transport http call mneme.build_context --param query='"x"' --param branch_name=main
+mnemovela --transport http call mnemovela.build_context --param query='"x"' --param branch_name=main
 ```
 
 > **Note:** `commit --payload` (and `--metadata`) take JSON objects and work best over

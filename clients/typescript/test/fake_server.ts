@@ -11,11 +11,11 @@ export async function startFakeServer(): Promise<{ url: string; close: () => Pro
       const method: string = body.method ?? "";
       let result: unknown;
       let error: { code: number; message: string } | undefined;
-      if (method === "mneme.add_episode") {
+      if (method === "mnemovela.add_episode") {
         result = { commit_id: "mem_1", branch_name: body.params?.branch_name, memory_type: "episode" };
-      } else if (method === "mneme.search_memory") {
+      } else if (method === "mnemovela.search_memory") {
         result = [{ commit: { commit_id: "mem_1" }, score: 0.9 }, { commit: { commit_id: "mem_2" }, score: 0.5 }];
-      } else if (method === "mneme.list_branches") {
+      } else if (method === "mnemovela.list_branches") {
         result = [{ branch_name: "main", head_sequence: 3 }];
       } else {
         error = { code: -32601, message: `method not found: ${method}` };

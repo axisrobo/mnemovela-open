@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from mneme_client import AsyncMnemeClient
+from mnemovela_client import AsyncMnemeClient
 from fake_server import serve
 
 

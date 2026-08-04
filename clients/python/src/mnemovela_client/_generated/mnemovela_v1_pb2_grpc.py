@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from . import mneme_v1_pb2 as mneme__v1__pb2
+from . import mnemovela_v1_pb2 as mnemovela__v1__pb2
 
 GRPC_GENERATED_VERSION = '1.81.1'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in mneme_v1_pb2_grpc.py depends on'
+        + ' but the generated code in mnemovela_v1_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -27,7 +27,7 @@ if _version_not_supported:
 
 class MnemeStub:
     """Mneme is the core memory-operation service. Every method corresponds to a
-    stable operation in the mneme.memory.v1-draft contract.
+    stable operation in the mnemovela.memory.v1-draft contract.
 
     """
 
@@ -38,95 +38,95 @@ class MnemeStub:
             channel: A grpc.Channel.
         """
         self.CommitMemory = channel.unary_unary(
-                '/mneme.v1.Mneme/CommitMemory',
-                request_serializer=mneme__v1__pb2.CommitMemoryRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.CommitMemoryResponse.FromString,
+                '/mnemovela.v1.Mneme/CommitMemory',
+                request_serializer=mnemovela__v1__pb2.CommitMemoryRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.CommitMemoryResponse.FromString,
                 _registered_method=True)
         self.AddEpisode = channel.unary_unary(
-                '/mneme.v1.Mneme/AddEpisode',
-                request_serializer=mneme__v1__pb2.AddEpisodeRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.AddEpisodeResponse.FromString,
+                '/mnemovela.v1.Mneme/AddEpisode',
+                request_serializer=mnemovela__v1__pb2.AddEpisodeRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.AddEpisodeResponse.FromString,
                 _registered_method=True)
         self.AddFact = channel.unary_unary(
-                '/mneme.v1.Mneme/AddFact',
-                request_serializer=mneme__v1__pb2.AddFactRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.AddFactResponse.FromString,
+                '/mnemovela.v1.Mneme/AddFact',
+                request_serializer=mnemovela__v1__pb2.AddFactRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.AddFactResponse.FromString,
                 _registered_method=True)
         self.InvalidateFact = channel.unary_unary(
-                '/mneme.v1.Mneme/InvalidateFact',
-                request_serializer=mneme__v1__pb2.InvalidateFactRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.InvalidateFactResponse.FromString,
+                '/mnemovela.v1.Mneme/InvalidateFact',
+                request_serializer=mnemovela__v1__pb2.InvalidateFactRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.InvalidateFactResponse.FromString,
                 _registered_method=True)
         self.UpsertSubject = channel.unary_unary(
-                '/mneme.v1.Mneme/UpsertSubject',
-                request_serializer=mneme__v1__pb2.UpsertSubjectRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.UpsertSubjectResponse.FromString,
+                '/mnemovela.v1.Mneme/UpsertSubject',
+                request_serializer=mnemovela__v1__pb2.UpsertSubjectRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.UpsertSubjectResponse.FromString,
                 _registered_method=True)
         self.UpsertEntity = channel.unary_unary(
-                '/mneme.v1.Mneme/UpsertEntity',
-                request_serializer=mneme__v1__pb2.UpsertEntityRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.UpsertEntityResponse.FromString,
+                '/mnemovela.v1.Mneme/UpsertEntity',
+                request_serializer=mnemovela__v1__pb2.UpsertEntityRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.UpsertEntityResponse.FromString,
                 _registered_method=True)
         self.SearchMemory = channel.unary_unary(
-                '/mneme.v1.Mneme/SearchMemory',
-                request_serializer=mneme__v1__pb2.SearchMemoryRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.SearchMemoryResponse.FromString,
+                '/mnemovela.v1.Mneme/SearchMemory',
+                request_serializer=mnemovela__v1__pb2.SearchMemoryRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.SearchMemoryResponse.FromString,
                 _registered_method=True)
         self.QueryMemories = channel.unary_unary(
-                '/mneme.v1.Mneme/QueryMemories',
-                request_serializer=mneme__v1__pb2.QueryMemoriesRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.QueryMemoriesResponse.FromString,
+                '/mnemovela.v1.Mneme/QueryMemories',
+                request_serializer=mnemovela__v1__pb2.QueryMemoriesRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.QueryMemoriesResponse.FromString,
                 _registered_method=True)
         self.QueryFacts = channel.unary_unary(
-                '/mneme.v1.Mneme/QueryFacts',
-                request_serializer=mneme__v1__pb2.QueryFactsRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.QueryFactsResponse.FromString,
+                '/mnemovela.v1.Mneme/QueryFacts',
+                request_serializer=mnemovela__v1__pb2.QueryFactsRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.QueryFactsResponse.FromString,
                 _registered_method=True)
         self.ResolveEntity = channel.unary_unary(
-                '/mneme.v1.Mneme/ResolveEntity',
-                request_serializer=mneme__v1__pb2.ResolveEntityRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.ResolveEntityResponse.FromString,
+                '/mnemovela.v1.Mneme/ResolveEntity',
+                request_serializer=mnemovela__v1__pb2.ResolveEntityRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.ResolveEntityResponse.FromString,
                 _registered_method=True)
         self.ResolveEntityExplained = channel.unary_unary(
-                '/mneme.v1.Mneme/ResolveEntityExplained',
-                request_serializer=mneme__v1__pb2.ResolveEntityExplainedRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.ResolveEntityExplainedResponse.FromString,
+                '/mnemovela.v1.Mneme/ResolveEntityExplained',
+                request_serializer=mnemovela__v1__pb2.ResolveEntityExplainedRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.ResolveEntityExplainedResponse.FromString,
                 _registered_method=True)
         self.ExtractEpisode = channel.unary_unary(
-                '/mneme.v1.Mneme/ExtractEpisode',
-                request_serializer=mneme__v1__pb2.ExtractEpisodeRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.ExtractEpisodeResponse.FromString,
+                '/mnemovela.v1.Mneme/ExtractEpisode',
+                request_serializer=mnemovela__v1__pb2.ExtractEpisodeRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.ExtractEpisodeResponse.FromString,
                 _registered_method=True)
         self.CreateBranch = channel.unary_unary(
-                '/mneme.v1.Mneme/CreateBranch',
-                request_serializer=mneme__v1__pb2.CreateBranchRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.CreateBranchResponse.FromString,
+                '/mnemovela.v1.Mneme/CreateBranch',
+                request_serializer=mnemovela__v1__pb2.CreateBranchRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.CreateBranchResponse.FromString,
                 _registered_method=True)
         self.MergeBranch = channel.unary_unary(
-                '/mneme.v1.Mneme/MergeBranch',
-                request_serializer=mneme__v1__pb2.MergeBranchRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.MergeBranchResponse.FromString,
+                '/mnemovela.v1.Mneme/MergeBranch',
+                request_serializer=mnemovela__v1__pb2.MergeBranchRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.MergeBranchResponse.FromString,
                 _registered_method=True)
         self.ListBranches = channel.unary_unary(
-                '/mneme.v1.Mneme/ListBranches',
-                request_serializer=mneme__v1__pb2.ListBranchesRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.ListBranchesResponse.FromString,
+                '/mnemovela.v1.Mneme/ListBranches',
+                request_serializer=mnemovela__v1__pb2.ListBranchesRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.ListBranchesResponse.FromString,
                 _registered_method=True)
         self.SetRetentionState = channel.unary_unary(
-                '/mneme.v1.Mneme/SetRetentionState',
-                request_serializer=mneme__v1__pb2.SetRetentionStateRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.SetRetentionStateResponse.FromString,
+                '/mnemovela.v1.Mneme/SetRetentionState',
+                request_serializer=mnemovela__v1__pb2.SetRetentionStateRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.SetRetentionStateResponse.FromString,
                 _registered_method=True)
         self.VerifyCommitIndex = channel.unary_unary(
-                '/mneme.v1.Mneme/VerifyCommitIndex',
-                request_serializer=mneme__v1__pb2.VerifyCommitIndexRequest.SerializeToString,
-                response_deserializer=mneme__v1__pb2.VerifyCommitIndexResponse.FromString,
+                '/mnemovela.v1.Mneme/VerifyCommitIndex',
+                request_serializer=mnemovela__v1__pb2.VerifyCommitIndexRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.VerifyCommitIndexResponse.FromString,
                 _registered_method=True)
 
 
 class MnemeServicer:
     """Mneme is the core memory-operation service. Every method corresponds to a
-    stable operation in the mneme.memory.v1-draft contract.
+    stable operation in the mnemovela.memory.v1-draft contract.
 
     """
 
@@ -243,100 +243,100 @@ def add_MnemeServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'CommitMemory': grpc.unary_unary_rpc_method_handler(
                     servicer.CommitMemory,
-                    request_deserializer=mneme__v1__pb2.CommitMemoryRequest.FromString,
-                    response_serializer=mneme__v1__pb2.CommitMemoryResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.CommitMemoryRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.CommitMemoryResponse.SerializeToString,
             ),
             'AddEpisode': grpc.unary_unary_rpc_method_handler(
                     servicer.AddEpisode,
-                    request_deserializer=mneme__v1__pb2.AddEpisodeRequest.FromString,
-                    response_serializer=mneme__v1__pb2.AddEpisodeResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.AddEpisodeRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.AddEpisodeResponse.SerializeToString,
             ),
             'AddFact': grpc.unary_unary_rpc_method_handler(
                     servicer.AddFact,
-                    request_deserializer=mneme__v1__pb2.AddFactRequest.FromString,
-                    response_serializer=mneme__v1__pb2.AddFactResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.AddFactRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.AddFactResponse.SerializeToString,
             ),
             'InvalidateFact': grpc.unary_unary_rpc_method_handler(
                     servicer.InvalidateFact,
-                    request_deserializer=mneme__v1__pb2.InvalidateFactRequest.FromString,
-                    response_serializer=mneme__v1__pb2.InvalidateFactResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.InvalidateFactRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.InvalidateFactResponse.SerializeToString,
             ),
             'UpsertSubject': grpc.unary_unary_rpc_method_handler(
                     servicer.UpsertSubject,
-                    request_deserializer=mneme__v1__pb2.UpsertSubjectRequest.FromString,
-                    response_serializer=mneme__v1__pb2.UpsertSubjectResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.UpsertSubjectRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.UpsertSubjectResponse.SerializeToString,
             ),
             'UpsertEntity': grpc.unary_unary_rpc_method_handler(
                     servicer.UpsertEntity,
-                    request_deserializer=mneme__v1__pb2.UpsertEntityRequest.FromString,
-                    response_serializer=mneme__v1__pb2.UpsertEntityResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.UpsertEntityRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.UpsertEntityResponse.SerializeToString,
             ),
             'SearchMemory': grpc.unary_unary_rpc_method_handler(
                     servicer.SearchMemory,
-                    request_deserializer=mneme__v1__pb2.SearchMemoryRequest.FromString,
-                    response_serializer=mneme__v1__pb2.SearchMemoryResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.SearchMemoryRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.SearchMemoryResponse.SerializeToString,
             ),
             'QueryMemories': grpc.unary_unary_rpc_method_handler(
                     servicer.QueryMemories,
-                    request_deserializer=mneme__v1__pb2.QueryMemoriesRequest.FromString,
-                    response_serializer=mneme__v1__pb2.QueryMemoriesResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.QueryMemoriesRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.QueryMemoriesResponse.SerializeToString,
             ),
             'QueryFacts': grpc.unary_unary_rpc_method_handler(
                     servicer.QueryFacts,
-                    request_deserializer=mneme__v1__pb2.QueryFactsRequest.FromString,
-                    response_serializer=mneme__v1__pb2.QueryFactsResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.QueryFactsRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.QueryFactsResponse.SerializeToString,
             ),
             'ResolveEntity': grpc.unary_unary_rpc_method_handler(
                     servicer.ResolveEntity,
-                    request_deserializer=mneme__v1__pb2.ResolveEntityRequest.FromString,
-                    response_serializer=mneme__v1__pb2.ResolveEntityResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.ResolveEntityRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.ResolveEntityResponse.SerializeToString,
             ),
             'ResolveEntityExplained': grpc.unary_unary_rpc_method_handler(
                     servicer.ResolveEntityExplained,
-                    request_deserializer=mneme__v1__pb2.ResolveEntityExplainedRequest.FromString,
-                    response_serializer=mneme__v1__pb2.ResolveEntityExplainedResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.ResolveEntityExplainedRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.ResolveEntityExplainedResponse.SerializeToString,
             ),
             'ExtractEpisode': grpc.unary_unary_rpc_method_handler(
                     servicer.ExtractEpisode,
-                    request_deserializer=mneme__v1__pb2.ExtractEpisodeRequest.FromString,
-                    response_serializer=mneme__v1__pb2.ExtractEpisodeResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.ExtractEpisodeRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.ExtractEpisodeResponse.SerializeToString,
             ),
             'CreateBranch': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateBranch,
-                    request_deserializer=mneme__v1__pb2.CreateBranchRequest.FromString,
-                    response_serializer=mneme__v1__pb2.CreateBranchResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.CreateBranchRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.CreateBranchResponse.SerializeToString,
             ),
             'MergeBranch': grpc.unary_unary_rpc_method_handler(
                     servicer.MergeBranch,
-                    request_deserializer=mneme__v1__pb2.MergeBranchRequest.FromString,
-                    response_serializer=mneme__v1__pb2.MergeBranchResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.MergeBranchRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.MergeBranchResponse.SerializeToString,
             ),
             'ListBranches': grpc.unary_unary_rpc_method_handler(
                     servicer.ListBranches,
-                    request_deserializer=mneme__v1__pb2.ListBranchesRequest.FromString,
-                    response_serializer=mneme__v1__pb2.ListBranchesResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.ListBranchesRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.ListBranchesResponse.SerializeToString,
             ),
             'SetRetentionState': grpc.unary_unary_rpc_method_handler(
                     servicer.SetRetentionState,
-                    request_deserializer=mneme__v1__pb2.SetRetentionStateRequest.FromString,
-                    response_serializer=mneme__v1__pb2.SetRetentionStateResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.SetRetentionStateRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.SetRetentionStateResponse.SerializeToString,
             ),
             'VerifyCommitIndex': grpc.unary_unary_rpc_method_handler(
                     servicer.VerifyCommitIndex,
-                    request_deserializer=mneme__v1__pb2.VerifyCommitIndexRequest.FromString,
-                    response_serializer=mneme__v1__pb2.VerifyCommitIndexResponse.SerializeToString,
+                    request_deserializer=mnemovela__v1__pb2.VerifyCommitIndexRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.VerifyCommitIndexResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'mneme.v1.Mneme', rpc_method_handlers)
+            'mnemovela.v1.Mneme', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('mneme.v1.Mneme', rpc_method_handlers)
+    server.add_registered_method_handlers('mnemovela.v1.Mneme', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
 class Mneme:
     """Mneme is the core memory-operation service. Every method corresponds to a
-    stable operation in the mneme.memory.v1-draft contract.
+    stable operation in the mnemovela.memory.v1-draft contract.
 
     """
 
@@ -354,9 +354,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/CommitMemory',
-            mneme__v1__pb2.CommitMemoryRequest.SerializeToString,
-            mneme__v1__pb2.CommitMemoryResponse.FromString,
+            '/mnemovela.v1.Mneme/CommitMemory',
+            mnemovela__v1__pb2.CommitMemoryRequest.SerializeToString,
+            mnemovela__v1__pb2.CommitMemoryResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -381,9 +381,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/AddEpisode',
-            mneme__v1__pb2.AddEpisodeRequest.SerializeToString,
-            mneme__v1__pb2.AddEpisodeResponse.FromString,
+            '/mnemovela.v1.Mneme/AddEpisode',
+            mnemovela__v1__pb2.AddEpisodeRequest.SerializeToString,
+            mnemovela__v1__pb2.AddEpisodeResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -408,9 +408,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/AddFact',
-            mneme__v1__pb2.AddFactRequest.SerializeToString,
-            mneme__v1__pb2.AddFactResponse.FromString,
+            '/mnemovela.v1.Mneme/AddFact',
+            mnemovela__v1__pb2.AddFactRequest.SerializeToString,
+            mnemovela__v1__pb2.AddFactResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -435,9 +435,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/InvalidateFact',
-            mneme__v1__pb2.InvalidateFactRequest.SerializeToString,
-            mneme__v1__pb2.InvalidateFactResponse.FromString,
+            '/mnemovela.v1.Mneme/InvalidateFact',
+            mnemovela__v1__pb2.InvalidateFactRequest.SerializeToString,
+            mnemovela__v1__pb2.InvalidateFactResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -462,9 +462,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/UpsertSubject',
-            mneme__v1__pb2.UpsertSubjectRequest.SerializeToString,
-            mneme__v1__pb2.UpsertSubjectResponse.FromString,
+            '/mnemovela.v1.Mneme/UpsertSubject',
+            mnemovela__v1__pb2.UpsertSubjectRequest.SerializeToString,
+            mnemovela__v1__pb2.UpsertSubjectResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -489,9 +489,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/UpsertEntity',
-            mneme__v1__pb2.UpsertEntityRequest.SerializeToString,
-            mneme__v1__pb2.UpsertEntityResponse.FromString,
+            '/mnemovela.v1.Mneme/UpsertEntity',
+            mnemovela__v1__pb2.UpsertEntityRequest.SerializeToString,
+            mnemovela__v1__pb2.UpsertEntityResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -516,9 +516,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/SearchMemory',
-            mneme__v1__pb2.SearchMemoryRequest.SerializeToString,
-            mneme__v1__pb2.SearchMemoryResponse.FromString,
+            '/mnemovela.v1.Mneme/SearchMemory',
+            mnemovela__v1__pb2.SearchMemoryRequest.SerializeToString,
+            mnemovela__v1__pb2.SearchMemoryResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -543,9 +543,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/QueryMemories',
-            mneme__v1__pb2.QueryMemoriesRequest.SerializeToString,
-            mneme__v1__pb2.QueryMemoriesResponse.FromString,
+            '/mnemovela.v1.Mneme/QueryMemories',
+            mnemovela__v1__pb2.QueryMemoriesRequest.SerializeToString,
+            mnemovela__v1__pb2.QueryMemoriesResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -570,9 +570,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/QueryFacts',
-            mneme__v1__pb2.QueryFactsRequest.SerializeToString,
-            mneme__v1__pb2.QueryFactsResponse.FromString,
+            '/mnemovela.v1.Mneme/QueryFacts',
+            mnemovela__v1__pb2.QueryFactsRequest.SerializeToString,
+            mnemovela__v1__pb2.QueryFactsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -597,9 +597,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/ResolveEntity',
-            mneme__v1__pb2.ResolveEntityRequest.SerializeToString,
-            mneme__v1__pb2.ResolveEntityResponse.FromString,
+            '/mnemovela.v1.Mneme/ResolveEntity',
+            mnemovela__v1__pb2.ResolveEntityRequest.SerializeToString,
+            mnemovela__v1__pb2.ResolveEntityResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -624,9 +624,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/ResolveEntityExplained',
-            mneme__v1__pb2.ResolveEntityExplainedRequest.SerializeToString,
-            mneme__v1__pb2.ResolveEntityExplainedResponse.FromString,
+            '/mnemovela.v1.Mneme/ResolveEntityExplained',
+            mnemovela__v1__pb2.ResolveEntityExplainedRequest.SerializeToString,
+            mnemovela__v1__pb2.ResolveEntityExplainedResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -651,9 +651,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/ExtractEpisode',
-            mneme__v1__pb2.ExtractEpisodeRequest.SerializeToString,
-            mneme__v1__pb2.ExtractEpisodeResponse.FromString,
+            '/mnemovela.v1.Mneme/ExtractEpisode',
+            mnemovela__v1__pb2.ExtractEpisodeRequest.SerializeToString,
+            mnemovela__v1__pb2.ExtractEpisodeResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -678,9 +678,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/CreateBranch',
-            mneme__v1__pb2.CreateBranchRequest.SerializeToString,
-            mneme__v1__pb2.CreateBranchResponse.FromString,
+            '/mnemovela.v1.Mneme/CreateBranch',
+            mnemovela__v1__pb2.CreateBranchRequest.SerializeToString,
+            mnemovela__v1__pb2.CreateBranchResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -705,9 +705,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/MergeBranch',
-            mneme__v1__pb2.MergeBranchRequest.SerializeToString,
-            mneme__v1__pb2.MergeBranchResponse.FromString,
+            '/mnemovela.v1.Mneme/MergeBranch',
+            mnemovela__v1__pb2.MergeBranchRequest.SerializeToString,
+            mnemovela__v1__pb2.MergeBranchResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -732,9 +732,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/ListBranches',
-            mneme__v1__pb2.ListBranchesRequest.SerializeToString,
-            mneme__v1__pb2.ListBranchesResponse.FromString,
+            '/mnemovela.v1.Mneme/ListBranches',
+            mnemovela__v1__pb2.ListBranchesRequest.SerializeToString,
+            mnemovela__v1__pb2.ListBranchesResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -759,9 +759,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/SetRetentionState',
-            mneme__v1__pb2.SetRetentionStateRequest.SerializeToString,
-            mneme__v1__pb2.SetRetentionStateResponse.FromString,
+            '/mnemovela.v1.Mneme/SetRetentionState',
+            mnemovela__v1__pb2.SetRetentionStateRequest.SerializeToString,
+            mnemovela__v1__pb2.SetRetentionStateResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -786,9 +786,9 @@ class Mneme:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mneme.v1.Mneme/VerifyCommitIndex',
-            mneme__v1__pb2.VerifyCommitIndexRequest.SerializeToString,
-            mneme__v1__pb2.VerifyCommitIndexResponse.FromString,
+            '/mnemovela.v1.Mneme/VerifyCommitIndex',
+            mnemovela__v1__pb2.VerifyCommitIndexRequest.SerializeToString,
+            mnemovela__v1__pb2.VerifyCommitIndexResponse.FromString,
             options,
             channel_credentials,
             insecure,

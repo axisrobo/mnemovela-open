@@ -6,10 +6,10 @@ This document explains the current Python integration surface of the Mneme archi
 
 Use these rules first:
 
-- application code should prefer the top-level `axisrobo.mneme` package and `axisrobo.mneme.api`
-- the top-level package exports are aggregated through `axisrobo.mneme.public_api`, but normal consumers should still import from `axisrobo.mneme`
-- backend or index implementors may depend on `axisrobo.mneme.contracts`
-- `axisrobo.mneme.errors` remains a stable compatibility path, while the canonical implementation now lives under `axisrobo.mneme.core`
+- application code should prefer the top-level `axisrobo.mnemovela` package and `axisrobo.mnemovela.api`
+- the top-level package exports are aggregated through `axisrobo.mnemovela.public_api`, but normal consumers should still import from `axisrobo.mnemovela`
+- backend or index implementors may depend on `axisrobo.mnemovela.contracts`
+- `axisrobo.mnemovela.errors` remains a stable compatibility path, while the canonical implementation now lives under `axisrobo.mnemovela.core`
 - grouped packages such as `querying/`, `indexing/`, `management/`, and `_internal/` are implementation layout, not the preferred integration surface for normal consumers
 
 ## Layering Summary
@@ -18,19 +18,19 @@ Use these rules first:
 
 Prefer:
 
-- `from axisrobo.mneme import ...`
-- `from axisrobo.mneme.api import ...`
+- `from axisrobo.mnemovela import ...`
+- `from axisrobo.mnemovela.api import ...`
 
 These are the stable public entry points.
 
-If you are maintaining older compatibility imports, use explicit compat submodules such as `axisrobo.mneme.compat.sqlite`, `axisrobo.mneme.compat.querying`, or `axisrobo.mneme.compat.management`.
+If you are maintaining older compatibility imports, use explicit compat submodules such as `axisrobo.mnemovela.compat.sqlite`, `axisrobo.mnemovela.compat.querying`, or `axisrobo.mnemovela.compat.management`.
 
 ### For backend and index implementors
 
 Prefer:
 
-- `from axisrobo.mneme.contracts import StorageBackend`
-- `from axisrobo.mneme.contracts import RelationIndex, SemanticIndex, LexicalIndex`
+- `from axisrobo.mnemovela.contracts import StorageBackend`
+- `from axisrobo.mnemovela.contracts import RelationIndex, SemanticIndex, LexicalIndex`
 
 These are the stable abstract contracts for extension work.
 
@@ -38,13 +38,13 @@ These are the stable abstract contracts for extension work.
 
 The real implementation is grouped by domain:
 
-- `axisrobo.mneme.ingestion`
-- `axisrobo.mneme.querying`
-- `axisrobo.mneme.indexing`
-- `axisrobo.mneme.management`
-- `axisrobo.mneme.jobs`
-- `axisrobo.mneme.backends`
-- `axisrobo.mneme._internal`
+- `axisrobo.mnemovela.ingestion`
+- `axisrobo.mnemovela.querying`
+- `axisrobo.mnemovela.indexing`
+- `axisrobo.mnemovela.management`
+- `axisrobo.mnemovela.jobs`
+- `axisrobo.mnemovela.backends`
+- `axisrobo.mnemovela._internal`
 
 Do not treat `_internal` as a stable consumer API.
 
@@ -53,7 +53,7 @@ Do not treat `_internal` as a stable consumer API.
 The simplest application entry point is still the service wrapper.
 
 ```python
-from axisrobo.mneme import LocalMemoryService, SQLiteServiceConfig
+from axisrobo.mnemovela import LocalMemoryService, SQLiteServiceConfig
 
 config = SQLiteServiceConfig(database_path="./agentic-memory.db", persistent_indexes=True)
 
@@ -64,7 +64,7 @@ with LocalMemoryService.from_sqlite(config) as memory:
 If you want backend-agnostic construction, use the API-layer factory path.
 
 ```python
-from axisrobo.mneme import MemoryServiceConfig, create_memory_engine
+from axisrobo.mnemovela import MemoryServiceConfig, create_memory_engine
 
 engine = create_memory_engine(
     MemoryServiceConfig(
@@ -82,7 +82,7 @@ finally:
 ## Register Subjects, Entities, and Objects
 
 ```python
-from axisrobo.mneme import LocalMemoryService, MemoryObjectType
+from axisrobo.mnemovela import LocalMemoryService, MemoryObjectType
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     memory.upsert_subject(
@@ -112,12 +112,12 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 
 ## Commit Typed Memories
 
-The top-level package still exposes typed frames for the ten-type taxonomy. Applications should create frames from `axisrobo.mneme.types` exports and commit through the service or engine facade.
+The top-level package still exposes typed frames for the ten-type taxonomy. Applications should create frames from `axisrobo.mnemovela.types` exports and commit through the service or engine facade.
 
 ### Event memory
 
 ```python
-from axisrobo.mneme import (
+from axisrobo.mnemovela import (
     EntityLink,
     Event5W2H,
     EventFrame,
@@ -161,7 +161,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 ### Knowledge memory
 
 ```python
-from axisrobo.mneme import KnowledgeAttributes, KnowledgeFrame, KnowledgeModality, LocalMemoryService, SubjectScope
+from axisrobo.mnemovela import KnowledgeAttributes, KnowledgeFrame, KnowledgeModality, LocalMemoryService, SubjectScope
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     commit = memory.commit_knowledge(
@@ -189,7 +189,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 The same pattern applies to `commit_experience(...)`, `create_simulation_branch(...)`, `commit_emotion(...)`, `commit_procedure(...)`, `commit_intention(...)`, `commit_belief(...)`, `commit_mission(...)`, and `commit_preference(...)`: construct the typed frame from top-level exports, then commit through the engine or service facade.
 
 ```python
-from axisrobo.mneme import BeliefFrame, LocalMemoryService, MissionFrame, PreferenceFrame, SubjectScope
+from axisrobo.mnemovela import BeliefFrame, LocalMemoryService, MissionFrame, PreferenceFrame, SubjectScope
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     memory.commit_belief(
@@ -236,10 +236,10 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 
 ## Ingest Media and Queue Deferred Extraction
 
-Media ingestion is still a public API operation even though its real implementation now lives under `axisrobo.mneme.ingestion`.
+Media ingestion is still a public API operation even though its real implementation now lives under `axisrobo.mnemovela.ingestion`.
 
 ```python
-from axisrobo.mneme import LocalMemoryService, MediaExtractionMode, SubjectScope
+from axisrobo.mnemovela import LocalMemoryService, MediaExtractionMode, SubjectScope
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     source_commit = memory.ingest_media(
@@ -272,12 +272,12 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 
 ## Structured Query and Hybrid Recall
 
-Structured and ranked recall remain public engine/service APIs, while the planner and scoring internals now live under `axisrobo.mneme.querying`.
+Structured and ranked recall remain public engine/service APIs, while the planner and scoring internals now live under `axisrobo.mnemovela.querying`.
 
 ### Structured query
 
 ```python
-from axisrobo.mneme import LocalMemoryService, MemoryObjectType, MemoryType, SubjectScope
+from axisrobo.mnemovela import LocalMemoryService, MemoryObjectType, MemoryType, SubjectScope
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     commits = memory.query_memories(
@@ -300,7 +300,7 @@ The older `subject_entity_search(...)` name still works as a compatibility wrapp
 ### Filter by retention tier
 
 ```python
-from axisrobo.mneme import LocalMemoryService, RetentionState
+from axisrobo.mnemovela import LocalMemoryService, RetentionState
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     cold_or_frozen = memory.query_memories(
@@ -322,7 +322,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 ### Hybrid search with ranked results
 
 ```python
-from axisrobo.mneme import LocalMemoryService, MemoryType, SubjectScope
+from axisrobo.mnemovela import LocalMemoryService, MemoryType, SubjectScope
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     results = memory.hybrid_search(
@@ -343,7 +343,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 ### Relation-only traversal
 
 ```python
-from axisrobo.mneme import LocalMemoryService, RecallMode
+from axisrobo.mnemovela import LocalMemoryService, RecallMode
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     results = memory.hybrid_search(
@@ -363,7 +363,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 ### Explain why a memory matched
 
 ```python
-from axisrobo.mneme import LocalMemoryService, MemoryType
+from axisrobo.mnemovela import LocalMemoryService, MemoryType
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     results = memory.hybrid_search(
@@ -387,7 +387,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 ## Snapshots and Maintenance
 
 ```python
-from axisrobo.mneme import LocalMemoryService
+from axisrobo.mnemovela import LocalMemoryService
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     memory.create_simulation_branch(branch_name="sim/trial-plan", from_branch="main", ttl_days=14)
@@ -399,7 +399,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 ```
 
 ```python
-from axisrobo.mneme import LocalMemoryService
+from axisrobo.mnemovela import LocalMemoryService
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     result = memory.run_maintenance("nightly", branch_name="main", max_jobs=10)
@@ -423,39 +423,39 @@ Supported maintenance scopes in the current baseline are:
 If you are implementing a custom backend or index, use the explicit contract layer rather than importing from internal implementation packages.
 
 ```python
-from axisrobo.mneme.contracts import LexicalIndex, RelationIndex, SemanticIndex, StorageBackend
+from axisrobo.mnemovela.contracts import LexicalIndex, RelationIndex, SemanticIndex, StorageBackend
 ```
 
 The compatibility module still works:
 
 ```python
-from axisrobo.mneme.interfaces import StorageBackend
+from axisrobo.mnemovela.interfaces import StorageBackend
 ```
 
-but new extension code should prefer `axisrobo.mneme.contracts`.
+but new extension code should prefer `axisrobo.mnemovela.contracts`.
 
 For legacy SQLite-specific compatibility imports, prefer the explicit compat layer instead of reaching into backend internals:
 
 ```python
-from axisrobo.mneme.compat.sqlite import SQLiteBackend, SQLiteLexicalIndex, SQLiteRelationIndex, SQLiteSemanticIndex
+from axisrobo.mnemovela.compat.sqlite import SQLiteBackend, SQLiteLexicalIndex, SQLiteRelationIndex, SQLiteSemanticIndex
 ```
 
 Likewise, if you need stable exception types for integration boundaries, prefer:
 
 ```python
-from axisrobo.mneme.core import BranchNotFoundError, MergeConflictError
+from axisrobo.mnemovela.core import BranchNotFoundError, MergeConflictError
 ```
 
 The older compatibility path still works:
 
 ```python
-from axisrobo.mneme.errors import BranchNotFoundError, MergeConflictError
+from axisrobo.mnemovela.errors import BranchNotFoundError, MergeConflictError
 ```
 
 ## Run Deferred Media Extraction
 
 ```python
-from axisrobo.mneme import LocalMemoryService
+from axisrobo.mnemovela import LocalMemoryService
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     result = memory.run_maintenance("media", max_jobs=10)
@@ -468,7 +468,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 Use `check_consistency(...)` to validate subject, entity, object, and ontology bindings over a branch or snapshot.
 
 ```python
-from axisrobo.mneme import LocalMemoryService
+from axisrobo.mnemovela import LocalMemoryService
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     report = memory.check_consistency(branch_name="main")
@@ -482,7 +482,7 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 Use the contradiction review queue when new knowledge conflicts with earlier claims or ontology assertions. `review_contradiction(...)` records workflow history in addition to changing status.
 
 ```python
-from axisrobo.mneme import ContradictionReviewAction, ContradictionStatus, LocalMemoryService
+from axisrobo.mnemovela import ContradictionReviewAction, ContradictionStatus, LocalMemoryService
 
 with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
     queue = memory.list_review_queue(branch_name="main")

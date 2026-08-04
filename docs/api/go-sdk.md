@@ -5,11 +5,11 @@
 The Mneme Go runtime is a zero-dependency, embeddable memory engine that provides CRUD, search, branch-based isolation, fact management, entity resolution, and context assembly. Add it to any Go project:
 
 ```bash
-go get github.com/axisrobo/mneme/go
+go get github.com/axisrobo/mnemovela/go
 ```
 
 ```go
-import "github.com/axisrobo/mneme/go/core"
+import "github.com/axisrobo/mnemovela/go/core"
 ```
 
 ## Quick start
@@ -21,7 +21,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/axisrobo/mneme/go/core"
+    "github.com/axisrobo/mnemovela/go/core"
 )
 
 func main() {
@@ -102,9 +102,9 @@ rt := core.NewRuntimeWithStore(store)
 
 | Env var | Effect |
 |---|---|
-| `MNEME_BACKEND` | Select backend by name (e.g. `"pebble"`, `"memory"`) |
-| `MNEME_DATA_PATH` | Data path for the selected backend |
-| `Mneme_GO_PEBBLE_PATH` | Legacy fallback, sets backend to `"pebble"` |
+| `MNEMOVELA_BACKEND` | Select backend by name (e.g. `"pebble"`, `"memory"`) |
+| `MNEMOVELA_DATA_PATH` | Data path for the selected backend |
+| `Mnemovela_GO_PEBBLE_PATH` | Legacy fallback, sets backend to `"pebble"` |
 | _(none set)_ | Defaults to `"memory"` (in-process, volatile) |
 
 ### Backend registry
@@ -130,12 +130,12 @@ type StoreConfig struct {
 | Backend | Registration | Description |
 |---|---|---|
 | `"memory"` | OSS default (init-time registration in `go/core/defaults.go`) | In-process map-based store; no persistence |
-| `"pebble"` | OSS: blank-import `"github.com/axisrobo/mneme/go/backend/pebble"` | Embedded persistent store using Pebble (CockroachDB's LSM) |
-| `"postgres"` | Enterprise Edition (`github.com/axisrobo/mneme-ee/go`) | PostgreSQL-backed scalable store |
+| `"pebble"` | OSS: blank-import `"github.com/axisrobo/mnemovela/go/backend/pebble"` | Embedded persistent store using Pebble (CockroachDB's LSM) |
+| `"postgres"` | Enterprise Edition (`github.com/axisrobo/mnemovela-ee/go`) | PostgreSQL-backed scalable store |
 
 ```go
 // Enabling the pebble backend via blank import:
-import _ "github.com/axisrobo/mneme/go/backend/pebble"
+import _ "github.com/axisrobo/mnemovela/go/backend/pebble"
 ```
 
 ## Writing
@@ -505,7 +505,7 @@ type RerankerConfig struct {
 
 OSS default: `"none"` (no-op reranker, returns all-zero scores).
 
-The active reranker is set via `Runtime.SetReranker(...)` and applied inside `SearchMemory`. The command binaries call `core.SetReranker(core.RerankerFromEnv())` at startup, where `RerankerFromEnv()` reads the `MNEME_RERANKER` environment variable (unset or `none` leaves the baseline ordering unchanged). The EE registers `llm` as a `Reranker`; its graph/neighborhood capabilities are EE utilities and are not auto-applied rerankers.
+The active reranker is set via `Runtime.SetReranker(...)` and applied inside `SearchMemory`. The command binaries call `core.SetReranker(core.RerankerFromEnv())` at startup, where `RerankerFromEnv()` reads the `MNEMOVELA_RERANKER` environment variable (unset or `none` leaves the baseline ordering unchanged). The EE registers `llm` as a `Reranker`; its graph/neighborhood capabilities are EE utilities and are not auto-applied rerankers.
 
 ### ExtractionProvider interface
 
@@ -518,7 +518,7 @@ type ExtractionProvider interface {
 
 Registered with `RegisterExtractor(name, factory)`. Lookup via `GetExtractorFactory(name)`.
 
-The extractor is selected by the `extract_episode` `provider` parameter (default `offline`, which ships in the OSS core). The EE registers `llm` and `openai`; requesting a provider that is not registered returns an error. EE LLM providers read `MNEME_LLM_API_KEY`, `MNEME_LLM_BASE_URL`, and `MNEME_LLM_MODEL`.
+The extractor is selected by the `extract_episode` `provider` parameter (default `offline`, which ships in the OSS core). The EE registers `llm` and `openai`; requesting a provider that is not registered returns an error. EE LLM providers read `MNEMOVELA_LLM_API_KEY`, `MNEMOVELA_LLM_BASE_URL`, and `MNEMOVELA_LLM_MODEL`.
 
 ```go
 type ExtractorConfig struct {
@@ -576,7 +576,7 @@ Event types: `EventCommitStored`, `EventEntityUpserted`, `EventFactStored`, `Eve
 
 ### Enterprise Edition
 
-The Enterprise Edition module (`github.com/axisrobo/mneme-ee/go`) provides additional registrations that are not in OSS:
+The Enterprise Edition module (`github.com/axisrobo/mnemovela-ee/go`) provides additional registrations that are not in OSS:
 
 | Category | OSS defaults | EE additions |
 |---|---|---|
@@ -589,10 +589,10 @@ The Enterprise Edition module (`github.com/axisrobo/mneme-ee/go`) provides addit
 
 | Binary | Source | Description | Key env vars |
 |---|---|---|---|
-| `mneme-jsonrpc-stdio` | `go/cmd/mneme-jsonrpc-stdio` | JSON-RPC 2.0 over stdin/stdout | `MNEME_BACKEND`, `MNEME_DATA_PATH`, `Mneme_GO_PEBBLE_PATH` |
-| `mneme-mcp-stdio` | `go/cmd/mneme-mcp-stdio` | Model Context Protocol (MCP) over stdin/stdout | `MNEME_BACKEND`, `MNEME_DATA_PATH`, `Mneme_GO_PEBBLE_PATH` |
-| `mneme-http` | `go/cmd/mneme-http` | JSON-RPC HTTP server | `Mneme_HTTP_ADDR` (default `127.0.0.1:8080`) |
-| `mneme-grpc` | `go/cmd/mneme-grpc` | gRPC server with health check | `Mneme_GRPC_PORT` (default `9090`) |
+| `mnemovela-jsonrpc-stdio` | `go/cmd/mnemovela-jsonrpc-stdio` | JSON-RPC 2.0 over stdin/stdout | `MNEMOVELA_BACKEND`, `MNEMOVELA_DATA_PATH`, `Mnemovela_GO_PEBBLE_PATH` |
+| `mnemovela-mcp-stdio` | `go/cmd/mnemovela-mcp-stdio` | Model Context Protocol (MCP) over stdin/stdout | `MNEMOVELA_BACKEND`, `MNEMOVELA_DATA_PATH`, `Mnemovela_GO_PEBBLE_PATH` |
+| `mnemovela-http` | `go/cmd/mnemovela-http` | JSON-RPC HTTP server | `Mnemovela_HTTP_ADDR` (default `127.0.0.1:8080`) |
+| `mnemovela-grpc` | `go/cmd/mnemovela-grpc` | gRPC server with health check | `Mnemovela_GRPC_PORT` (default `9090`) |
 
 All binaries use `StoreConfigFromEnv()` for backend selection and blank-import the pebble backend.
 

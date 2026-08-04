@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `axisrobo.mneme` package is the in-process Python SDK for the Mneme memory architecture. It provides local embedded storage (SQLite or in-memory), typed memory commits, hybrid retrieval, entity management, media ingestion, and maintenance orchestration.
+The `axisrobo.mnemovela` package is the in-process Python SDK for the Mneme memory architecture. It provides local embedded storage (SQLite or in-memory), typed memory commits, hybrid retrieval, entity management, media ingestion, and maintenance orchestration.
 
 **Install** (editable from source):
 ```bash
@@ -12,11 +12,11 @@ pip install -e .
 **Stable import surfaces:**
 
 ```python
-from axisrobo.mneme import (...)       # top-level aggregated public API
-from axisrobo.mneme.api import (...)   # direct service/factory entry points
+from axisrobo.mnemovela import (...)       # top-level aggregated public API
+from axisrobo.mnemovela.api import (...)   # direct service/factory entry points
 ```
 
-Packages such as `_internal/`, `querying/`, `indexing/`, and `management/` are implementation layout and **not** part of the stable consumer API. Backend and index implementors should use `axisrobo.mneme.contracts`.
+Packages such as `_internal/`, `querying/`, `indexing/`, and `management/` are implementation layout and **not** part of the stable consumer API. Backend and index implementors should use `axisrobo.mnemovela.contracts`.
 
 ---
 
@@ -25,7 +25,7 @@ Packages such as `_internal/`, `querying/`, `indexing/`, and `management/` are i
 ### In-memory (ephemeral)
 
 ```python
-from axisrobo.mneme import LocalMemoryService, SQLiteServiceConfig
+from axisrobo.mnemovela import LocalMemoryService, SQLiteServiceConfig
 
 config = SQLiteServiceConfig(database_path=":memory:", persistent_indexes=False)
 with LocalMemoryService.from_sqlite(config) as memory:
@@ -48,7 +48,7 @@ with LocalMemoryService.from_sqlite(config) as memory:
 ### File-backed SQLite
 
 ```python
-from axisrobo.mneme import LocalMemoryService, SQLiteServiceConfig
+from axisrobo.mnemovela import LocalMemoryService, SQLiteServiceConfig
 
 config = SQLiteServiceConfig(database_path="./agentic-memory.db", persistent_indexes=True)
 with LocalMemoryService.from_sqlite(config) as memory:
@@ -81,7 +81,7 @@ with LocalMemoryService.from_sqlite("./data.db") as memory:
 A frozen dataclass for backend-agnostic construction. The backend name is resolved against the registered store factories.
 
 ```python
-from axisrobo.mneme import MemoryServiceConfig, create_memory_engine
+from axisrobo.mnemovela import MemoryServiceConfig, create_memory_engine
 
 engine = create_memory_engine(
     MemoryServiceConfig(
@@ -105,8 +105,8 @@ Fields:
 A frozen dataclass for direct SQLite construction — the simplest path:
 
 ```python
-from axisrobo.mneme import SQLiteServiceConfig, create_sqlite_engine
-from axisrobo.mneme.backends.sqlite import SQLiteBackendConfig, create_sqlite_engine  # same objects
+from axisrobo.mnemovela import SQLiteServiceConfig, create_sqlite_engine
+from axisrobo.mnemovela.backends.sqlite import SQLiteBackendConfig, create_sqlite_engine  # same objects
 
 engine = create_sqlite_engine("./agentic-memory.db", persistent_indexes=True)
 ```
@@ -143,7 +143,7 @@ The OSS distribution ships two backends:
 | `"memory"` | In-memory storage (ephemeral). |
 | `"sqlite"` | SQLite file-backed storage with optional persistent indexes. |
 
-Server backends (e.g. `"postgres"`) are provided by the Enterprise Edition (`axisrobo-mneme-ee`). The registry auto-discovers backends at import time so `"postgres"` becomes available without code changes once the EE package is installed.
+Server backends (e.g. `"postgres"`) are provided by the Enterprise Edition (`axisrobo-mnemovela-ee`). The registry auto-discovers backends at import time so `"postgres"` becomes available without code changes once the EE package is installed.
 
 ---
 
@@ -281,7 +281,7 @@ memory.commit_<type>(
 All frames accept either a typed dataclass instance or a plain `Mapping[str, Any]` that the engine normalizes internally.
 
 ```python
-from axisrobo.mneme import BeliefFrame, SubjectScope
+from axisrobo.mnemovela import BeliefFrame, SubjectScope
 
 memory.commit_belief(
     branch_name="main",
@@ -714,20 +714,20 @@ memory.sync_connector(
 ) -> dict[str, Any]
 ```
 
-**Important:** Cloud connectors (GitHub, GDrive, OneDrive, Tencent, S3, Azure) ship in the Enterprise Edition (`axisrobo-mneme-ee`). In the OSS core alone, `sync_connector` raises `ValueError("Unknown connector: ...")` with a hint to install the EE package. The connector registry auto-discovers connectors at import time when the EE package is present.
+**Important:** Cloud connectors (GitHub, GDrive, OneDrive, Tencent, S3, Azure) ship in the Enterprise Edition (`axisrobo-mnemovela-ee`). In the OSS core alone, `sync_connector` raises `ValueError("Unknown connector: ...")` with a hint to install the EE package. The connector registry auto-discovers connectors at import time when the EE package is present.
 
 ---
 
 ## Editions note
 
-**OSS Core** (`axisrobo.mneme`):
+**OSS Core** (`axisrobo.mnemovela`):
 
 - Embedded backends: `memory` (in-memory), `sqlite` (file-backed with persistent indexes)
 - Baseline retrieval: structured filtering, lexical (BM25/term), relation traversal, cosine semantic on local indexes
 - Rule-based and offline extraction: `extract_episode` with built-in providers, file ingestion
 - Entity resolution: exact-match (ID, canonical name, alias, normalized text)
 
-**Enterprise Edition** (`axisrobo-mneme-ee`):
+**Enterprise Edition** (`axisrobo-mnemovela-ee`):
 
 - Additional backends: `postgres` with PGVector
 - LLM-powered extraction: OpenAI client for episode-to-fact/frame materialization
@@ -737,7 +737,7 @@ memory.sync_connector(
 
 EE backends and connectors register into the same APIs at import time, so code written against the OSS SDK works unchanged when the EE package is present.
 
-**Activating rerankers and extractors:** `create_memory_engine` honors the `MNEME_RERANKER` environment variable, setting the engine's reranker from it at construction (unset or `none` preserves the baseline order). `hybrid_search` then applies the selected reranker automatically. Extraction is selected per call via `extract_episode(provider=...)`: `offline` is the default and ships in the OSS core, while the EE registers `llm` and `openai`; requesting an unregistered provider raises a JSON-RPC `-32602` error. EE LLM providers read `MNEME_LLM_API_KEY`, `MNEME_LLM_BASE_URL`, and `MNEME_LLM_MODEL`.
+**Activating rerankers and extractors:** `create_memory_engine` honors the `MNEMOVELA_RERANKER` environment variable, setting the engine's reranker from it at construction (unset or `none` preserves the baseline order). `hybrid_search` then applies the selected reranker automatically. Extraction is selected per call via `extract_episode(provider=...)`: `offline` is the default and ships in the OSS core, while the EE registers `llm` and `openai`; requesting an unregistered provider raises a JSON-RPC `-32602` error. EE LLM providers read `MNEMOVELA_LLM_API_KEY`, `MNEMOVELA_LLM_BASE_URL`, and `MNEMOVELA_LLM_MODEL`.
 
 ---
 

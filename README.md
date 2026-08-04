@@ -1,17 +1,17 @@
-# Mneme-open
+# Mnemovela-open
 
 Open (Apache-2.0) client SDKs, examples, API reference, and prebuilt binaries
-for **[Mneme](https://github.com/axisrobo/mneme)**.
+for **[Mnemovela](https://github.com/axisrobo/mnemovela)**.
 
-## What is Mneme?
+## What is Mnemovela?
 
-Mneme is a **cognition runtime** that gives software agents long-term memory,
+Mnemovela is a **cognition runtime** that gives software agents long-term memory,
 context assembly, and knowledge representation. Think of it as a memory
 subsystem that sits alongside your LLM: every observation, fact, decision, and
 plan is stored as a typed, temporal, branchable record, and you retrieve it with
 a hybrid search (lexical + semantic + relation + time) plus context assembly.
 
-Mneme's data model combines Git-like branching with cognitive memory types:
+Mnemovela's data model combines Git-like branching with cognitive memory types:
 
 | Memory type | Example |
 |-------------|---------|
@@ -26,12 +26,12 @@ Every record is **immutable and append-only**, tagged with branch, timestamp,
 retention tier, and identity scope (tenant/project). The engine owns the
 semantics; storage backends are replaceable.
 
-## What is Mneme-open?
+## What is Mnemovela-open?
 
-**Mneme-open** is the public, open-source window into Mneme. It contains
-everything you need to **integrate with a running Mneme server** — client
+**Mnemovela-open** is the public, open-source window into Mnemovela. It contains
+everything you need to **integrate with a running Mnemovela server** — client
 libraries, CLI tools, protocol schemas, and API documentation —?under the
-**Apache-2.0** license. The Mneme engine source is not included here; this
+**Apache-2.0** license. The Mnemovela engine source is not included here; this
 repository ships only the client-facing layer.
 
 **What's in this repository:**
@@ -43,7 +43,7 @@ repository ships only the client-facing layer.
 | `docs/` | Full API reference (Python SDK, Go SDK, JSON-RPC, MCP, REST, gRPC) |
 | `contracts/` | Language-neutral protocol schemas (JSON-RPC, MCP, REST/OpenAPI, gRPC Proto) |
 
-**What's NOT here (in the private Mneme engine repo):**
+**What's NOT here (in the private Mnemovela engine repo):**
 the engine server + storage backends + advanced algorithms (LLM reranking,
 LLM extraction, graph/neighborhood expansion, cloud connectors, contradiction
 detection, simulation). Prebuilt binaries of the engine servers ARE available
@@ -52,15 +52,15 @@ from this repository's releases.
 ## Getting started
 
 1. **Get a server binary.** Download a prebuilt server binary from the [latest
-   GitHub release](https://github.com/axisrobo/mneme-open/releases) for your platform.
+   GitHub release](https://github.com/axisrobo/mnemovela-open/releases) for your platform.
    (See [local build](#building-from-source) if you prefer to build from the
    engine source.)
 2. **Start the server:**
    ```bash
-   mneme-http   # JSON-RPC over HTTP + REST, default 127.0.0.1:8080
-   mneme-grpc   # gRPC, default :9090
+   mnemovela-http   # JSON-RPC over HTTP + REST, default 127.0.0.1:8080
+   mnemovela-grpc   # gRPC, default :9090
    ```
-   The server starts with an in-memory backend. Set `Mneme_GO_PEBBLE_PATH` for
+   The server starts with an in-memory backend. Set `Mnemovela_GO_PEBBLE_PATH` for
    pebble persistence.
 3. **Pick a client and integrate:**
 
@@ -69,8 +69,8 @@ from this repository's releases.
    pip install ./clients/python
    ```
    ```python
-   from mneme_client import MnemeClient  # gRPC
-   from mneme_client import MnemeHttpClient  # HTTP (full method surface)
+   from mnemovela_client import MnemeClient  # gRPC
+   from mnemovela_client import MnemeHttpClient  # HTTP (full method surface)
    client = MnemeHttpClient("http://127.0.0.1:8080")
    client.add_episode(branch_name="main", content="hello")
    client.search_memory(branch_name="main", query="hello")
@@ -78,23 +78,23 @@ from this repository's releases.
 
    **Go (gRPC + HTTP):**
    ```go
-   import "github.com/axisrobo/mneme-open/clients/go/mnemeclient"
-   t := mnemeclient.NewJSONRPCTransport("http://localhost:8080")
-   c := mnemeclient.New(t)
-   raw, _ := c.AddEpisode(ctx, mnemeclient.P{"branch_name":"main","content":"hi"})
+   import "github.com/axisrobo/mnemovela-open/clients/go/mnemovela"
+   t := mnemovela.NewJSONRPCTransport("http://localhost:8080")
+   c := mnemovela.New(t)
+   raw, _ := c.AddEpisode(ctx, mnemovela.P{"branch_name":"main","content":"hi"})
    ```
 
    **TypeScript (HTTP):**
    ```typescript
-   import { MnemeClient } from "@axisrobo/mneme-client";
+   import { MnemeClient } from "@axisrobo/mnemovela-client";
    const client = new MnemeClient("http://127.0.0.1:8080");
    await client.addEpisode({ branch_name: "main", content: "hello" });
    ```
 
    **CLI:**
    ```bash
-   mneme --transport http add-episode --branch main --content "hi"
-   mneme search --branch main --query "hi"
+   mnemovela --transport http add-episode --branch main --content "hi"
+   mnemovela search --branch main --query "hi"
    ```
 
    See `docs/api/` for the full API reference, and `examples/` for runnable
@@ -114,13 +114,13 @@ binary:
 ## License
 
 Source content is **Apache-2.0** (`LICENSE`). Prebuilt binaries are distributed
-under separate terms (`BINARY-LICENSE.md`). The Mneme engine (not in this
+under separate terms (`BINARY-LICENSE.md`). The Mnemovela engine (not in this
 repository) is licensed separately.
 
 ## Building from source
 
-The server binaries in the releases are built from the Mneme engine source. If
+The server binaries in the releases are built from the Mnemovela engine source. If
 you have access to the engine repository, build them with:
 ```bash
-cd go && CGO_ENABLED=0 go build ./cmd/mneme-http ./cmd/mneme-grpc ./cmd/mneme-jsonrpc-stdio ./cmd/mneme-mcp-stdio
+cd go && CGO_ENABLED=0 go build ./cmd/mnemovela-http ./cmd/mnemovela-grpc ./cmd/mnemovela-jsonrpc-stdio ./cmd/mnemovela-mcp-stdio
 ```

@@ -1,13 +1,13 @@
-# Mneme Agent Integration
+# Mnemovela Agent Integration
 
-Run Mneme as a **memory backend for AI coding agents** (OpenCode, Claude Code,
+Run Mnemovela as a **memory backend for AI coding agents** (OpenCode, Claude Code,
 Codex, and any MCP-compatible tool). The agent stores decisions, facts, workspace
 state, and project knowledge across sessions, and recalls them at task start.
 
 ## How it works
 
-1. **Start the Mneme MCP server.** The server binary (`mneme-mcp-stdio`) speaks
-   the Model Context Protocol over standard input/output. It exposes 25 `mneme.*`
+1. **Start the Mnemovela MCP server.** The server binary (`mnemovela-mcp-stdio`) speaks
+   the Model Context Protocol over standard input/output. It exposes 25 `mnemovela.*`
    tools across five categories:
 
    | Category | What it does | Tools |
@@ -18,14 +18,14 @@ state, and project knowledge across sessions, and recalls them at task start.
    | **Session** | Start and end coding sessions with context | `session_start`, `session_end`, `get_context` |
    | **Maintenance** | Branch, merge, extract, invalidate stale facts | `create_branch`, `merge_branch`, `invalidate_fact`, `extract_episode`, `list_branches` |
 
-   Get a binary from the [latest Mneme-open release](/releases) and put it on
+   Get a binary from the [latest Mnemovela-open release](/releases) and put it on
    your PATH.
 
 2. **Configure your agent's MCP** (see platform configs below). The agent gets a
-   "Mneme" MCP server it can call for `mneme.search_memory(...)` etc.
+   "Mnemovela" MCP server it can call for `mnemovela.search_memory(...)` etc.
 
-3. **Load a companion skill** that tells the agent *when* and *how* to use Mneme
-   — see the [universal skill](skills/mneme-agent-memory/SKILL.md). Without a skill,
+3. **Load a companion skill** that tells the agent *when* and *how* to use Mnemovela
+   — see the [universal skill](skills/mnemovela-agent-memory/SKILL.md). Without a skill,
    the agent has the tool but doesn't know the memory lifecycle.
 
 ## Platform configs
@@ -37,9 +37,9 @@ Copy `opencode.json` into your project root (or merge into an existing one):
 ```json
 {
   "mcp": {
-    "Mneme": {
+    "Mnemovela": {
       "type": "local",
-      "command": ["mneme-mcp-stdio"],
+      "command": ["mnemovela-mcp-stdio"],
       "enabled": true
     }
   }
@@ -47,10 +47,10 @@ Copy `opencode.json` into your project root (or merge into an existing one):
 ```
 
 If the binary is not on PATH, use an absolute path, e.g.:
-`"command": ["D:\\tools\\mneme-mcp-stdio.exe"]`.
+`"command": ["D:\\tools\\mnemovela-mcp-stdio.exe"]`.
 
-Then put the [universal skill](skills/mneme-agent-memory/SKILL.md) into
-`.opencode/skills/mneme-agent-memory/SKILL.md` — OpenCode auto-loads it.
+Then put the [universal skill](skills/mnemovela-agent-memory/SKILL.md) into
+`.opencode/skills/mnemovela-agent-memory/SKILL.md` — OpenCode auto-loads it.
 
 ### Claude Code
 
@@ -59,14 +59,14 @@ Add the MCP server to `~/.claude/settings.json`:
 ```json
 {
   "mcpServers": {
-    "Mneme": {
-      "command": "mneme-mcp-stdio"
+    "Mnemovela": {
+      "command": "mnemovela-mcp-stdio"
     }
   }
 }
 ```
 
-Then copy the [universal skill](skills/mneme-agent-memory/SKILL.md) into your project
+Then copy the [universal skill](skills/mnemovela-agent-memory/SKILL.md) into your project
 as `CLAUDE.md` or a hook that invokes the recall/writeback patterns.
 
 ### Codex
@@ -74,8 +74,8 @@ as `CLAUDE.md` or a hook that invokes the recall/writeback patterns.
 Add to `~/.codex/config.toml`:
 
 ```toml
-[mcp."Mneme"]
-command = "mneme-mcp-stdio"
+[mcp."Mnemovela"]
+command = "mnemovela-mcp-stdio"
 ```
 
 Then either add the skill content to `AGENTS.md` or configure hooks in
@@ -84,7 +84,7 @@ session-end.
 
 ## Companion skill
 
-The **[universal agent-memory skill](skills/mneme-agent-memory/SKILL.md)** covers the
+The **[universal agent-memory skill](skills/mnemovela-agent-memory/SKILL.md)** covers the
 full lifecycle:
 
 | Phase | What the agent does |
@@ -100,43 +100,43 @@ It also defines the **entity ID convention** (`module:<name>`, `file:<path>`,
 
 ## Getting the binary
 
-Download the latest `mneme-mcp-stdio` for your platform from
+Download the latest `mnemovela-mcp-stdio` for your platform from
 [GitHub Releases](/releases). The release includes four server binaries:
 
 | Binary | Purpose |
 |--------|---------|
-| `mneme-mcp-stdio` | **MCP server** — the one agents use |
-| `mneme-jsonrpc-stdio` | JSON-RPC server over stdio (alternative protocol) |
-| `mneme-http` | HTTP server with REST + JSON-RPC (`/api/v1/jsonrpc`) |
-| `mneme-grpc` | gRPC server |
+| `mnemovela-mcp-stdio` | **MCP server** — the one agents use |
+| `mnemovela-jsonrpc-stdio` | JSON-RPC server over stdio (alternative protocol) |
+| `mnemovela-http` | HTTP server with REST + JSON-RPC (`/api/v1/jsonrpc`) |
+| `mnemovela-grpc` | gRPC server |
 
 All binaries start with an in-memory backend (no persistence). For persistence
-across restarts, set `Mneme_GO_PEBBLE_PATH=./mneme.pebble` before launching.
+across restarts, set `Mnemovela_GO_PEBBLE_PATH=./mnemovela.pebble` before launching.
 
 ## Example: a full session
 
 ```
 [Agent starts a task "add dark mode toggle"]
 
-Agent: mneme.search_memory(query="dark mode theme", top_k=5)
+Agent: mnemovela.search_memory(query="dark mode theme", top_k=5)
 → finds: "Previous attempt stalled on CSS variable conflicts"
 → finds: "Constraint: must support system preference detection"
 
-Agent: mneme.query_facts(subject_id="constraint:theme-system-preference")
+Agent: mnemovela.query_facts(subject_id="constraint:theme-system-preference")
 → fact: constraint:theme-system-preference = "requires @media (prefers-color-scheme)"
 
-Agent: mneme.build_context(query="dark mode UI patterns")
+Agent: mnemovela.build_context(query="dark mode UI patterns")
 → returns sections from past episodes about component patterns
 
 [Agent works, adding a theme toggle component...]
 
-Agent: mneme.capture_decision(decision_summary="Use CSS custom properties on :root", rationale="Least churn on existing components", alternatives="Tailwind dark: prefix, separate stylesheets")
+Agent: mnemovela.capture_decision(decision_summary="Use CSS custom properties on :root", rationale="Least churn on existing components", alternatives="Tailwind dark: prefix, separate stylesheets")
 
-Agent: mneme.add_fact(fact_id="fact:dark-mode-implements-css-vars", subject_id="module:theme-provider", predicate="implements", object_value="CSS custom properties approach")
+Agent: mnemovela.add_fact(fact_id="fact:dark-mode-implements-css-vars", subject_id="module:theme-provider", predicate="implements", object_value="CSS custom properties approach")
 
 [Agent completes]
 
-Agent: mneme.session_end(summary="Added dark mode toggle. Changed: ThemeProvider.tsx, styles/theme.css, Settings.tsx. Tests: 5/5 pass (npm run test -- Theme). Key decisions: CSS vars approach. Pitfalls: Flash-of-light on initial load — deferred to follow-up.")
+Agent: mnemovela.session_end(summary="Added dark mode toggle. Changed: ThemeProvider.tsx, styles/theme.css, Settings.tsx. Tests: 5/5 pass (npm run test -- Theme). Key decisions: CSS vars approach. Pitfalls: Flash-of-light on initial load — deferred to follow-up.")
 ```
 
 This gives the next session full context before a single file read. The

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from mneme_client._generated import mneme_v1_pb2 as pb
+from mnemovela_client._generated import mnemovela_v1_pb2 as pb
 
 
 def to_value(obj: Any) -> "pb.Value":
