@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from fake_http_server import serve_http
-from mneme_client import MnemeHttpClient, AsyncMnemeHttpClient, MnemeError
+from mnemovela_client import MnemeHttpClient, AsyncMnemeHttpClient, MnemeError
 
 
 class TestHttpClient(unittest.TestCase):
@@ -28,7 +28,7 @@ class TestHttpClient(unittest.TestCase):
         with serve_http() as url:
             c = MnemeHttpClient(url)
             with self.assertRaises(MnemeError) as ctx:
-                c.call("mneme.nope")
+                c.call("mnemovela.nope")
             self.assertEqual(ctx.exception.code, -32601)
 
     def test_async_add_episode(self):

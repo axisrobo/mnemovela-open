@@ -1,6 +1,6 @@
-# Mneme-open - 宣传材料（中文）
+# Mnemovela-open - 宣传材料（中文）
 
-将 `{LINK}` 替换为 `https://github.com/axisrobo/mneme-open`。
+将 `{LINK}` 替换为 `https://github.com/axisrobo/mnemovela-open`。
 
 ---
 
@@ -10,7 +10,7 @@
 
 给你的 AI Agent 装上"长期记忆"。
 
-Mneme 开源了——一个专门为 AI 编程 Agent 设计的认知运行时。支持记忆存储、知识图谱、工作区状态，跨 session 保持上下文。
+Mnemovela 开源了——一个专门为 AI 编程 Agent 设计的认知运行时。支持记忆存储、知识图谱、工作区状态，跨 session 保持上下文。
 
 - Python / TypeScript / Go / CLI 全支持
 - MCP / JSON-RPC / REST / gRPC 四种协议
@@ -27,7 +27,7 @@ GitHub：{LINK}
 
 AI 编程助手每次新 session 都"失忆"？
 
-Mneme 让 Agent 学会记住：
+Mnemovela 让 Agent 学会记住：
 - 上次改了哪些文件 —— 不用重新翻代码
 - 做了哪些决策 —— 不用再讨论一遍
 - 踩了哪些坑 —— 不用再 debug 一次
@@ -46,7 +46,7 @@ Mneme 让 Agent 学会记住：
 AI Agent 的三件套：
 1. 推理（LLM）
 2. 工具（Function Call）
-3. 记忆（Mneme）—— 今天刚开源
+3. 记忆（Mnemovela）—— 今天刚开源
 
 Apache-2.0，GitHub 见 → {LINK}
 
@@ -56,10 +56,10 @@ Apache-2.0，GitHub 见 → {LINK}
 
 ### 第 1 篇 —— 产品发布
 
-Mneme 正式开源（Apache-2.0）：一个 Agent 认知运行时，为 AI 编程助手提供跨 session 的长期记忆、知识图谱和工作区状态。
+Mnemovela 正式开源（Apache-2.0）：一个 Agent 认知运行时，为 AI 编程助手提供跨 session 的长期记忆、知识图谱和工作区状态。
 
 工作原理：
-- Agent 在查文件之前先调 `mneme.search_memory()`
+- Agent 在查文件之前先调 `mnemovela.search_memory()`
 - 工作过程中用 `capture_decision()`、`capture_error()`、`add_fact()` 记录
 - 会话结束时 `session_end()` 写入摘要、变更文件、决策列表
 - 下次会话开始时 Agent 已经知道项目状态
@@ -76,7 +76,7 @@ Mneme 正式开源（Apache-2.0）：一个 Agent 认知运行时，为 AI 编�
 
 ### 第 2 篇 —— 架构角度
 
-大多数"Agent 记忆"项目是向量数据库 + 搜索。Mneme 不同。
+大多数"Agent 记忆"项目是向量数据库 + 搜索。Mnemovela 不同。
 
 它建模了 14 种认知记忆类型，每种都有独立的 Schema、检索策略和保留策略：
 
@@ -103,7 +103,7 @@ Mneme 正式开源（Apache-2.0）：一个 Agent 认知运行时，为 AI 编�
 
 ## CSDN（技术博客，约800字）
 
-### 标题：AI编程Agent缺的不是智商，是记忆 —— Mneme开源认知运行时介绍
+### 标题：AI编程Agent缺的不是智商，是记忆 —— Mnemovela开源认知运行时介绍
 
 **一、Agent 的"失忆症"**
 
@@ -111,11 +111,11 @@ Mneme 正式开源（Apache-2.0）：一个 Agent 认知运行时，为 AI 编�
 
 这本质上是**上下文断裂**的问题。session 内的上下文窗口有限，跨 session 的上下文则完全不存在。
 
-Mneme 解决的就是这个"跨 session 上下文"问题。
+Mnemovela 解决的就是这个"跨 session 上下文"问题。
 
-**二、Mneme 是什么**
+**二、Mnemovela 是什么**
 
-Mneme 是一个**Agent 认知运行时**，提供：
+Mnemovela 是一个**Agent 认知运行时**，提供：
 - 长期记忆存储：Agent 每次工作的内容、决策、错误、发现都可持久化
 - 知识图谱：模块依赖、文件关系、项目约束以结构化方式存储
 - 工作区状态：当前活跃文件、待定决策、测试状态等临时上下文
@@ -123,7 +123,7 @@ Mneme 是一个**Agent 认知运行时**，提供：
 
 它不是"文档数据库"，而是一个**认知模型**——理解事件、知识、经验、模拟等 14 种不同的记忆类型。
 
-**三、Agent 怎么用 Mneme**
+**三、Agent 怎么用 Mnemovela**
 
 会话开始 → Agent 先调 `search_memory()` 查历史
 工作过程 → Agent 记录决策、错误、发现
@@ -143,7 +143,7 @@ Mneme 是一个**Agent 认知运行时**，提供：
 
 ## 微信公众号（4段式推文）
 
-### 标题：给你的 AI 编程助手装上"长期记忆" —— Mneme 开源
+### 标题：给你的 AI 编程助手装上"长期记忆" —— Mnemovela 开源
 
 **（第1段 —— 痛点）**
 
@@ -151,15 +151,15 @@ Mneme 是一个**Agent 认知运行时**，提供：
 
 **（第2段 —— 产品）**
 
-Mneme 就是专门解决这个问题的。它是一个开源的**Agent 认知运行时**，为 AI Agent 提供：跨 session 记忆持久化、结构化知识图谱、工作区状态保存、混合检索。今天正式以 Apache-2.0 协议开源。
+Mnemovela 就是专门解决这个问题的。它是一个开源的**Agent 认知运行时**，为 AI Agent 提供：跨 session 记忆持久化、结构化知识图谱、工作区状态保存、混合检索。今天正式以 Apache-2.0 协议开源。
 
 **（第3段 —— 场景）**
 
-Agent 在 Mneme 的加持下，工作流程变成：会话开始先查历史记忆 → 工作过程实时记录决策和错误 → 会话结束写回摘要和变更列表 → 下次会话上下文自动恢复。支持 OpenCode、Claude Code、Codex（通过 MCP 协议即插即用）。提供 Python、TypeScript、Go 三种 SDK。
+Agent 在 Mnemovela 的加持下，工作流程变成：会话开始先查历史记忆 → 工作过程实时记录决策和错误 → 会话结束写回摘要和变更列表 → 下次会话上下文自动恢复。支持 OpenCode、Claude Code、Codex（通过 MCP 协议即插即用）。提供 Python、TypeScript、Go 三种 SDK。
 
 **（第4段 —— 获取 + CTA）**
 
-GitHub：{LINK}。Apache-2.0 完全开源。预编译二进制已就绪。文档齐全：SDK 文档、API 参考、Agent 集成 Guide。如果你在开发 AI Agent，试试 Mneme —— 别让 Agent 每次从头开始。
+GitHub：{LINK}。Apache-2.0 完全开源。预编译二进制已就绪。文档齐全：SDK 文档、API 参考、Agent 集成 Guide。如果你在开发 AI Agent，试试 Mnemovela —— 别让 Agent 每次从头开始。
 
 ---
 
@@ -167,6 +167,6 @@ GitHub：{LINK}。Apache-2.0 完全开源。预编译二进制已就绪。文档
 
 | 用途 | 文字 |
 |------|------|
-| 定位一句话 | Mneme：给 AI Agent 装上长期记忆 |
+| 定位一句话 | Mnemovela：给 AI Agent 装上长期记忆 |
 | 技术一句话 | Git 式分支语义 x 14 种认知记忆类型 x 混合检索 —— 为 AI Agent 而生 |
 | 对比定位 | 不是向量数据库，不是聊天记录。是 Agent 的记忆模型。 |

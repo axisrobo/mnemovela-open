@@ -1,6 +1,6 @@
-"""End-to-end Mneme quickstart against a running server (JSON-RPC over HTTP).
+"""End-to-end Mnemovela quickstart against a running server (JSON-RPC over HTTP).
 
-Start a server first, e.g. `mneme-http` (default 127.0.0.1:8080), then:
+Start a server first, e.g. `mnemovela-http` (default 127.0.0.1:8080), then:
 
     python python_quickstart.py --address http://127.0.0.1:8080
 
@@ -13,12 +13,12 @@ import argparse
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Mneme HTTP quickstart")
+    parser = argparse.ArgumentParser(description="Mnemovela HTTP quickstart")
     parser.add_argument("--address", default="http://127.0.0.1:8080")
     parser.add_argument("--branch", default="main")
     args = parser.parse_args()
 
-    from mneme_client import MnemeHttpClient, MnemeError
+    from mnemovela_client import MnemeHttpClient, MnemeError
 
     client = MnemeHttpClient(args.address)
 
@@ -50,7 +50,7 @@ def main() -> int:
         print("\nOK")
         return 0
     except MnemeError as err:
-        print(f"Mneme error: {err}")
+        print(f"Mnemovela error: {err}")
         return 1
 
 

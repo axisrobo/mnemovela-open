@@ -2,17 +2,17 @@
 
 ## Overview
 
-The Mneme gRPC service is defined by the Protocol Buffers contract `contracts/mneme.v1.proto`. A production-ready Go server (`go/server/grpc`) implements the full surface and registers health checking via `grpc.health.v1`.
+The Mneme gRPC service is defined by the Protocol Buffers contract `contracts/mnemovela.v1.proto`. A production-ready Go server (`go/server/grpc`) implements the full surface and registers health checking via `grpc.health.v1`.
 
 **Run locally:**
 
 ```
-go run ./cmd/mneme-grpc
+go run ./cmd/mnemovela-grpc
 ```
 
-The server listens on the port specified by the environment variable `Mneme_GRPC_PORT` (default `9090`). An embedded Pebble store backs the runtime by default.
+The server listens on the port specified by the environment variable `Mnemovela_GRPC_PORT` (default `9090`). An embedded Pebble store backs the runtime by default.
 
-All RPCs belong to the `mneme.v1.Mneme` service.
+All RPCs belong to the `mnemovela.v1.Mneme` service.
 
 ## Service & RPCs
 
@@ -63,7 +63,7 @@ All RPCs belong to the `mneme.v1.Mneme` service.
 | `SetRetentionState` | `SetRetentionStateRequest` | `SetRetentionStateResponse` | Change retention state of a commit |
 | `VerifyCommitIndex` | `VerifyCommitIndexRequest` | `VerifyCommitIndexResponse` | Verify index consistency for a commit |
 
-All 17 RPCs are confirmed present in `contracts/mneme.v1.proto` and implemented by the Go server at `go/server/grpc/server.go`.
+All 17 RPCs are confirmed present in `contracts/mnemovela.v1.proto` and implemented by the Go server at `go/server/grpc/server.go`.
 
 ## Messages
 
@@ -112,7 +112,7 @@ Assuming the service is running on `localhost:9090`:
 ```bash
 grpcurl -plaintext \
   -d '{"branch_name":"main","query":"contract clause ambiguity","top_k":5}' \
-  localhost:9090 mneme.v1.Mneme/SearchMemory
+  localhost:9090 mnemovela.v1.Mneme/SearchMemory
 ```
 
 ### SearchMemory with Go client
@@ -120,7 +120,7 @@ grpcurl -plaintext \
 ```go
 import (
     "context"
-    Mnemev1 "github.com/axisrobo/mneme/go/api/mneme/v1"
+    Mnemovelav1 "github.com/axisrobo/mnemovela/go/api/mnemovela/v1"
     "google.golang.org/grpc"
     "google.golang.org/grpc/credentials/insecure"
 )
@@ -128,8 +128,8 @@ import (
 conn, _ := grpc.Dial("localhost:9090", grpc.WithTransportCredentials(insecure.NewCredentials()))
 defer conn.Close()
 
-client := Mnemev1.NewMnemeClient(conn)
-resp, err := client.SearchMemory(context.Background(), &Mnemev1.SearchMemoryRequest{
+client := Mnemovelav1.NewMnemeClient(conn)
+resp, err := client.SearchMemory(context.Background(), &Mnemovelav1.SearchMemoryRequest{
     BranchName: "main",
     Query:      "contract clause ambiguity",
     TopK:       5,
@@ -138,12 +138,12 @@ resp, err := client.SearchMemory(context.Background(), &Mnemev1.SearchMemoryRequ
 
 ## Notes
 
-- The `contracts/mneme.v1.proto` file is the authoritative `v1` contract.
-- Generated Go stubs live in `go/api/mneme/v1/` (`mneme.pb.go`, `mneme_grpc.pb.go`).
+- The `contracts/mnemovela.v1.proto` file is the authoritative `v1` contract.
+- Generated Go stubs live in `go/api/mnemovela/v1/` (`mnemovela.pb.go`, `mnemovela_grpc.pb.go`).
 - Health checking is available via the standard `grpc.health.v1.Health/Check` service.
 
 ## See also
 
 - [./README.md](./README.md)
 - [go-sdk.md](./go-sdk.md)
-- [Proto contract](../../contracts/mneme.v1.proto)
+- [Proto contract](../../contracts/mnemovela.v1.proto)

@@ -6,7 +6,7 @@ import urllib.error
 import urllib.request
 from typing import Any
 
-from mneme_client.errors import MnemeError
+from mnemovela_client.errors import MnemeError
 
 # Full JSON-RPC method surface exposed as client.<name>(**params).
 _RPC_METHODS = (
@@ -67,7 +67,7 @@ def _attach_methods() -> None:
         return method
 
     for name in _RPC_METHODS:
-        rpc = f"mneme.{name}"
+        rpc = f"mnemovela.{name}"
         setattr(MnemeHttpClient, name, _make_sync(rpc))
         setattr(AsyncMnemeHttpClient, name, _make_async(rpc))
 

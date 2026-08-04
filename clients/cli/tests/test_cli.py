@@ -5,7 +5,7 @@ import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
-# reuse the mneme-client package + its fake gRPC server
+# reuse the mnemovela-client package + its fake gRPC server
 _ROOT = Path(__file__).resolve().parents[2]  # clients/
 sys.path.insert(0, str(_ROOT / "python" / "src"))
 sys.path.insert(0, str(_ROOT / "python" / "tests"))
@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from fake_server import serve  # from clients/python/tests
 from fake_http_server import serve_http  # from clients/python/tests
-from mneme_cli.main import main
+from mnemovela_cli.main import main
 
 
 def _run(argv):
@@ -76,7 +76,7 @@ class TestCliHttp(unittest.TestCase):
 
     def test_call_subcommand(self):
         with serve_http() as addr:
-            rc, out = _run(["--transport", "http", "--address", addr, "call", "mneme.add_episode",
+            rc, out = _run(["--transport", "http", "--address", addr, "call", "mnemovela.add_episode",
                             "--param", "branch_name=main", "--param", "content=via call"])
             self.assertEqual(rc, 0)
             data = json.loads(out)
@@ -84,7 +84,7 @@ class TestCliHttp(unittest.TestCase):
 
     def test_call_unknown_method_error(self):
         with serve_http() as addr:
-            rc, out = _run(["--transport", "http", "--address", addr, "call", "mneme.nope"])
+            rc, out = _run(["--transport", "http", "--address", addr, "call", "mnemovela.nope"])
             self.assertNotEqual(rc, 0)  # MnemeError -> non-zero
 
     def test_http_identity_params(self):

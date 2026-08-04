@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/axisrobo/mneme-open/clients/go/mnemeclient"
+	"github.com/axisrobo/mnemovela-open/clients/go/mnemovela"
 )
 
 type cmdSpec struct {
@@ -22,29 +22,29 @@ type cmdSpec struct {
 }
 
 var commands = map[string]cmdSpec{
-	"add-episode":              {rpc: "mneme.add_episode", strs: []string{"branch-name", "content", "episode-type", "source", "observed-at"}},
-	"add-fact":                 {rpc: "mneme.add_fact", strs: []string{"branch-name", "fact-id", "subject-id", "predicate", "object-value", "valid-from", "valid-to"}, flts: []string{"confidence"}},
-	"commit":                   {rpc: "mneme.commit_memory", strs: []string{"branch-name", "memory-type", "owner-subject-id"}, jsons: []string{"payload", "metadata"}},
-	"invalidate-fact":          {rpc: "mneme.invalidate_fact", strs: []string{"branch-name", "fact-id", "invalidated-at", "reason"}},
-	"upsert-subject":           {rpc: "mneme.upsert_subject", strs: []string{"subject-id", "subject-type", "display-name"}},
-	"upsert-entity":            {rpc: "mneme.upsert_entity", strs: []string{"entity-id", "entity-type", "canonical-name"}},
-	"search":                   {rpc: "mneme.search_memory", strs: []string{"branch-name", "query"}, ints: []string{"top-k"}},
-	"query-memories":           {rpc: "mneme.query_memories", strs: []string{"branch-name"}, ints: []string{"limit"}},
-	"query-facts":              {rpc: "mneme.query_facts", strs: []string{"branch-name", "fact-id", "subject-id", "predicate", "true-at"}, ints: []string{"limit"}, bools: []string{"include-invalidated"}},
-	"resolve-entity":           {rpc: "mneme.resolve_entity", strs: []string{"mention", "entity-type"}},
-	"resolve-entity-explained": {rpc: "mneme.resolve_entity_explained", strs: []string{"mention", "entity-type"}},
-	"extract-episode":          {rpc: "mneme.extract_episode", strs: []string{"branch-name", "episode-commit-id", "provider"}},
-	"create-branch":            {rpc: "mneme.create_branch", strs: []string{"branch-name", "from-branch"}},
-	"merge-branch":             {rpc: "mneme.merge_branch", strs: []string{"source-branch", "target-branch", "strategy"}},
-	"list-branches":            {rpc: "mneme.list_branches"},
-	"set-retention-state":      {rpc: "mneme.set_retention_state", strs: []string{"commit-id", "retention-state"}},
-	"verify-index":             {rpc: "mneme.verify_commit_index", strs: []string{"commit-id"}},
+	"add-episode":              {rpc: "mnemovela.add_episode", strs: []string{"branch-name", "content", "episode-type", "source", "observed-at"}},
+	"add-fact":                 {rpc: "mnemovela.add_fact", strs: []string{"branch-name", "fact-id", "subject-id", "predicate", "object-value", "valid-from", "valid-to"}, flts: []string{"confidence"}},
+	"commit":                   {rpc: "mnemovela.commit_memory", strs: []string{"branch-name", "memory-type", "owner-subject-id"}, jsons: []string{"payload", "metadata"}},
+	"invalidate-fact":          {rpc: "mnemovela.invalidate_fact", strs: []string{"branch-name", "fact-id", "invalidated-at", "reason"}},
+	"upsert-subject":           {rpc: "mnemovela.upsert_subject", strs: []string{"subject-id", "subject-type", "display-name"}},
+	"upsert-entity":            {rpc: "mnemovela.upsert_entity", strs: []string{"entity-id", "entity-type", "canonical-name"}},
+	"search":                   {rpc: "mnemovela.search_memory", strs: []string{"branch-name", "query"}, ints: []string{"top-k"}},
+	"query-memories":           {rpc: "mnemovela.query_memories", strs: []string{"branch-name"}, ints: []string{"limit"}},
+	"query-facts":              {rpc: "mnemovela.query_facts", strs: []string{"branch-name", "fact-id", "subject-id", "predicate", "true-at"}, ints: []string{"limit"}, bools: []string{"include-invalidated"}},
+	"resolve-entity":           {rpc: "mnemovela.resolve_entity", strs: []string{"mention", "entity-type"}},
+	"resolve-entity-explained": {rpc: "mnemovela.resolve_entity_explained", strs: []string{"mention", "entity-type"}},
+	"extract-episode":          {rpc: "mnemovela.extract_episode", strs: []string{"branch-name", "episode-commit-id", "provider"}},
+	"create-branch":            {rpc: "mnemovela.create_branch", strs: []string{"branch-name", "from-branch"}},
+	"merge-branch":             {rpc: "mnemovela.merge_branch", strs: []string{"source-branch", "target-branch", "strategy"}},
+	"list-branches":            {rpc: "mnemovela.list_branches"},
+	"set-retention-state":      {rpc: "mnemovela.set_retention_state", strs: []string{"commit-id", "retention-state"}},
+	"verify-index":             {rpc: "mnemovela.verify_commit_index", strs: []string{"commit-id"}},
 }
 
 func kebabToSnake(s string) string { return strings.ReplaceAll(s, "-", "_") }
 
 func run(args []string, out io.Writer) int {
-	global := flag.NewFlagSet("mneme", flag.ContinueOnError)
+	global := flag.NewFlagSet("mnemovela", flag.ContinueOnError)
 	global.SetOutput(out)
 	transport := global.String("transport", "grpc", "transport: grpc|http")
 	address := global.String("address", "", "server address (default localhost:9090 for grpc, http://localhost:8080 for http)")
@@ -55,7 +55,7 @@ func run(args []string, out io.Writer) int {
 	}
 	rest := global.Args()
 	if len(rest) == 0 {
-		fmt.Fprintln(out, "usage: mneme [--transport grpc|http] [--address ADDR] <command> [flags]")
+		fmt.Fprintln(out, "usage: mnemovela [--transport grpc|http] [--address ADDR] <command> [flags]")
 		fmt.Fprintln(out, "commands: add-episode, add-fact, commit, search, query-facts, list-branches, create-branch, ... , call")
 		return 2
 	}
@@ -69,13 +69,13 @@ func run(args []string, out io.Writer) int {
 			addr = "localhost:9090"
 		}
 	}
-	var tr mnemeclient.Transport
+	var tr mnemovela.Transport
 	var err error
 	switch *transport {
 	case "grpc":
-		tr, err = mnemeclient.NewGRPCTransport(addr)
+		tr, err = mnemovela.NewGRPCTransport(addr)
 	case "http":
-		tr = mnemeclient.NewJSONRPCTransport(addr)
+		tr = mnemovela.NewJSONRPCTransport(addr)
 	default:
 		fmt.Fprintf(out, "unknown transport %q (use grpc or http)\n", *transport)
 		return 2
@@ -84,7 +84,7 @@ func run(args []string, out io.Writer) int {
 		fmt.Fprintf(out, "connect: %v\n", err)
 		return 1
 	}
-	client := mnemeclient.New(tr)
+	client := mnemovela.New(tr)
 	defer client.Close()
 
 	params := map[string]any{}
@@ -97,7 +97,7 @@ func run(args []string, out io.Writer) int {
 
 	var method string
 	if cmd == "call" {
-		// mneme call <method> --param k=v --param k2=v2
+		// mnemovela call <method> --param k=v --param k2=v2
 		fs := flag.NewFlagSet("call", flag.ContinueOnError)
 		fs.SetOutput(out)
 		var kv multiFlag
@@ -106,7 +106,7 @@ func run(args []string, out io.Writer) int {
 			return 2
 		}
 		if fs.NArg() < 1 {
-			fmt.Fprintln(out, "usage: mneme call <mneme.method> [--param k=v ...]")
+			fmt.Fprintln(out, "usage: mnemovela call <mnemovela.method> [--param k=v ...]")
 			return 2
 		}
 		method = fs.Arg(0)

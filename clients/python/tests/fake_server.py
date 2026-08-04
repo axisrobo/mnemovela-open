@@ -5,8 +5,8 @@ from concurrent import futures
 
 import grpc
 
-from mneme_client._generated import mneme_v1_pb2 as pb
-from mneme_client._generated import mneme_v1_pb2_grpc as pb_grpc
+from mnemovela_client._generated import mnemovela_v1_pb2 as pb
+from mnemovela_client._generated import mnemovela_v1_pb2_grpc as pb_grpc
 
 
 class FakeMneme(pb_grpc.MnemeServicer):

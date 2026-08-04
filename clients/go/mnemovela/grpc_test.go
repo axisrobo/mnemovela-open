@@ -1,4 +1,4 @@
-package mnemeclient
+package mnemovela
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"net"
 	"testing"
 
-	pb "github.com/axisrobo/mneme-open/clients/go/internal/mnemev1"
+	pb "github.com/axisrobo/mnemovela-open/clients/go/internal/mnemovelav1"
 	"google.golang.org/grpc"
 )
 

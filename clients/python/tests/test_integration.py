@@ -2,12 +2,12 @@ import os, sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from mneme_client import MnemeClient
+from mnemovela_client import MnemeClient
 
-ADDR = os.getenv("MNEME_GRPC_ADDR")
+ADDR = os.getenv("MNEMOVELA_GRPC_ADDR")
 
 
-@unittest.skipUnless(ADDR, "set MNEME_GRPC_ADDR to run live integration test")
+@unittest.skipUnless(ADDR, "set MNEMOVELA_GRPC_ADDR to run live integration test")
 class TestLiveServer(unittest.TestCase):
     def test_add_and_search(self):
         with MnemeClient(ADDR) as c:

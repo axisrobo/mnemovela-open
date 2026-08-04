@@ -1,6 +1,6 @@
-# Mneme-open — Promotional Materials (English)
+# Mnemovela-open — Promotional Materials (English)
 
-Replace `{LINK}` with `https://github.com/axisrobo/mneme-open`.
+Replace `{LINK}` with `https://github.com/axisrobo/mnemovela-open`.
 
 ---
 
@@ -12,7 +12,7 @@ Your AI coding agent doesn't remember what it fixed last time. Every new session
 starts from zero — re-reading files, re-discovering the project, re-guessing
 context.
 
-Mneme is an open-source agent cognition runtime. It gives AI agents persistent
+Mnemovela is an open-source agent cognition runtime. It gives AI agents persistent
 long-term memory, knowledge graphs, and workspace state — across sessions.
 
 - Python / TypeScript / Go / CLI — four clients
@@ -31,7 +31,7 @@ GitHub: {LINK}
 Every AI agent session is a clean slate. You give it prompt context but it does
 not persist. Close the IDE and it forgets everything.
 
-Mneme gives your agent a memory lifecycle:
+Mnemovela gives your agent a memory lifecycle:
 - Which files changed last session
 - What decisions were made and why
 - What errors were encountered and how they were fixed
@@ -46,7 +46,7 @@ Context is memory, not a prompt.
 
 ### Post 3 — short
 
-Mneme: long-term memory for your AI agent.
+Mnemovela: long-term memory for your AI agent.
 14 memory types | 4 protocols | 3 language SDKs | Apache-2.0
 {LLINK}
 
@@ -56,12 +56,12 @@ Mneme: long-term memory for your AI agent.
 
 ### Post 1 — product launch
 
-Mneme is now open-source (Apache-2.0): an agent cognition runtime that gives
+Mnemovela is now open-source (Apache-2.0): an agent cognition runtime that gives
 AI coding agents persistent long-term memory, knowledge graphs, and workspace
 state — across sessions.
 
 What it does:
-- Agents call `mneme.search_memory()` before reading files
+- Agents call `mnemovela.search_memory()` before reading files
 - They `capture_decision()`, `capture_error()`, `add_fact()` during work
 - They `session_end()` with a summary, changed files, and decisions
 - Next session, the agent knows the project state before a single file read
@@ -82,7 +82,7 @@ temporal), and 14 distinct memory types.
 
 ### Post 2 — architecture angle
 
-Most "agent memory" projects are vector DBs with search. Mneme is different.
+Most "agent memory" projects are vector DBs with search. Mnemovela is different.
 
 It models 14 cognitive memory types — each with its own schema, retrieval
 profile, and retention policy:
@@ -112,8 +112,8 @@ And it all speaks MCP — drop in for OpenCode, Claude Code, or Codex.
 
 | Use | Text |
 |-----|------|
-| GitHub description | Open-source client SDKs, CLI, API docs, and prebuilt binaries for the Mneme agent cognition runtime. Apache-2.0. |
-| Elevator pitch | Mneme is a cognition runtime that gives AI agents persistent memory, knowledge graphs, and workspace state — across sessions. |
+| GitHub description | Open-source client SDKs, CLI, API docs, and prebuilt binaries for the Mnemovela agent cognition runtime. Apache-2.0. |
+| Elevator pitch | Mnemovela is a cognition runtime that gives AI agents persistent memory, knowledge graphs, and workspace state — across sessions. |
 | Technical pitch | Git-like branching semantics x 14 cognitive memory types x hybrid search — for AI agents. |
 | Contrast pitch | Not a vector DB. Not a chat log. A memory model for agents. |
-| Tagline | Mneme: long-term memory for AI agents. |
+| Tagline | Mnemovela: long-term memory for AI agents. |

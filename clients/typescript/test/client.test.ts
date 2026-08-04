@@ -31,7 +31,7 @@ test("unknown method throws MnemeError -32601", async () => {
   const s = await startFakeServer();
   try {
     const c = new MnemeClient(s.url);
-    await assert.rejects(() => c.request("mneme.nope"), (e: unknown) => e instanceof MnemeError && (e as MnemeError).code === -32601);
+    await assert.rejects(() => c.request("mnemovela.nope"), (e: unknown) => e instanceof MnemeError && (e as MnemeError).code === -32601);
   } finally {
     await s.close();
   }

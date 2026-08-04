@@ -3,8 +3,8 @@
 ## Python
 
 ```python
-from axisrobo.mneme.backends.sqlite import SQLiteMemoryBackend
-from axisrobo.mneme.engine import LocalMemoryEngine
+from axisrobo.mnemovela.backends.sqlite import SQLiteMemoryBackend
+from axisrobo.mnemovela.engine import LocalMemoryEngine
 
 with LocalMemoryEngine(SQLiteMemoryBackend.in_memory()) as engine:
     context = engine.build_context(query="current project constraints", branch_name="main", budget=1200)
@@ -16,7 +16,7 @@ with LocalMemoryEngine(SQLiteMemoryBackend.in_memory()) as engine:
 {
   "jsonrpc": "2.0",
   "id": 1,
-  "method": "mneme.build_context",
+  "method": "mnemovela.build_context",
   "params": {
     "query": "current project constraints",
     "branch_name": "main",

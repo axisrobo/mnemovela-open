@@ -10,7 +10,7 @@ The Mneme REST API is a FastAPI service (`services/python-rest-api`) that provid
 uvicorn mneme_rest_api.main:app --app-dir services/python-rest-api/src --host 0.0.0.0 --port 8000
 ```
 
-All endpoints are mounted under the base path `/api/v1`. The REST API is a Python application shell over the engine: it routes HTTP requests to the OSS `axisrobo.mneme` Python library.
+All endpoints are mounted under the base path `/api/v1`. The REST API is a Python application shell over the engine: it routes HTTP requests to the OSS `axisrobo.mnemovela` Python library.
 
 ## Endpoint reference
 
@@ -190,12 +190,12 @@ The response includes `nodes` and `edges` arrays suitable for rendering:
 
 In addition to the query and write REST routes, the service exposes the full Mneme JSON-RPC method set over HTTP at `POST /api/v1/jsonrpc`. The same endpoint is also served by the Go HTTP server, so a single JSON-RPC-over-HTTP contract works against either runtime.
 
-The request body is a standard JSON-RPC 2.0 request object, and the response is the corresponding JSON-RPC 2.0 response envelope. This transport exposes every `mneme.*` method — including `build_context`, the `capture_*` session methods, and the `reconcile_*` maintenance methods — not just the query and write routes described above. JSON-RPC-level failures are returned as a JSON-RPC `error` object with HTTP status `200` (the HTTP layer only reports transport-level problems). See [`./jsonrpc.md`](./jsonrpc.md) for the complete method reference.
+The request body is a standard JSON-RPC 2.0 request object, and the response is the corresponding JSON-RPC 2.0 response envelope. This transport exposes every `mnemovela.*` method — including `build_context`, the `capture_*` session methods, and the `reconcile_*` maintenance methods — not just the query and write routes described above. JSON-RPC-level failures are returned as a JSON-RPC `error` object with HTTP status `200` (the HTTP layer only reports transport-level problems). See [`./jsonrpc.md`](./jsonrpc.md) for the complete method reference.
 
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/jsonrpc \
   -H "Content-Type: application/json" \
-  -d '{"jsonrpc": "2.0", "id": 1, "method": "mneme.build_context", "params": {"query": "contract dispute status", "branch_name": "main", "budget": 800, "limit": 10}}'
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "mnemovela.build_context", "params": {"query": "contract dispute status", "branch_name": "main", "budget": 800, "limit": 10}}'
 ```
 
 The response is a JSON-RPC envelope:
@@ -245,7 +245,7 @@ curl -s -X POST http://localhost:8000/api/v1/branches \
 
 ## Contract status
 
-The OpenAPI contract at `contracts/mneme.rest.v1-draft.openapi.json` documents the health, query, and graph endpoints (`/api/v1/health`, `/api/v1/query/search`, `/api/v1/query/timeline`, `/api/v1/visualizations/graph`) and now also covers the JSON-RPC-over-HTTP endpoint (`/api/v1/jsonrpc`) and all ten write endpoints (`/api/v1/memory/episode`, `/api/v1/memory/fact`, `/api/v1/memory/commit`, `/api/v1/memory/fact/invalidate`, `/api/v1/subjects`, `/api/v1/entities`, `/api/v1/branches`, `/api/v1/branches/merge`, `/api/v1/extract`, `/api/v1/commits/retention`). The remaining health/liveness and derived query endpoints (`/live`, `/ready`, `/metrics`, `/query/context`, `/query/entity/evolve`, `/query/connectors/status`) exist in the Python service router source but are not yet described in the v1-draft contract.
+The OpenAPI contract at `contracts/mnemovela.rest.v1-draft.openapi.json` documents the health, query, and graph endpoints (`/api/v1/health`, `/api/v1/query/search`, `/api/v1/query/timeline`, `/api/v1/visualizations/graph`) and now also covers the JSON-RPC-over-HTTP endpoint (`/api/v1/jsonrpc`) and all ten write endpoints (`/api/v1/memory/episode`, `/api/v1/memory/fact`, `/api/v1/memory/commit`, `/api/v1/memory/fact/invalidate`, `/api/v1/subjects`, `/api/v1/entities`, `/api/v1/branches`, `/api/v1/branches/merge`, `/api/v1/extract`, `/api/v1/commits/retention`). The remaining health/liveness and derived query endpoints (`/live`, `/ready`, `/metrics`, `/query/context`, `/query/entity/evolve`, `/query/connectors/status`) exist in the Python service router source but are not yet described in the v1-draft contract.
 
 ## Edition notes
 
@@ -254,4 +254,4 @@ The OpenAPI contract at `contracts/mneme.rest.v1-draft.openapi.json` documents t
 ## See also
 
 - [./README.md](./README.md)
-- [OpenAPI contract](../../contracts/mneme.rest.v1-draft.openapi.json)
+- [OpenAPI contract](../../contracts/mnemovela.rest.v1-draft.openapi.json)
