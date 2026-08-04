@@ -1441,8 +1441,18 @@ type SearchMemoryRequest struct {
 	TenantId            string                 `protobuf:"bytes,5,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
 	ProjectId           string                 `protobuf:"bytes,6,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	PrincipalSubjectIds []string               `protobuf:"bytes,7,rep,name=principal_subject_ids,json=principalSubjectIds,proto3" json:"principal_subject_ids,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// Temporal view. "current" (the default) keeps only the currently-valid member
+	// of each temporal identity group: facts explicitly invalidated by an
+	// invalidate_fact commit are excluded, revision commits (supersede/refute/split)
+	// shadow their predecessors, and late-arriving evidence never shadows a newer
+	// valid_from. "history" returns every matching commit untouched (no grouping
+	// dedup). Empty defaults to "current"; any other value is invalid.
+	View string `protobuf:"bytes,8,opt,name=view,proto3" json:"view,omitempty"`
+	// Optional ISO-8601 point-in-time filter (applies to the current view only):
+	// restricts members to those valid at that instant. Ignored for view="history".
+	AsOf          string `protobuf:"bytes,9,opt,name=as_of,json=asOf,proto3" json:"as_of,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SearchMemoryRequest) Reset() {
@@ -1522,6 +1532,20 @@ func (x *SearchMemoryRequest) GetPrincipalSubjectIds() []string {
 		return x.PrincipalSubjectIds
 	}
 	return nil
+}
+
+func (x *SearchMemoryRequest) GetView() string {
+	if x != nil {
+		return x.View
+	}
+	return ""
+}
+
+func (x *SearchMemoryRequest) GetAsOf() string {
+	if x != nil {
+		return x.AsOf
+	}
+	return ""
 }
 
 type SearchMemoryResponse struct {
@@ -3432,7 +3456,7 @@ const file_mnemovela_v1_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12)\n" +
 	"\x05value\x18\x02 \x01(\v2\x13.mnemovela.v1.ValueR\x05value:\x028\x01\"3\n" +
 	"\x14UpsertEntityResponse\x12\x1b\n" +
-	"\tentity_id\x18\x01 \x01(\tR\bentityId\"\xf0\x01\n" +
+	"\tentity_id\x18\x01 \x01(\tR\bentityId\"\x99\x02\n" +
 	"\x13SearchMemoryRequest\x12\x1f\n" +
 	"\vbranch_name\x18\x01 \x01(\tR\n" +
 	"branchName\x12\x14\n" +
@@ -3443,7 +3467,9 @@ const file_mnemovela_v1_proto_rawDesc = "" +
 	"\ttenant_id\x18\x05 \x01(\tR\btenantId\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x06 \x01(\tR\tprojectId\x122\n" +
-	"\x15principal_subject_ids\x18\a \x03(\tR\x13principalSubjectIds\"\xda\x01\n" +
+	"\x15principal_subject_ids\x18\a \x03(\tR\x13principalSubjectIds\x12\x12\n" +
+	"\x04view\x18\b \x01(\tR\x04view\x12\x13\n" +
+	"\x05as_of\x18\t \x01(\tR\x04asOf\"\xda\x01\n" +
 	"\x14SearchMemoryResponse\x12I\n" +
 	"\aresults\x18\x01 \x03(\v2/.mnemovela.v1.SearchMemoryResponse.SearchResultR\aresults\x1aw\n" +
 	"\fSearchResult\x12,\n" +
