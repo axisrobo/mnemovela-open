@@ -122,6 +122,16 @@ class MnemeStub:
                 request_serializer=mnemovela__v1__pb2.VerifyCommitIndexRequest.SerializeToString,
                 response_deserializer=mnemovela__v1__pb2.VerifyCommitIndexResponse.FromString,
                 _registered_method=True)
+        self.Admit = channel.unary_unary(
+                '/mnemovela.v1.Mneme/Admit',
+                request_serializer=mnemovela__v1__pb2.AdmitRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.AdmitResponse.FromString,
+                _registered_method=True)
+        self.Revise = channel.unary_unary(
+                '/mnemovela.v1.Mneme/Revise',
+                request_serializer=mnemovela__v1__pb2.ReviseRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.ReviseResponse.FromString,
+                _registered_method=True)
 
 
 class MnemeServicer:
@@ -238,6 +248,19 @@ class MnemeServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Admit(self, request, context):
+        """--- admission & revision ---
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Revise(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MnemeServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -325,6 +348,16 @@ def add_MnemeServicer_to_server(servicer, server):
                     servicer.VerifyCommitIndex,
                     request_deserializer=mnemovela__v1__pb2.VerifyCommitIndexRequest.FromString,
                     response_serializer=mnemovela__v1__pb2.VerifyCommitIndexResponse.SerializeToString,
+            ),
+            'Admit': grpc.unary_unary_rpc_method_handler(
+                    servicer.Admit,
+                    request_deserializer=mnemovela__v1__pb2.AdmitRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.AdmitResponse.SerializeToString,
+            ),
+            'Revise': grpc.unary_unary_rpc_method_handler(
+                    servicer.Revise,
+                    request_deserializer=mnemovela__v1__pb2.ReviseRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.ReviseResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -789,6 +822,60 @@ class Mneme:
             '/mnemovela.v1.Mneme/VerifyCommitIndex',
             mnemovela__v1__pb2.VerifyCommitIndexRequest.SerializeToString,
             mnemovela__v1__pb2.VerifyCommitIndexResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Admit(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mneme/Admit',
+            mnemovela__v1__pb2.AdmitRequest.SerializeToString,
+            mnemovela__v1__pb2.AdmitResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Revise(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mneme/Revise',
+            mnemovela__v1__pb2.ReviseRequest.SerializeToString,
+            mnemovela__v1__pb2.ReviseResponse.FromString,
             options,
             channel_credentials,
             insecure,
