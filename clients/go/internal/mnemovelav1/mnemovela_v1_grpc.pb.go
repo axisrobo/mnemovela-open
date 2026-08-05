@@ -36,6 +36,8 @@ const (
 	Mneme_ListBranches_FullMethodName           = "/mnemovela.v1.Mneme/ListBranches"
 	Mneme_SetRetentionState_FullMethodName      = "/mnemovela.v1.Mneme/SetRetentionState"
 	Mneme_VerifyCommitIndex_FullMethodName      = "/mnemovela.v1.Mneme/VerifyCommitIndex"
+	Mneme_Admit_FullMethodName                  = "/mnemovela.v1.Mneme/Admit"
+	Mneme_Revise_FullMethodName                 = "/mnemovela.v1.Mneme/Revise"
 )
 
 // MnemeClient is the client API for Mneme service.
@@ -65,6 +67,9 @@ type MnemeClient interface {
 	// --- maintenance ---
 	SetRetentionState(ctx context.Context, in *SetRetentionStateRequest, opts ...grpc.CallOption) (*SetRetentionStateResponse, error)
 	VerifyCommitIndex(ctx context.Context, in *VerifyCommitIndexRequest, opts ...grpc.CallOption) (*VerifyCommitIndexResponse, error)
+	// --- admission & revision ---
+	Admit(ctx context.Context, in *AdmitRequest, opts ...grpc.CallOption) (*AdmitResponse, error)
+	Revise(ctx context.Context, in *ReviseRequest, opts ...grpc.CallOption) (*ReviseResponse, error)
 }
 
 type mnemeClient struct {
@@ -245,6 +250,26 @@ func (c *mnemeClient) VerifyCommitIndex(ctx context.Context, in *VerifyCommitInd
 	return out, nil
 }
 
+func (c *mnemeClient) Admit(ctx context.Context, in *AdmitRequest, opts ...grpc.CallOption) (*AdmitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdmitResponse)
+	err := c.cc.Invoke(ctx, Mneme_Admit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemeClient) Revise(ctx context.Context, in *ReviseRequest, opts ...grpc.CallOption) (*ReviseResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReviseResponse)
+	err := c.cc.Invoke(ctx, Mneme_Revise_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MnemeServer is the server API for Mneme service.
 // All implementations must embed UnimplementedMnemeServer
 // for forward compatibility.
@@ -272,6 +297,9 @@ type MnemeServer interface {
 	// --- maintenance ---
 	SetRetentionState(context.Context, *SetRetentionStateRequest) (*SetRetentionStateResponse, error)
 	VerifyCommitIndex(context.Context, *VerifyCommitIndexRequest) (*VerifyCommitIndexResponse, error)
+	// --- admission & revision ---
+	Admit(context.Context, *AdmitRequest) (*AdmitResponse, error)
+	Revise(context.Context, *ReviseRequest) (*ReviseResponse, error)
 	mustEmbedUnimplementedMnemeServer()
 }
 
@@ -332,6 +360,12 @@ func (UnimplementedMnemeServer) SetRetentionState(context.Context, *SetRetention
 }
 func (UnimplementedMnemeServer) VerifyCommitIndex(context.Context, *VerifyCommitIndexRequest) (*VerifyCommitIndexResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method VerifyCommitIndex not implemented")
+}
+func (UnimplementedMnemeServer) Admit(context.Context, *AdmitRequest) (*AdmitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Admit not implemented")
+}
+func (UnimplementedMnemeServer) Revise(context.Context, *ReviseRequest) (*ReviseResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Revise not implemented")
 }
 func (UnimplementedMnemeServer) mustEmbedUnimplementedMnemeServer() {}
 func (UnimplementedMnemeServer) testEmbeddedByValue()               {}
@@ -660,6 +694,42 @@ func _Mneme_VerifyCommitIndex_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mneme_Admit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdmitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemeServer).Admit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mneme_Admit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemeServer).Admit(ctx, req.(*AdmitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mneme_Revise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReviseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemeServer).Revise(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mneme_Revise_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemeServer).Revise(ctx, req.(*ReviseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Mneme_ServiceDesc is the grpc.ServiceDesc for Mneme service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -734,6 +804,14 @@ var Mneme_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VerifyCommitIndex",
 			Handler:    _Mneme_VerifyCommitIndex_Handler,
+		},
+		{
+			MethodName: "Admit",
+			Handler:    _Mneme_Admit_Handler,
+		},
+		{
+			MethodName: "Revise",
+			Handler:    _Mneme_Revise_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

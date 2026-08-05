@@ -2896,6 +2896,410 @@ func (x *VerifyCommitIndexResponse) GetIssues() []*VerifyCommitIndexResponse_Ind
 	return nil
 }
 
+type AdmitRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MemoryType    string                 `protobuf:"bytes,1,opt,name=memory_type,json=memoryType,proto3" json:"memory_type,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	SourceId      string                 `protobuf:"bytes,3,opt,name=source_id,json=sourceId,proto3" json:"source_id,omitempty"`
+	SubjectId     string                 `protobuf:"bytes,4,opt,name=subject_id,json=subjectId,proto3" json:"subject_id,omitempty"`
+	TenantId      string                 `protobuf:"bytes,5,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	ProjectId     string                 `protobuf:"bytes,6,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	SourceTrust   string                 `protobuf:"bytes,7,opt,name=source_trust,json=sourceTrust,proto3" json:"source_trust,omitempty"`
+	Payload       map[string]string      `protobuf:"bytes,8,rep,name=payload,proto3" json:"payload,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // optional key/value attributes
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdmitRequest) Reset() {
+	*x = AdmitRequest{}
+	mi := &file_mnemovela_v1_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdmitRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdmitRequest) ProtoMessage() {}
+
+func (x *AdmitRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mnemovela_v1_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdmitRequest.ProtoReflect.Descriptor instead.
+func (*AdmitRequest) Descriptor() ([]byte, []int) {
+	return file_mnemovela_v1_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *AdmitRequest) GetMemoryType() string {
+	if x != nil {
+		return x.MemoryType
+	}
+	return ""
+}
+
+func (x *AdmitRequest) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+func (x *AdmitRequest) GetSourceId() string {
+	if x != nil {
+		return x.SourceId
+	}
+	return ""
+}
+
+func (x *AdmitRequest) GetSubjectId() string {
+	if x != nil {
+		return x.SubjectId
+	}
+	return ""
+}
+
+func (x *AdmitRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *AdmitRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *AdmitRequest) GetSourceTrust() string {
+	if x != nil {
+		return x.SourceTrust
+	}
+	return ""
+}
+
+func (x *AdmitRequest) GetPayload() map[string]string {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+type AdmitResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Action          string                 `protobuf:"bytes,1,opt,name=action,proto3" json:"action,omitempty"` // accept | quarantine | reject
+	MemoryType      string                 `protobuf:"bytes,2,opt,name=memory_type,json=memoryType,proto3" json:"memory_type,omitempty"`
+	Ttl             string                 `protobuf:"bytes,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	Sensitivity     string                 `protobuf:"bytes,4,opt,name=sensitivity,proto3" json:"sensitivity,omitempty"`
+	Duplicate       bool                   `protobuf:"varint,5,opt,name=duplicate,proto3" json:"duplicate,omitempty"`
+	SuggestedBranch string                 `protobuf:"bytes,6,opt,name=suggested_branch,json=suggestedBranch,proto3" json:"suggested_branch,omitempty"`
+	Reasons         []*AdmitReason         `protobuf:"bytes,7,rep,name=reasons,proto3" json:"reasons,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *AdmitResponse) Reset() {
+	*x = AdmitResponse{}
+	mi := &file_mnemovela_v1_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdmitResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdmitResponse) ProtoMessage() {}
+
+func (x *AdmitResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mnemovela_v1_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdmitResponse.ProtoReflect.Descriptor instead.
+func (*AdmitResponse) Descriptor() ([]byte, []int) {
+	return file_mnemovela_v1_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *AdmitResponse) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
+func (x *AdmitResponse) GetMemoryType() string {
+	if x != nil {
+		return x.MemoryType
+	}
+	return ""
+}
+
+func (x *AdmitResponse) GetTtl() string {
+	if x != nil {
+		return x.Ttl
+	}
+	return ""
+}
+
+func (x *AdmitResponse) GetSensitivity() string {
+	if x != nil {
+		return x.Sensitivity
+	}
+	return ""
+}
+
+func (x *AdmitResponse) GetDuplicate() bool {
+	if x != nil {
+		return x.Duplicate
+	}
+	return false
+}
+
+func (x *AdmitResponse) GetSuggestedBranch() string {
+	if x != nil {
+		return x.SuggestedBranch
+	}
+	return ""
+}
+
+func (x *AdmitResponse) GetReasons() []*AdmitReason {
+	if x != nil {
+		return x.Reasons
+	}
+	return nil
+}
+
+type AdmitReason struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Rule          string                 `protobuf:"bytes,1,opt,name=rule,proto3" json:"rule,omitempty"`
+	Severity      string                 `protobuf:"bytes,2,opt,name=severity,proto3" json:"severity,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdmitReason) Reset() {
+	*x = AdmitReason{}
+	mi := &file_mnemovela_v1_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdmitReason) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdmitReason) ProtoMessage() {}
+
+func (x *AdmitReason) ProtoReflect() protoreflect.Message {
+	mi := &file_mnemovela_v1_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdmitReason.ProtoReflect.Descriptor instead.
+func (*AdmitReason) Descriptor() ([]byte, []int) {
+	return file_mnemovela_v1_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *AdmitReason) GetRule() string {
+	if x != nil {
+		return x.Rule
+	}
+	return ""
+}
+
+func (x *AdmitReason) GetSeverity() string {
+	if x != nil {
+		return x.Severity
+	}
+	return ""
+}
+
+func (x *AdmitReason) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type ReviseRequest struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	BranchName          string                 `protobuf:"bytes,1,opt,name=branch_name,json=branchName,proto3" json:"branch_name,omitempty"`
+	Relation            string                 `protobuf:"bytes,2,opt,name=relation,proto3" json:"relation,omitempty"` // supersede|correct|refute|confirm|merge|split
+	PredecessorIds      []string               `protobuf:"bytes,3,rep,name=predecessor_ids,json=predecessorIds,proto3" json:"predecessor_ids,omitempty"`
+	Reason              string                 `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	MemoryType          string                 `protobuf:"bytes,5,opt,name=memory_type,json=memoryType,proto3" json:"memory_type,omitempty"`
+	Payload             map[string]string      `protobuf:"bytes,6,rep,name=payload,proto3" json:"payload,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	TenantId            string                 `protobuf:"bytes,7,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	ProjectId           string                 `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	PrincipalSubjectIds []string               `protobuf:"bytes,9,rep,name=principal_subject_ids,json=principalSubjectIds,proto3" json:"principal_subject_ids,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *ReviseRequest) Reset() {
+	*x = ReviseRequest{}
+	mi := &file_mnemovela_v1_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReviseRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReviseRequest) ProtoMessage() {}
+
+func (x *ReviseRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_mnemovela_v1_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReviseRequest.ProtoReflect.Descriptor instead.
+func (*ReviseRequest) Descriptor() ([]byte, []int) {
+	return file_mnemovela_v1_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *ReviseRequest) GetBranchName() string {
+	if x != nil {
+		return x.BranchName
+	}
+	return ""
+}
+
+func (x *ReviseRequest) GetRelation() string {
+	if x != nil {
+		return x.Relation
+	}
+	return ""
+}
+
+func (x *ReviseRequest) GetPredecessorIds() []string {
+	if x != nil {
+		return x.PredecessorIds
+	}
+	return nil
+}
+
+func (x *ReviseRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *ReviseRequest) GetMemoryType() string {
+	if x != nil {
+		return x.MemoryType
+	}
+	return ""
+}
+
+func (x *ReviseRequest) GetPayload() map[string]string {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+func (x *ReviseRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *ReviseRequest) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *ReviseRequest) GetPrincipalSubjectIds() []string {
+	if x != nil {
+		return x.PrincipalSubjectIds
+	}
+	return nil
+}
+
+type ReviseResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Commit        *Commit                `protobuf:"bytes,1,opt,name=commit,proto3" json:"commit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReviseResponse) Reset() {
+	*x = ReviseResponse{}
+	mi := &file_mnemovela_v1_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReviseResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReviseResponse) ProtoMessage() {}
+
+func (x *ReviseResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_mnemovela_v1_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReviseResponse.ProtoReflect.Descriptor instead.
+func (*ReviseResponse) Descriptor() ([]byte, []int) {
+	return file_mnemovela_v1_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *ReviseResponse) GetCommit() *Commit {
+	if x != nil {
+		return x.Commit
+	}
+	return nil
+}
+
 type Value_Struct struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Fields        map[string]*Value      `protobuf:"bytes,1,rep,name=fields,proto3" json:"fields,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
@@ -2905,7 +3309,7 @@ type Value_Struct struct {
 
 func (x *Value_Struct) Reset() {
 	*x = Value_Struct{}
-	mi := &file_mnemovela_v1_proto_msgTypes[41]
+	mi := &file_mnemovela_v1_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2917,7 +3321,7 @@ func (x *Value_Struct) String() string {
 func (*Value_Struct) ProtoMessage() {}
 
 func (x *Value_Struct) ProtoReflect() protoreflect.Message {
-	mi := &file_mnemovela_v1_proto_msgTypes[41]
+	mi := &file_mnemovela_v1_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2949,7 +3353,7 @@ type Value_List struct {
 
 func (x *Value_List) Reset() {
 	*x = Value_List{}
-	mi := &file_mnemovela_v1_proto_msgTypes[42]
+	mi := &file_mnemovela_v1_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2961,7 +3365,7 @@ func (x *Value_List) String() string {
 func (*Value_List) ProtoMessage() {}
 
 func (x *Value_List) ProtoReflect() protoreflect.Message {
-	mi := &file_mnemovela_v1_proto_msgTypes[42]
+	mi := &file_mnemovela_v1_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2995,7 +3399,7 @@ type SearchMemoryResponse_SearchResult struct {
 
 func (x *SearchMemoryResponse_SearchResult) Reset() {
 	*x = SearchMemoryResponse_SearchResult{}
-	mi := &file_mnemovela_v1_proto_msgTypes[47]
+	mi := &file_mnemovela_v1_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3007,7 +3411,7 @@ func (x *SearchMemoryResponse_SearchResult) String() string {
 func (*SearchMemoryResponse_SearchResult) ProtoMessage() {}
 
 func (x *SearchMemoryResponse_SearchResult) ProtoReflect() protoreflect.Message {
-	mi := &file_mnemovela_v1_proto_msgTypes[47]
+	mi := &file_mnemovela_v1_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3061,7 +3465,7 @@ type QueryFactsResponse_FactItem struct {
 
 func (x *QueryFactsResponse_FactItem) Reset() {
 	*x = QueryFactsResponse_FactItem{}
-	mi := &file_mnemovela_v1_proto_msgTypes[48]
+	mi := &file_mnemovela_v1_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3073,7 +3477,7 @@ func (x *QueryFactsResponse_FactItem) String() string {
 func (*QueryFactsResponse_FactItem) ProtoMessage() {}
 
 func (x *QueryFactsResponse_FactItem) ProtoReflect() protoreflect.Message {
-	mi := &file_mnemovela_v1_proto_msgTypes[48]
+	mi := &file_mnemovela_v1_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3164,7 +3568,7 @@ type ListBranchesResponse_Branch struct {
 
 func (x *ListBranchesResponse_Branch) Reset() {
 	*x = ListBranchesResponse_Branch{}
-	mi := &file_mnemovela_v1_proto_msgTypes[49]
+	mi := &file_mnemovela_v1_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3176,7 +3580,7 @@ func (x *ListBranchesResponse_Branch) String() string {
 func (*ListBranchesResponse_Branch) ProtoMessage() {}
 
 func (x *ListBranchesResponse_Branch) ProtoReflect() protoreflect.Message {
-	mi := &file_mnemovela_v1_proto_msgTypes[49]
+	mi := &file_mnemovela_v1_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3231,7 +3635,7 @@ type VerifyCommitIndexResponse_IndexIssue struct {
 
 func (x *VerifyCommitIndexResponse_IndexIssue) Reset() {
 	*x = VerifyCommitIndexResponse_IndexIssue{}
-	mi := &file_mnemovela_v1_proto_msgTypes[50]
+	mi := &file_mnemovela_v1_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3243,7 +3647,7 @@ func (x *VerifyCommitIndexResponse_IndexIssue) String() string {
 func (*VerifyCommitIndexResponse_IndexIssue) ProtoMessage() {}
 
 func (x *VerifyCommitIndexResponse_IndexIssue) ProtoReflect() protoreflect.Message {
-	mi := &file_mnemovela_v1_proto_msgTypes[50]
+	mi := &file_mnemovela_v1_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3619,7 +4023,53 @@ const file_mnemovela_v1_proto_rawDesc = "" +
 	"IndexIssue\x12\x1b\n" +
 	"\tcommit_id\x18\x01 \x01(\tR\bcommitId\x12\x12\n" +
 	"\x04kind\x18\x02 \x01(\tR\x04kind\x12\x16\n" +
-	"\x06detail\x18\x03 \x01(\tR\x06detail2\x81\f\n" +
+	"\x06detail\x18\x03 \x01(\tR\x06detail\"\xdd\x02\n" +
+	"\fAdmitRequest\x12\x1f\n" +
+	"\vmemory_type\x18\x01 \x01(\tR\n" +
+	"memoryType\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1b\n" +
+	"\tsource_id\x18\x03 \x01(\tR\bsourceId\x12\x1d\n" +
+	"\n" +
+	"subject_id\x18\x04 \x01(\tR\tsubjectId\x12\x1b\n" +
+	"\ttenant_id\x18\x05 \x01(\tR\btenantId\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x06 \x01(\tR\tprojectId\x12!\n" +
+	"\fsource_trust\x18\a \x01(\tR\vsourceTrust\x12A\n" +
+	"\apayload\x18\b \x03(\v2'.mnemovela.v1.AdmitRequest.PayloadEntryR\apayload\x1a:\n" +
+	"\fPayloadEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xfa\x01\n" +
+	"\rAdmitResponse\x12\x16\n" +
+	"\x06action\x18\x01 \x01(\tR\x06action\x12\x1f\n" +
+	"\vmemory_type\x18\x02 \x01(\tR\n" +
+	"memoryType\x12\x10\n" +
+	"\x03ttl\x18\x03 \x01(\tR\x03ttl\x12 \n" +
+	"\vsensitivity\x18\x04 \x01(\tR\vsensitivity\x12\x1c\n" +
+	"\tduplicate\x18\x05 \x01(\bR\tduplicate\x12)\n" +
+	"\x10suggested_branch\x18\x06 \x01(\tR\x0fsuggestedBranch\x123\n" +
+	"\areasons\x18\a \x03(\v2\x19.mnemovela.v1.AdmitReasonR\areasons\"W\n" +
+	"\vAdmitReason\x12\x12\n" +
+	"\x04rule\x18\x01 \x01(\tR\x04rule\x12\x1a\n" +
+	"\bseverity\x18\x02 \x01(\tR\bseverity\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"\x9e\x03\n" +
+	"\rReviseRequest\x12\x1f\n" +
+	"\vbranch_name\x18\x01 \x01(\tR\n" +
+	"branchName\x12\x1a\n" +
+	"\brelation\x18\x02 \x01(\tR\brelation\x12'\n" +
+	"\x0fpredecessor_ids\x18\x03 \x03(\tR\x0epredecessorIds\x12\x16\n" +
+	"\x06reason\x18\x04 \x01(\tR\x06reason\x12\x1f\n" +
+	"\vmemory_type\x18\x05 \x01(\tR\n" +
+	"memoryType\x12B\n" +
+	"\apayload\x18\x06 \x03(\v2(.mnemovela.v1.ReviseRequest.PayloadEntryR\apayload\x12\x1b\n" +
+	"\ttenant_id\x18\a \x01(\tR\btenantId\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\b \x01(\tR\tprojectId\x122\n" +
+	"\x15principal_subject_ids\x18\t \x03(\tR\x13principalSubjectIds\x1a:\n" +
+	"\fPayloadEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\">\n" +
+	"\x0eReviseResponse\x12,\n" +
+	"\x06commit\x18\x01 \x01(\v2\x14.mnemovela.v1.CommitR\x06commit2\x88\r\n" +
 	"\x05Mneme\x12U\n" +
 	"\fCommitMemory\x12!.mnemovela.v1.CommitMemoryRequest\x1a\".mnemovela.v1.CommitMemoryResponse\x12O\n" +
 	"\n" +
@@ -3639,7 +4089,9 @@ const file_mnemovela_v1_proto_rawDesc = "" +
 	"\vMergeBranch\x12 .mnemovela.v1.MergeBranchRequest\x1a!.mnemovela.v1.MergeBranchResponse\x12U\n" +
 	"\fListBranches\x12!.mnemovela.v1.ListBranchesRequest\x1a\".mnemovela.v1.ListBranchesResponse\x12d\n" +
 	"\x11SetRetentionState\x12&.mnemovela.v1.SetRetentionStateRequest\x1a'.mnemovela.v1.SetRetentionStateResponse\x12d\n" +
-	"\x11VerifyCommitIndex\x12&.mnemovela.v1.VerifyCommitIndexRequest\x1a'.mnemovela.v1.VerifyCommitIndexResponseBPZNgithub.com/axisrobo/mnemovela-open/clients/go/internal/mnemovelav1;mnemovelav1b\x06proto3"
+	"\x11VerifyCommitIndex\x12&.mnemovela.v1.VerifyCommitIndexRequest\x1a'.mnemovela.v1.VerifyCommitIndexResponse\x12@\n" +
+	"\x05Admit\x12\x1a.mnemovela.v1.AdmitRequest\x1a\x1b.mnemovela.v1.AdmitResponse\x12C\n" +
+	"\x06Revise\x12\x1b.mnemovela.v1.ReviseRequest\x1a\x1c.mnemovela.v1.ReviseResponseBPZNgithub.com/axisrobo/mnemovela-open/clients/go/internal/mnemovelav1;mnemovelav1b\x06proto3"
 
 var (
 	file_mnemovela_v1_proto_rawDescOnce sync.Once
@@ -3653,7 +4105,7 @@ func file_mnemovela_v1_proto_rawDescGZIP() []byte {
 	return file_mnemovela_v1_proto_rawDescData
 }
 
-var file_mnemovela_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 51)
+var file_mnemovela_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 58)
 var file_mnemovela_v1_proto_goTypes = []any{
 	(*Commit)(nil),                               // 0: mnemovela.v1.Commit
 	(*EntityLink)(nil),                           // 1: mnemovela.v1.EntityLink
@@ -3694,28 +4146,35 @@ var file_mnemovela_v1_proto_goTypes = []any{
 	(*SetRetentionStateResponse)(nil),            // 36: mnemovela.v1.SetRetentionStateResponse
 	(*VerifyCommitIndexRequest)(nil),             // 37: mnemovela.v1.VerifyCommitIndexRequest
 	(*VerifyCommitIndexResponse)(nil),            // 38: mnemovela.v1.VerifyCommitIndexResponse
-	nil,                                          // 39: mnemovela.v1.Commit.PayloadEntry
-	nil,                                          // 40: mnemovela.v1.Commit.MetadataEntry
-	(*Value_Struct)(nil),                         // 41: mnemovela.v1.Value.Struct
-	(*Value_List)(nil),                           // 42: mnemovela.v1.Value.List
-	nil,                                          // 43: mnemovela.v1.Value.Struct.FieldsEntry
-	nil,                                          // 44: mnemovela.v1.CommitMemoryRequest.PayloadEntry
-	nil,                                          // 45: mnemovela.v1.CommitMemoryRequest.MetadataEntry
-	nil,                                          // 46: mnemovela.v1.UpsertEntityRequest.MetadataEntry
-	(*SearchMemoryResponse_SearchResult)(nil),    // 47: mnemovela.v1.SearchMemoryResponse.SearchResult
-	(*QueryFactsResponse_FactItem)(nil),          // 48: mnemovela.v1.QueryFactsResponse.FactItem
-	(*ListBranchesResponse_Branch)(nil),          // 49: mnemovela.v1.ListBranchesResponse.Branch
-	(*VerifyCommitIndexResponse_IndexIssue)(nil), // 50: mnemovela.v1.VerifyCommitIndexResponse.IndexIssue
+	(*AdmitRequest)(nil),                         // 39: mnemovela.v1.AdmitRequest
+	(*AdmitResponse)(nil),                        // 40: mnemovela.v1.AdmitResponse
+	(*AdmitReason)(nil),                          // 41: mnemovela.v1.AdmitReason
+	(*ReviseRequest)(nil),                        // 42: mnemovela.v1.ReviseRequest
+	(*ReviseResponse)(nil),                       // 43: mnemovela.v1.ReviseResponse
+	nil,                                          // 44: mnemovela.v1.Commit.PayloadEntry
+	nil,                                          // 45: mnemovela.v1.Commit.MetadataEntry
+	(*Value_Struct)(nil),                         // 46: mnemovela.v1.Value.Struct
+	(*Value_List)(nil),                           // 47: mnemovela.v1.Value.List
+	nil,                                          // 48: mnemovela.v1.Value.Struct.FieldsEntry
+	nil,                                          // 49: mnemovela.v1.CommitMemoryRequest.PayloadEntry
+	nil,                                          // 50: mnemovela.v1.CommitMemoryRequest.MetadataEntry
+	nil,                                          // 51: mnemovela.v1.UpsertEntityRequest.MetadataEntry
+	(*SearchMemoryResponse_SearchResult)(nil),    // 52: mnemovela.v1.SearchMemoryResponse.SearchResult
+	(*QueryFactsResponse_FactItem)(nil),          // 53: mnemovela.v1.QueryFactsResponse.FactItem
+	(*ListBranchesResponse_Branch)(nil),          // 54: mnemovela.v1.ListBranchesResponse.Branch
+	(*VerifyCommitIndexResponse_IndexIssue)(nil), // 55: mnemovela.v1.VerifyCommitIndexResponse.IndexIssue
+	nil, // 56: mnemovela.v1.AdmitRequest.PayloadEntry
+	nil, // 57: mnemovela.v1.ReviseRequest.PayloadEntry
 }
 var file_mnemovela_v1_proto_depIdxs = []int32{
-	39, // 0: mnemovela.v1.Commit.payload:type_name -> mnemovela.v1.Commit.PayloadEntry
-	40, // 1: mnemovela.v1.Commit.metadata:type_name -> mnemovela.v1.Commit.MetadataEntry
+	44, // 0: mnemovela.v1.Commit.payload:type_name -> mnemovela.v1.Commit.PayloadEntry
+	45, // 1: mnemovela.v1.Commit.metadata:type_name -> mnemovela.v1.Commit.MetadataEntry
 	1,  // 2: mnemovela.v1.Commit.entity_links:type_name -> mnemovela.v1.EntityLink
 	2,  // 3: mnemovela.v1.Commit.ontology_assertions:type_name -> mnemovela.v1.OntologyAssertion
-	41, // 4: mnemovela.v1.Value.struct_value:type_name -> mnemovela.v1.Value.Struct
-	42, // 5: mnemovela.v1.Value.list_value:type_name -> mnemovela.v1.Value.List
-	44, // 6: mnemovela.v1.CommitMemoryRequest.payload:type_name -> mnemovela.v1.CommitMemoryRequest.PayloadEntry
-	45, // 7: mnemovela.v1.CommitMemoryRequest.metadata:type_name -> mnemovela.v1.CommitMemoryRequest.MetadataEntry
+	46, // 4: mnemovela.v1.Value.struct_value:type_name -> mnemovela.v1.Value.Struct
+	47, // 5: mnemovela.v1.Value.list_value:type_name -> mnemovela.v1.Value.List
+	49, // 6: mnemovela.v1.CommitMemoryRequest.payload:type_name -> mnemovela.v1.CommitMemoryRequest.PayloadEntry
+	50, // 7: mnemovela.v1.CommitMemoryRequest.metadata:type_name -> mnemovela.v1.CommitMemoryRequest.MetadataEntry
 	1,  // 8: mnemovela.v1.CommitMemoryRequest.entity_links:type_name -> mnemovela.v1.EntityLink
 	2,  // 9: mnemovela.v1.CommitMemoryRequest.ontology_assertions:type_name -> mnemovela.v1.OntologyAssertion
 	0,  // 10: mnemovela.v1.CommitMemoryResponse.commit:type_name -> mnemovela.v1.Commit
@@ -3723,64 +4182,72 @@ var file_mnemovela_v1_proto_depIdxs = []int32{
 	1,  // 12: mnemovela.v1.AddFactRequest.entity_links:type_name -> mnemovela.v1.EntityLink
 	0,  // 13: mnemovela.v1.AddFactResponse.commit:type_name -> mnemovela.v1.Commit
 	0,  // 14: mnemovela.v1.InvalidateFactResponse.commit:type_name -> mnemovela.v1.Commit
-	46, // 15: mnemovela.v1.UpsertEntityRequest.metadata:type_name -> mnemovela.v1.UpsertEntityRequest.MetadataEntry
-	47, // 16: mnemovela.v1.SearchMemoryResponse.results:type_name -> mnemovela.v1.SearchMemoryResponse.SearchResult
+	51, // 15: mnemovela.v1.UpsertEntityRequest.metadata:type_name -> mnemovela.v1.UpsertEntityRequest.MetadataEntry
+	52, // 16: mnemovela.v1.SearchMemoryResponse.results:type_name -> mnemovela.v1.SearchMemoryResponse.SearchResult
 	0,  // 17: mnemovela.v1.QueryMemoriesResponse.commits:type_name -> mnemovela.v1.Commit
-	48, // 18: mnemovela.v1.QueryFactsResponse.facts:type_name -> mnemovela.v1.QueryFactsResponse.FactItem
+	53, // 18: mnemovela.v1.QueryFactsResponse.facts:type_name -> mnemovela.v1.QueryFactsResponse.FactItem
 	24, // 19: mnemovela.v1.ResolveEntityExplainedResponse.entity:type_name -> mnemovela.v1.ResolveEntityResponse
 	3,  // 20: mnemovela.v1.ExtractEpisodeResponse.run:type_name -> mnemovela.v1.ExtractionRun
 	0,  // 21: mnemovela.v1.MergeBranchResponse.commit:type_name -> mnemovela.v1.Commit
-	49, // 22: mnemovela.v1.ListBranchesResponse.branches:type_name -> mnemovela.v1.ListBranchesResponse.Branch
+	54, // 22: mnemovela.v1.ListBranchesResponse.branches:type_name -> mnemovela.v1.ListBranchesResponse.Branch
 	0,  // 23: mnemovela.v1.SetRetentionStateResponse.commit:type_name -> mnemovela.v1.Commit
-	50, // 24: mnemovela.v1.VerifyCommitIndexResponse.issues:type_name -> mnemovela.v1.VerifyCommitIndexResponse.IndexIssue
-	4,  // 25: mnemovela.v1.Commit.PayloadEntry.value:type_name -> mnemovela.v1.Value
-	4,  // 26: mnemovela.v1.Commit.MetadataEntry.value:type_name -> mnemovela.v1.Value
-	43, // 27: mnemovela.v1.Value.Struct.fields:type_name -> mnemovela.v1.Value.Struct.FieldsEntry
-	4,  // 28: mnemovela.v1.Value.List.values:type_name -> mnemovela.v1.Value
-	4,  // 29: mnemovela.v1.Value.Struct.FieldsEntry.value:type_name -> mnemovela.v1.Value
-	4,  // 30: mnemovela.v1.CommitMemoryRequest.PayloadEntry.value:type_name -> mnemovela.v1.Value
-	4,  // 31: mnemovela.v1.CommitMemoryRequest.MetadataEntry.value:type_name -> mnemovela.v1.Value
-	4,  // 32: mnemovela.v1.UpsertEntityRequest.MetadataEntry.value:type_name -> mnemovela.v1.Value
-	0,  // 33: mnemovela.v1.SearchMemoryResponse.SearchResult.commit:type_name -> mnemovela.v1.Commit
-	5,  // 34: mnemovela.v1.Mneme.CommitMemory:input_type -> mnemovela.v1.CommitMemoryRequest
-	7,  // 35: mnemovela.v1.Mneme.AddEpisode:input_type -> mnemovela.v1.AddEpisodeRequest
-	9,  // 36: mnemovela.v1.Mneme.AddFact:input_type -> mnemovela.v1.AddFactRequest
-	11, // 37: mnemovela.v1.Mneme.InvalidateFact:input_type -> mnemovela.v1.InvalidateFactRequest
-	13, // 38: mnemovela.v1.Mneme.UpsertSubject:input_type -> mnemovela.v1.UpsertSubjectRequest
-	15, // 39: mnemovela.v1.Mneme.UpsertEntity:input_type -> mnemovela.v1.UpsertEntityRequest
-	17, // 40: mnemovela.v1.Mneme.SearchMemory:input_type -> mnemovela.v1.SearchMemoryRequest
-	19, // 41: mnemovela.v1.Mneme.QueryMemories:input_type -> mnemovela.v1.QueryMemoriesRequest
-	21, // 42: mnemovela.v1.Mneme.QueryFacts:input_type -> mnemovela.v1.QueryFactsRequest
-	23, // 43: mnemovela.v1.Mneme.ResolveEntity:input_type -> mnemovela.v1.ResolveEntityRequest
-	25, // 44: mnemovela.v1.Mneme.ResolveEntityExplained:input_type -> mnemovela.v1.ResolveEntityExplainedRequest
-	27, // 45: mnemovela.v1.Mneme.ExtractEpisode:input_type -> mnemovela.v1.ExtractEpisodeRequest
-	29, // 46: mnemovela.v1.Mneme.CreateBranch:input_type -> mnemovela.v1.CreateBranchRequest
-	31, // 47: mnemovela.v1.Mneme.MergeBranch:input_type -> mnemovela.v1.MergeBranchRequest
-	33, // 48: mnemovela.v1.Mneme.ListBranches:input_type -> mnemovela.v1.ListBranchesRequest
-	35, // 49: mnemovela.v1.Mneme.SetRetentionState:input_type -> mnemovela.v1.SetRetentionStateRequest
-	37, // 50: mnemovela.v1.Mneme.VerifyCommitIndex:input_type -> mnemovela.v1.VerifyCommitIndexRequest
-	6,  // 51: mnemovela.v1.Mneme.CommitMemory:output_type -> mnemovela.v1.CommitMemoryResponse
-	8,  // 52: mnemovela.v1.Mneme.AddEpisode:output_type -> mnemovela.v1.AddEpisodeResponse
-	10, // 53: mnemovela.v1.Mneme.AddFact:output_type -> mnemovela.v1.AddFactResponse
-	12, // 54: mnemovela.v1.Mneme.InvalidateFact:output_type -> mnemovela.v1.InvalidateFactResponse
-	14, // 55: mnemovela.v1.Mneme.UpsertSubject:output_type -> mnemovela.v1.UpsertSubjectResponse
-	16, // 56: mnemovela.v1.Mneme.UpsertEntity:output_type -> mnemovela.v1.UpsertEntityResponse
-	18, // 57: mnemovela.v1.Mneme.SearchMemory:output_type -> mnemovela.v1.SearchMemoryResponse
-	20, // 58: mnemovela.v1.Mneme.QueryMemories:output_type -> mnemovela.v1.QueryMemoriesResponse
-	22, // 59: mnemovela.v1.Mneme.QueryFacts:output_type -> mnemovela.v1.QueryFactsResponse
-	24, // 60: mnemovela.v1.Mneme.ResolveEntity:output_type -> mnemovela.v1.ResolveEntityResponse
-	26, // 61: mnemovela.v1.Mneme.ResolveEntityExplained:output_type -> mnemovela.v1.ResolveEntityExplainedResponse
-	28, // 62: mnemovela.v1.Mneme.ExtractEpisode:output_type -> mnemovela.v1.ExtractEpisodeResponse
-	30, // 63: mnemovela.v1.Mneme.CreateBranch:output_type -> mnemovela.v1.CreateBranchResponse
-	32, // 64: mnemovela.v1.Mneme.MergeBranch:output_type -> mnemovela.v1.MergeBranchResponse
-	34, // 65: mnemovela.v1.Mneme.ListBranches:output_type -> mnemovela.v1.ListBranchesResponse
-	36, // 66: mnemovela.v1.Mneme.SetRetentionState:output_type -> mnemovela.v1.SetRetentionStateResponse
-	38, // 67: mnemovela.v1.Mneme.VerifyCommitIndex:output_type -> mnemovela.v1.VerifyCommitIndexResponse
-	51, // [51:68] is the sub-list for method output_type
-	34, // [34:51] is the sub-list for method input_type
-	34, // [34:34] is the sub-list for extension type_name
-	34, // [34:34] is the sub-list for extension extendee
-	0,  // [0:34] is the sub-list for field type_name
+	55, // 24: mnemovela.v1.VerifyCommitIndexResponse.issues:type_name -> mnemovela.v1.VerifyCommitIndexResponse.IndexIssue
+	56, // 25: mnemovela.v1.AdmitRequest.payload:type_name -> mnemovela.v1.AdmitRequest.PayloadEntry
+	41, // 26: mnemovela.v1.AdmitResponse.reasons:type_name -> mnemovela.v1.AdmitReason
+	57, // 27: mnemovela.v1.ReviseRequest.payload:type_name -> mnemovela.v1.ReviseRequest.PayloadEntry
+	0,  // 28: mnemovela.v1.ReviseResponse.commit:type_name -> mnemovela.v1.Commit
+	4,  // 29: mnemovela.v1.Commit.PayloadEntry.value:type_name -> mnemovela.v1.Value
+	4,  // 30: mnemovela.v1.Commit.MetadataEntry.value:type_name -> mnemovela.v1.Value
+	48, // 31: mnemovela.v1.Value.Struct.fields:type_name -> mnemovela.v1.Value.Struct.FieldsEntry
+	4,  // 32: mnemovela.v1.Value.List.values:type_name -> mnemovela.v1.Value
+	4,  // 33: mnemovela.v1.Value.Struct.FieldsEntry.value:type_name -> mnemovela.v1.Value
+	4,  // 34: mnemovela.v1.CommitMemoryRequest.PayloadEntry.value:type_name -> mnemovela.v1.Value
+	4,  // 35: mnemovela.v1.CommitMemoryRequest.MetadataEntry.value:type_name -> mnemovela.v1.Value
+	4,  // 36: mnemovela.v1.UpsertEntityRequest.MetadataEntry.value:type_name -> mnemovela.v1.Value
+	0,  // 37: mnemovela.v1.SearchMemoryResponse.SearchResult.commit:type_name -> mnemovela.v1.Commit
+	5,  // 38: mnemovela.v1.Mneme.CommitMemory:input_type -> mnemovela.v1.CommitMemoryRequest
+	7,  // 39: mnemovela.v1.Mneme.AddEpisode:input_type -> mnemovela.v1.AddEpisodeRequest
+	9,  // 40: mnemovela.v1.Mneme.AddFact:input_type -> mnemovela.v1.AddFactRequest
+	11, // 41: mnemovela.v1.Mneme.InvalidateFact:input_type -> mnemovela.v1.InvalidateFactRequest
+	13, // 42: mnemovela.v1.Mneme.UpsertSubject:input_type -> mnemovela.v1.UpsertSubjectRequest
+	15, // 43: mnemovela.v1.Mneme.UpsertEntity:input_type -> mnemovela.v1.UpsertEntityRequest
+	17, // 44: mnemovela.v1.Mneme.SearchMemory:input_type -> mnemovela.v1.SearchMemoryRequest
+	19, // 45: mnemovela.v1.Mneme.QueryMemories:input_type -> mnemovela.v1.QueryMemoriesRequest
+	21, // 46: mnemovela.v1.Mneme.QueryFacts:input_type -> mnemovela.v1.QueryFactsRequest
+	23, // 47: mnemovela.v1.Mneme.ResolveEntity:input_type -> mnemovela.v1.ResolveEntityRequest
+	25, // 48: mnemovela.v1.Mneme.ResolveEntityExplained:input_type -> mnemovela.v1.ResolveEntityExplainedRequest
+	27, // 49: mnemovela.v1.Mneme.ExtractEpisode:input_type -> mnemovela.v1.ExtractEpisodeRequest
+	29, // 50: mnemovela.v1.Mneme.CreateBranch:input_type -> mnemovela.v1.CreateBranchRequest
+	31, // 51: mnemovela.v1.Mneme.MergeBranch:input_type -> mnemovela.v1.MergeBranchRequest
+	33, // 52: mnemovela.v1.Mneme.ListBranches:input_type -> mnemovela.v1.ListBranchesRequest
+	35, // 53: mnemovela.v1.Mneme.SetRetentionState:input_type -> mnemovela.v1.SetRetentionStateRequest
+	37, // 54: mnemovela.v1.Mneme.VerifyCommitIndex:input_type -> mnemovela.v1.VerifyCommitIndexRequest
+	39, // 55: mnemovela.v1.Mneme.Admit:input_type -> mnemovela.v1.AdmitRequest
+	42, // 56: mnemovela.v1.Mneme.Revise:input_type -> mnemovela.v1.ReviseRequest
+	6,  // 57: mnemovela.v1.Mneme.CommitMemory:output_type -> mnemovela.v1.CommitMemoryResponse
+	8,  // 58: mnemovela.v1.Mneme.AddEpisode:output_type -> mnemovela.v1.AddEpisodeResponse
+	10, // 59: mnemovela.v1.Mneme.AddFact:output_type -> mnemovela.v1.AddFactResponse
+	12, // 60: mnemovela.v1.Mneme.InvalidateFact:output_type -> mnemovela.v1.InvalidateFactResponse
+	14, // 61: mnemovela.v1.Mneme.UpsertSubject:output_type -> mnemovela.v1.UpsertSubjectResponse
+	16, // 62: mnemovela.v1.Mneme.UpsertEntity:output_type -> mnemovela.v1.UpsertEntityResponse
+	18, // 63: mnemovela.v1.Mneme.SearchMemory:output_type -> mnemovela.v1.SearchMemoryResponse
+	20, // 64: mnemovela.v1.Mneme.QueryMemories:output_type -> mnemovela.v1.QueryMemoriesResponse
+	22, // 65: mnemovela.v1.Mneme.QueryFacts:output_type -> mnemovela.v1.QueryFactsResponse
+	24, // 66: mnemovela.v1.Mneme.ResolveEntity:output_type -> mnemovela.v1.ResolveEntityResponse
+	26, // 67: mnemovela.v1.Mneme.ResolveEntityExplained:output_type -> mnemovela.v1.ResolveEntityExplainedResponse
+	28, // 68: mnemovela.v1.Mneme.ExtractEpisode:output_type -> mnemovela.v1.ExtractEpisodeResponse
+	30, // 69: mnemovela.v1.Mneme.CreateBranch:output_type -> mnemovela.v1.CreateBranchResponse
+	32, // 70: mnemovela.v1.Mneme.MergeBranch:output_type -> mnemovela.v1.MergeBranchResponse
+	34, // 71: mnemovela.v1.Mneme.ListBranches:output_type -> mnemovela.v1.ListBranchesResponse
+	36, // 72: mnemovela.v1.Mneme.SetRetentionState:output_type -> mnemovela.v1.SetRetentionStateResponse
+	38, // 73: mnemovela.v1.Mneme.VerifyCommitIndex:output_type -> mnemovela.v1.VerifyCommitIndexResponse
+	40, // 74: mnemovela.v1.Mneme.Admit:output_type -> mnemovela.v1.AdmitResponse
+	43, // 75: mnemovela.v1.Mneme.Revise:output_type -> mnemovela.v1.ReviseResponse
+	57, // [57:76] is the sub-list for method output_type
+	38, // [38:57] is the sub-list for method input_type
+	38, // [38:38] is the sub-list for extension type_name
+	38, // [38:38] is the sub-list for extension extendee
+	0,  // [0:38] is the sub-list for field type_name
 }
 
 func init() { file_mnemovela_v1_proto_init() }
@@ -3801,7 +4268,7 @@ func file_mnemovela_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mnemovela_v1_proto_rawDesc), len(file_mnemovela_v1_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   51,
+			NumMessages:   58,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
