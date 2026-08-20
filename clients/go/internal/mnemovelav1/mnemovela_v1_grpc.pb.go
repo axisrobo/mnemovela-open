@@ -38,6 +38,11 @@ const (
 	Mnemovela_VerifyCommitIndex_FullMethodName      = "/mnemovela.v1.Mnemovela/VerifyCommitIndex"
 	Mnemovela_Admit_FullMethodName                  = "/mnemovela.v1.Mnemovela/Admit"
 	Mnemovela_Revise_FullMethodName                 = "/mnemovela.v1.Mnemovela/Revise"
+	Mnemovela_DeleteCommit_FullMethodName           = "/mnemovela.v1.Mnemovela/DeleteCommit"
+	Mnemovela_DispositionEvidence_FullMethodName    = "/mnemovela.v1.Mnemovela/DispositionEvidence"
+	Mnemovela_SetLegalHold_FullMethodName           = "/mnemovela.v1.Mnemovela/SetLegalHold"
+	Mnemovela_IsLegalHold_FullMethodName            = "/mnemovela.v1.Mnemovela/IsLegalHold"
+	Mnemovela_ExecuteDisposal_FullMethodName        = "/mnemovela.v1.Mnemovela/ExecuteDisposal"
 )
 
 // MnemovelaClient is the client API for Mnemovela service.
@@ -70,6 +75,18 @@ type MnemovelaClient interface {
 	// --- admission & revision ---
 	Admit(ctx context.Context, in *AdmitRequest, opts ...grpc.CallOption) (*AdmitResponse, error)
 	Revise(ctx context.Context, in *ReviseRequest, opts ...grpc.CallOption) (*ReviseResponse, error)
+	// DeleteCommit physically deletes a commit and its derived chain, returning
+	// disposition evidence.
+	DeleteCommit(ctx context.Context, in *DeleteCommitRequest, opts ...grpc.CallOption) (*DeleteCommitResponse, error)
+	// DispositionEvidence returns the recorded disposition evidence for a commit.
+	DispositionEvidence(ctx context.Context, in *DispositionEvidenceRequest, opts ...grpc.CallOption) (*DispositionEvidenceResponse, error)
+	// SetLegalHold marks or unmarks a commit as excluded from disposal.
+	SetLegalHold(ctx context.Context, in *SetLegalHoldRequest, opts ...grpc.CallOption) (*SetLegalHoldResponse, error)
+	// IsLegalHold reports whether a commit is under legal hold.
+	IsLegalHold(ctx context.Context, in *IsLegalHoldRequest, opts ...grpc.CallOption) (*IsLegalHoldResponse, error)
+	// ExecuteDisposal physically deletes tombstoned commits past their grace
+	// period, skipping legal-held commits.
+	ExecuteDisposal(ctx context.Context, in *ExecuteDisposalRequest, opts ...grpc.CallOption) (*ExecuteDisposalResponse, error)
 }
 
 type mnemovelaClient struct {
@@ -270,6 +287,56 @@ func (c *mnemovelaClient) Revise(ctx context.Context, in *ReviseRequest, opts ..
 	return out, nil
 }
 
+func (c *mnemovelaClient) DeleteCommit(ctx context.Context, in *DeleteCommitRequest, opts ...grpc.CallOption) (*DeleteCommitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteCommitResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_DeleteCommit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemovelaClient) DispositionEvidence(ctx context.Context, in *DispositionEvidenceRequest, opts ...grpc.CallOption) (*DispositionEvidenceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DispositionEvidenceResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_DispositionEvidence_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemovelaClient) SetLegalHold(ctx context.Context, in *SetLegalHoldRequest, opts ...grpc.CallOption) (*SetLegalHoldResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetLegalHoldResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_SetLegalHold_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemovelaClient) IsLegalHold(ctx context.Context, in *IsLegalHoldRequest, opts ...grpc.CallOption) (*IsLegalHoldResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IsLegalHoldResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_IsLegalHold_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemovelaClient) ExecuteDisposal(ctx context.Context, in *ExecuteDisposalRequest, opts ...grpc.CallOption) (*ExecuteDisposalResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExecuteDisposalResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_ExecuteDisposal_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MnemovelaServer is the server API for Mnemovela service.
 // All implementations must embed UnimplementedMnemovelaServer
 // for forward compatibility.
@@ -300,6 +367,18 @@ type MnemovelaServer interface {
 	// --- admission & revision ---
 	Admit(context.Context, *AdmitRequest) (*AdmitResponse, error)
 	Revise(context.Context, *ReviseRequest) (*ReviseResponse, error)
+	// DeleteCommit physically deletes a commit and its derived chain, returning
+	// disposition evidence.
+	DeleteCommit(context.Context, *DeleteCommitRequest) (*DeleteCommitResponse, error)
+	// DispositionEvidence returns the recorded disposition evidence for a commit.
+	DispositionEvidence(context.Context, *DispositionEvidenceRequest) (*DispositionEvidenceResponse, error)
+	// SetLegalHold marks or unmarks a commit as excluded from disposal.
+	SetLegalHold(context.Context, *SetLegalHoldRequest) (*SetLegalHoldResponse, error)
+	// IsLegalHold reports whether a commit is under legal hold.
+	IsLegalHold(context.Context, *IsLegalHoldRequest) (*IsLegalHoldResponse, error)
+	// ExecuteDisposal physically deletes tombstoned commits past their grace
+	// period, skipping legal-held commits.
+	ExecuteDisposal(context.Context, *ExecuteDisposalRequest) (*ExecuteDisposalResponse, error)
 	mustEmbedUnimplementedMnemovelaServer()
 }
 
@@ -366,6 +445,21 @@ func (UnimplementedMnemovelaServer) Admit(context.Context, *AdmitRequest) (*Admi
 }
 func (UnimplementedMnemovelaServer) Revise(context.Context, *ReviseRequest) (*ReviseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Revise not implemented")
+}
+func (UnimplementedMnemovelaServer) DeleteCommit(context.Context, *DeleteCommitRequest) (*DeleteCommitResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCommit not implemented")
+}
+func (UnimplementedMnemovelaServer) DispositionEvidence(context.Context, *DispositionEvidenceRequest) (*DispositionEvidenceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DispositionEvidence not implemented")
+}
+func (UnimplementedMnemovelaServer) SetLegalHold(context.Context, *SetLegalHoldRequest) (*SetLegalHoldResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetLegalHold not implemented")
+}
+func (UnimplementedMnemovelaServer) IsLegalHold(context.Context, *IsLegalHoldRequest) (*IsLegalHoldResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsLegalHold not implemented")
+}
+func (UnimplementedMnemovelaServer) ExecuteDisposal(context.Context, *ExecuteDisposalRequest) (*ExecuteDisposalResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExecuteDisposal not implemented")
 }
 func (UnimplementedMnemovelaServer) mustEmbedUnimplementedMnemovelaServer() {}
 func (UnimplementedMnemovelaServer) testEmbeddedByValue()                   {}
@@ -730,6 +824,96 @@ func _Mnemovela_Revise_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mnemovela_DeleteCommit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCommitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).DeleteCommit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_DeleteCommit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).DeleteCommit(ctx, req.(*DeleteCommitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemovela_DispositionEvidence_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DispositionEvidenceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).DispositionEvidence(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_DispositionEvidence_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).DispositionEvidence(ctx, req.(*DispositionEvidenceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemovela_SetLegalHold_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetLegalHoldRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).SetLegalHold(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_SetLegalHold_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).SetLegalHold(ctx, req.(*SetLegalHoldRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemovela_IsLegalHold_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsLegalHoldRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).IsLegalHold(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_IsLegalHold_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).IsLegalHold(ctx, req.(*IsLegalHoldRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemovela_ExecuteDisposal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExecuteDisposalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).ExecuteDisposal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_ExecuteDisposal_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).ExecuteDisposal(ctx, req.(*ExecuteDisposalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Mnemovela_ServiceDesc is the grpc.ServiceDesc for Mnemovela service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -812,6 +996,26 @@ var Mnemovela_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Revise",
 			Handler:    _Mnemovela_Revise_Handler,
+		},
+		{
+			MethodName: "DeleteCommit",
+			Handler:    _Mnemovela_DeleteCommit_Handler,
+		},
+		{
+			MethodName: "DispositionEvidence",
+			Handler:    _Mnemovela_DispositionEvidence_Handler,
+		},
+		{
+			MethodName: "SetLegalHold",
+			Handler:    _Mnemovela_SetLegalHold_Handler,
+		},
+		{
+			MethodName: "IsLegalHold",
+			Handler:    _Mnemovela_IsLegalHold_Handler,
+		},
+		{
+			MethodName: "ExecuteDisposal",
+			Handler:    _Mnemovela_ExecuteDisposal_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

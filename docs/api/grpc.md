@@ -63,7 +63,17 @@ All RPCs belong to the `mnemovela.v1.Mnemovela` service.
 | `SetRetentionState` | `SetRetentionStateRequest` | `SetRetentionStateResponse` | Change retention state of a commit |
 | `VerifyCommitIndex` | `VerifyCommitIndexRequest` | `VerifyCommitIndexResponse` | Verify index consistency for a commit |
 
-All 17 RPCs are confirmed present in `contracts/mnemovela.v1.proto` and implemented by the Go server at `go/server/grpc/server.go`.
+### Lifecycle (physical delete / disposition / legal hold / disposal)
+
+| RPC | Request | Response | Description |
+|-----|---------|----------|-------------|
+| `DeleteCommit` | `DeleteCommitRequest` | `DeleteCommitResponse` | Physically delete a commit + derived chain, return disposition evidence |
+| `DispositionEvidence` | `DispositionEvidenceRequest` | `DispositionEvidenceResponse` | Return recorded disposition evidence for a commit |
+| `SetLegalHold` | `SetLegalHoldRequest` | `SetLegalHoldResponse` | Mark/unmark a commit as excluded from disposal |
+| `IsLegalHold` | `IsLegalHoldRequest` | `IsLegalHoldResponse` | Report whether a commit is under legal hold |
+| `ExecuteDisposal` | `ExecuteDisposalRequest` | `ExecuteDisposalResponse` | Physically delete tombstoned commits past grace, skipping legal holds |
+
+All RPCs are confirmed present in `contracts/mnemovela.v1.proto` and implemented by the Go server at `go/server/grpc/server.go`.
 
 ## Messages
 
@@ -128,7 +138,7 @@ import (
 conn, _ := grpc.Dial("localhost:9090", grpc.WithTransportCredentials(insecure.NewCredentials()))
 defer conn.Close()
 
-client := Mnemovelav1.NewMnemeClient(conn)
+client := Mnemovelav1.NewMnemovelaClient(conn)
 resp, err := client.SearchMemory(context.Background(), &Mnemovelav1.SearchMemoryRequest{
     BranchName: "main",
     Query:      "contract clause ambiguity",

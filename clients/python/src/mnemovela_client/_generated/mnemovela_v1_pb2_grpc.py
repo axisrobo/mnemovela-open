@@ -132,6 +132,31 @@ class MnemovelaStub:
                 request_serializer=mnemovela__v1__pb2.ReviseRequest.SerializeToString,
                 response_deserializer=mnemovela__v1__pb2.ReviseResponse.FromString,
                 _registered_method=True)
+        self.DeleteCommit = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/DeleteCommit',
+                request_serializer=mnemovela__v1__pb2.DeleteCommitRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.DeleteCommitResponse.FromString,
+                _registered_method=True)
+        self.DispositionEvidence = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/DispositionEvidence',
+                request_serializer=mnemovela__v1__pb2.DispositionEvidenceRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.DispositionEvidenceResponse.FromString,
+                _registered_method=True)
+        self.SetLegalHold = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/SetLegalHold',
+                request_serializer=mnemovela__v1__pb2.SetLegalHoldRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.SetLegalHoldResponse.FromString,
+                _registered_method=True)
+        self.IsLegalHold = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/IsLegalHold',
+                request_serializer=mnemovela__v1__pb2.IsLegalHoldRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.IsLegalHoldResponse.FromString,
+                _registered_method=True)
+        self.ExecuteDisposal = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/ExecuteDisposal',
+                request_serializer=mnemovela__v1__pb2.ExecuteDisposalRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.ExecuteDisposalResponse.FromString,
+                _registered_method=True)
 
 
 class MnemovelaServicer:
@@ -261,6 +286,47 @@ class MnemovelaServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DeleteCommit(self, request, context):
+        """--- lifecycle (physical delete / disposition / legal hold / disposal) ---
+        These mirror the mnemovela.delete_commit / disposition_evidence /
+        set_legal_hold / is_legal_hold / execute_disposal JSON-RPC methods.
+
+        DeleteCommit physically deletes a commit and its derived chain, returning
+        disposition evidence.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DispositionEvidence(self, request, context):
+        """DispositionEvidence returns the recorded disposition evidence for a commit.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetLegalHold(self, request, context):
+        """SetLegalHold marks or unmarks a commit as excluded from disposal.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def IsLegalHold(self, request, context):
+        """IsLegalHold reports whether a commit is under legal hold.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ExecuteDisposal(self, request, context):
+        """ExecuteDisposal physically deletes tombstoned commits past their grace
+        period, skipping legal-held commits.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MnemovelaServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -358,6 +424,31 @@ def add_MnemovelaServicer_to_server(servicer, server):
                     servicer.Revise,
                     request_deserializer=mnemovela__v1__pb2.ReviseRequest.FromString,
                     response_serializer=mnemovela__v1__pb2.ReviseResponse.SerializeToString,
+            ),
+            'DeleteCommit': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteCommit,
+                    request_deserializer=mnemovela__v1__pb2.DeleteCommitRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.DeleteCommitResponse.SerializeToString,
+            ),
+            'DispositionEvidence': grpc.unary_unary_rpc_method_handler(
+                    servicer.DispositionEvidence,
+                    request_deserializer=mnemovela__v1__pb2.DispositionEvidenceRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.DispositionEvidenceResponse.SerializeToString,
+            ),
+            'SetLegalHold': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetLegalHold,
+                    request_deserializer=mnemovela__v1__pb2.SetLegalHoldRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.SetLegalHoldResponse.SerializeToString,
+            ),
+            'IsLegalHold': grpc.unary_unary_rpc_method_handler(
+                    servicer.IsLegalHold,
+                    request_deserializer=mnemovela__v1__pb2.IsLegalHoldRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.IsLegalHoldResponse.SerializeToString,
+            ),
+            'ExecuteDisposal': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExecuteDisposal,
+                    request_deserializer=mnemovela__v1__pb2.ExecuteDisposalRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.ExecuteDisposalResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -876,6 +967,141 @@ class Mnemovela:
             '/mnemovela.v1.Mnemovela/Revise',
             mnemovela__v1__pb2.ReviseRequest.SerializeToString,
             mnemovela__v1__pb2.ReviseResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteCommit(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/DeleteCommit',
+            mnemovela__v1__pb2.DeleteCommitRequest.SerializeToString,
+            mnemovela__v1__pb2.DeleteCommitResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DispositionEvidence(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/DispositionEvidence',
+            mnemovela__v1__pb2.DispositionEvidenceRequest.SerializeToString,
+            mnemovela__v1__pb2.DispositionEvidenceResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetLegalHold(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/SetLegalHold',
+            mnemovela__v1__pb2.SetLegalHoldRequest.SerializeToString,
+            mnemovela__v1__pb2.SetLegalHoldResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def IsLegalHold(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/IsLegalHold',
+            mnemovela__v1__pb2.IsLegalHoldRequest.SerializeToString,
+            mnemovela__v1__pb2.IsLegalHoldResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ExecuteDisposal(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/ExecuteDisposal',
+            mnemovela__v1__pb2.ExecuteDisposalRequest.SerializeToString,
+            mnemovela__v1__pb2.ExecuteDisposalResponse.FromString,
             options,
             channel_credentials,
             insecure,
