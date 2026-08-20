@@ -1,6 +1,6 @@
-# Mneme API & SDK Reference
+# Mnemovela API & SDK Reference
 
-This is the reference hub for every way to talk to Mneme. Mneme exposes one
+This is the reference hub for every way to talk to Mnemovela. Mnemovela exposes one
 semantic memory contract through several surfaces; pick the surface that matches
 how you deploy.
 
@@ -8,7 +8,7 @@ how you deploy.
 
 | Surface | Best for | Language | Reference |
 |---------|----------|----------|-----------|
-| **Python SDK** | Embedding Mneme in a Python app/notebook; the most complete surface (typed frames, ingestion, maintenance) | Python | [python-sdk.md](python-sdk.md) |
+| **Python SDK** | Embedding Mnemovela in a Python app/notebook; the most complete surface (typed frames, ingestion, maintenance) | Python | [python-sdk.md](python-sdk.md) |
 | **Go SDK** | Embedding a zero-dependency runtime in a Go agent/service | Go | [go-sdk.md](go-sdk.md) |
 | **JSON-RPC** | Language-neutral, network/stdio integration | any | [jsonrpc.md](jsonrpc.md) |
 | **MCP** | Exposing memory tools to LLM agents / IDEs | any (MCP client) | [mcp.md](mcp.md) |
@@ -38,14 +38,14 @@ The authoritative machine-readable definitions live in
 | `mnemovela.v1.proto` | gRPC service |
 | `mnemovela.memory_frames.v1.schema.json` | The fourteen typed memory frames |
 | `mnemovela.memory.v1.schema.json` | Memory-operation semantics (shared fixtures) |
-| `mnemovela.context.v1-draft.schema.json` | `build_context` response |
+| `mnemovela.context.v1.schema.json` | `build_context` response (ContextBundle v1) |
 | `mnemovela.event.v1-draft.schema.json` | Event envelope |
 
 Contracts tagged `v1` are frozen; `v1-draft` contracts are still evolving.
 
 ## Editions
 
-Mneme is open core. Every surface above ships in the **open-source core**
+Mnemovela is open core. Every surface above ships in the **open-source core**
 (AGPL-3.0), but some operations depend on implementations provided by the
 proprietary **Enterprise Edition** (`axisrobo-mnemovela-ee`), which registers into
 the same APIs at startup:

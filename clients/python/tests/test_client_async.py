@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from mnemovela_client import AsyncMnemeClient
+from mnemovela_client import AsyncMnemovelaClient
 from fake_server import serve
 
 
@@ -11,7 +11,7 @@ class TestAsyncClient(unittest.TestCase):
     def test_add_episode_async(self):
         async def run():
             with serve() as addr:
-                client = AsyncMnemeClient(addr)
+                client = AsyncMnemovelaClient(addr)
                 commit = await client.add_episode(branch_name="main", content="hi")
                 await client.close()
                 return commit
@@ -21,7 +21,7 @@ class TestAsyncClient(unittest.TestCase):
     def test_search_async(self):
         async def run():
             with serve() as addr:
-                client = AsyncMnemeClient(addr)
+                client = AsyncMnemovelaClient(addr)
                 results = await client.search_memory("main", "hi", top_k=3)
                 await client.close()
                 return results

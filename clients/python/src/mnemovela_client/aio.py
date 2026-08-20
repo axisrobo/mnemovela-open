@@ -9,18 +9,18 @@ from mnemovela_client._generated import mnemovela_v1_pb2 as pb
 from mnemovela_client._generated import mnemovela_v1_pb2_grpc as pb_grpc
 from mnemovela_client._json import to_value_map
 from mnemovela_client.client import _commit_to_dict, _fact_to_dict, _run_to_dict
-from mnemovela_client.errors import MnemeError
+from mnemovela_client.errors import MnemovelaError
 
 
-class AsyncMnemeClient:
+class AsyncMnemovelaClient:
     def __init__(self, address: str = "localhost:9090"):
         self._channel = aio.insecure_channel(address)
-        self._stub = pb_grpc.MnemeStub(self._channel)
+        self._stub = pb_grpc.MnemovelaStub(self._channel)
 
     async def close(self) -> None:
         await self._channel.close()
 
-    async def __aenter__(self) -> "AsyncMnemeClient":
+    async def __aenter__(self) -> "AsyncMnemovelaClient":
         return self
 
     async def __aexit__(self, *exc) -> None:
@@ -30,7 +30,7 @@ class AsyncMnemeClient:
         try:
             return await method(request)
         except grpc.aio.AioRpcError as err:
-            raise MnemeError.from_rpc_error(err) from err
+            raise MnemovelaError.from_rpc_error(err) from err
 
     # ── typed writes ────────────────────────────────────────────────
     async def add_episode(self, *, branch_name: str, content: str, episode_type: str = "",

@@ -1,8 +1,8 @@
-# Mneme gRPC API
+# Mnemovela gRPC API
 
 ## Overview
 
-The Mneme gRPC service is defined by the Protocol Buffers contract `contracts/mnemovela.v1.proto`. A production-ready Go server (`go/server/grpc`) implements the full surface and registers health checking via `grpc.health.v1`.
+The Mnemovela gRPC service is defined by the Protocol Buffers contract `contracts/mnemovela.v1.proto`. A production-ready Go server (`go/server/grpc`) implements the full surface and registers health checking via `grpc.health.v1`.
 
 **Run locally:**
 
@@ -12,7 +12,7 @@ go run ./cmd/mnemovela-grpc
 
 The server listens on the port specified by the environment variable `Mnemovela_GRPC_PORT` (default `9090`). An embedded Pebble store backs the runtime by default.
 
-All RPCs belong to the `mnemovela.v1.Mneme` service.
+All RPCs belong to the `mnemovela.v1.Mnemovela` service.
 
 ## Service & RPCs
 
@@ -112,7 +112,7 @@ Assuming the service is running on `localhost:9090`:
 ```bash
 grpcurl -plaintext \
   -d '{"branch_name":"main","query":"contract clause ambiguity","top_k":5}' \
-  localhost:9090 mnemovela.v1.Mneme/SearchMemory
+  localhost:9090 mnemovela.v1.Mnemovela/SearchMemory
 ```
 
 ### SearchMemory with Go client
@@ -139,7 +139,7 @@ resp, err := client.SearchMemory(context.Background(), &Mnemovelav1.SearchMemory
 ## Notes
 
 - The `contracts/mnemovela.v1.proto` file is the authoritative `v1` contract.
-- Generated Go stubs live in `go/api/mnemovela/v1/` (`mnemovela.pb.go`, `mnemovela_grpc.pb.go`).
+- Generated Go stubs live in `go/api/mnemovela/v1/` (`mnemovela.v1.pb.go`, `mnemovela.v1_grpc.pb.go`).
 - Health checking is available via the standard `grpc.health.v1.Health/Check` service.
 
 ## See also

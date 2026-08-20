@@ -36,7 +36,7 @@ The canonical descriptive memory. Use for raw observations, tool outputs,
 user messages, and system events.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="event",
   payload={
@@ -68,7 +68,7 @@ claims, attributes (intrinsic/state/source), axioms, temporal context, and
 causal dynamics.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="knowledge",
   payload={
@@ -102,7 +102,7 @@ Reflection after an action. Captures what was observed, what mattered, and
 what the outcome was.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="experience",
   payload={
@@ -123,7 +123,7 @@ mnemovela.commit_memory(
 Hypothetical reasoning. Model initial state, apply operators, and rank outcomes.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="simulation",
   payload={
@@ -150,7 +150,7 @@ Affective state. Links to the triggering event, carries valence/arousal, and
 threat/reward/attachment scores.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="emotion",
   payload={
@@ -169,7 +169,7 @@ A reusable step-by-step process. Stores preconditions, ordered action steps
 with expected outcomes, and links to related knowledge.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="procedure",
   payload={
@@ -192,7 +192,7 @@ An agent goal. Carries target state, motivation level, priority, deadline, and
 success criteria.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="intention",
   payload={
@@ -217,7 +217,7 @@ A worldview assumption that may be revised. Tracks schema, belief statements,
 prior state, and confidence.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="belief",
   payload={
@@ -236,7 +236,7 @@ mnemovela.commit_memory(
 A long-running, multi-stage undertaking. Tracks stage progress and linked events.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="mission",
   payload={
@@ -256,7 +256,7 @@ Style, UX, and execution preferences. Captures how an agent or user likes
 things done.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="preference",
   payload={
@@ -274,7 +274,7 @@ Transient task-local state. Captures active files, pending decisions, test
 status — overwritten each session, not accumulated.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="workspace_state",
   payload={
@@ -293,7 +293,7 @@ An archived design decision. Stores the choice, rationale, and alternatives
 considered.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="decision",
   payload={
@@ -311,7 +311,7 @@ mnemovela.commit_memory(
 A project invariant that future work must respect.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="constraint",
   payload={
@@ -328,7 +328,7 @@ How two entities relate. Use for knowledge-graph edges between subjects,
 objects, concepts, and modules.
 
 ```
-mnemovela.commit_memory(
+mneme.commit_memory(
   branch_name="main",
   memory_type="relationship",
   payload={

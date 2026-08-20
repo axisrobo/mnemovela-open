@@ -7,7 +7,7 @@ import grpc
 from mnemovela_client._generated import mnemovela_v1_pb2 as pb
 from mnemovela_client._generated import mnemovela_v1_pb2_grpc as pb_grpc
 from mnemovela_client._json import to_value_map, from_value_map
-from mnemovela_client.errors import MnemeError
+from mnemovela_client.errors import MnemovelaError
 
 
 def _commit_to_dict(c: "pb.Commit") -> dict[str, Any]:
@@ -54,15 +54,15 @@ def _run_to_dict(r) -> dict[str, Any]:
     }
 
 
-class MnemeClient:
+class MnemovelaClient:
     def __init__(self, address: str = "localhost:9090"):
         self._channel = grpc.insecure_channel(address)
-        self._stub = pb_grpc.MnemeStub(self._channel)
+        self._stub = pb_grpc.MnemovelaStub(self._channel)
 
     def close(self) -> None:
         self._channel.close()
 
-    def __enter__(self) -> "MnemeClient":
+    def __enter__(self) -> "MnemovelaClient":
         return self
 
     def __exit__(self, *exc) -> None:
@@ -72,7 +72,7 @@ class MnemeClient:
         try:
             return method(request)
         except grpc.RpcError as err:
-            raise MnemeError.from_rpc_error(err) from err
+            raise MnemovelaError.from_rpc_error(err) from err
 
     # ── typed writes ────────────────────────────────────────────────
     def add_episode(self, *, branch_name: str, content: str, episode_type: str = "",

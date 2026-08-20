@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `axisrobo.mnemovela` package is the in-process Python SDK for the Mneme memory architecture. It provides local embedded storage (SQLite or in-memory), typed memory commits, hybrid retrieval, entity management, media ingestion, and maintenance orchestration.
+The `axisrobo.mnemovela` package is the in-process Python SDK for the Mnemovela memory architecture. It provides local embedded storage (SQLite or in-memory), typed memory commits, hybrid retrieval, entity management, media ingestion, and maintenance orchestration.
 
 **Install** (editable from source):
 ```bash

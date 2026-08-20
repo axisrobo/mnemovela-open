@@ -1,8 +1,8 @@
-# Mneme JSON-RPC API
+# Mnemovela JSON-RPC API
 
 ## Overview
 
-Mneme exposes a JSON-RPC 2.0 interface over stdio for local memory operations -- storing subjects, entities, episodes, facts, and commits; querying and searching; running extraction and reconciliation; capturing agent session events; and syncing connectors. The server reads one JSON object per line on stdin and writes one JSON response per line on stdout.
+Mnemovela exposes a JSON-RPC 2.0 interface over stdio for local memory operations -- storing subjects, entities, episodes, facts, and commits; querying and searching; running extraction and reconciliation; capturing agent session events; and syncing connectors. The server reads one JSON object per line on stdin and writes one JSON response per line on stdout.
 
 **Launch**
 
@@ -78,7 +78,7 @@ The following table lists every `mnemovela.*` method dispatched by either runtim
 | `mnemovela.invalidate_fact` | `branch_name`, `fact_id`, `invalidated_at` | `reason` | Mark a fact as invalidated (non-destructive). |
 | `mnemovela.query_facts` | _(none required)_ | `branch_name`, `fact_id`, `subject_id`, `predicate`, `true_at`, `include_invalidated`, `limit` | Query facts with optional filters. |
 | `mnemovela.query_memories` | `branch_name` | `entity_ids`, `limit` | List committed memory frames on a branch. |
-| `mnemovela.search_memory` | `query` | `branch_name`, `top_k` | Hybrid (keyword + vector) search across memory. |
+| `mnemovela.search_memory` | `query` | `branch_name`, `top_k`, `view`, `as_of` | Hybrid (keyword + vector) search across memory. `view` is `"current"` (default) or `"history"`; `as_of` is an ISO-8601 date-time to query a historical instant. |
 | `mnemovela.create_branch` | `branch_name` | `from_branch` | Create a new branch, optionally from an existing branch. |
 | `mnemovela.merge_branch` | `source_branch` | `target_branch`, `strategy` | Merge one branch into another. |
 | `mnemovela.list_branches` **(Python)** | _(none required)_ | `status` | List all branches, optionally filtered by status. |
@@ -157,6 +157,23 @@ Request:
 }
 ```
 
+The default temporal view is `"current"` (only the currently-valid member of each temporal identity group is returned). Pass `"view": "history"` to opt into the raw-history behavior that returns every matching commit (including invalidated facts), or `"as_of": "<ISO-8601>"` with `view: "current"` to see the value that was valid at that instant:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "mnemovela.search_memory",
+  "params": {
+    "query": "user location",
+    "branch_name": "main",
+    "top_k": 5,
+    "view": "current",
+    "as_of": "2026-07-01T12:00:00Z"
+  }
+}
+```
+
 Response:
 ```json
 {
@@ -206,4 +223,4 @@ Response:
 - [`./mcp.md`](./mcp.md) -- MCP (Model Context Protocol) interface
 - [`./README.md`](./README.md)
 - [`contracts/mnemovela.jsonrpc.v1.schema.json`](../../contracts/mnemovela.jsonrpc.v1.schema.json)
-- [`contracts/mnemovela.jsonrpc.v1-draft.schema.json`](../../contracts/mnemovela.jsonrpc.v1-draft.schema.json)
+- [`contracts/mnemovela.jsonrpc.v1.schema.json`](../../contracts/mnemovela.jsonrpc.v1.schema.json)

@@ -1,8 +1,8 @@
-# Mneme MCP Server
+# Mnemovela MCP Server
 
 ## Overview
 
-Mneme implements a **Model Context Protocol (MCP)** server over stdio, exposing memory tools to LLM agents and IDEs. The server communicates via JSON-RPC 2.0 over stdin/stdout, following the MCP specification (protocol version `2024-11-05`).
+Mnemovela implements a **Model Context Protocol (MCP)** server over stdio, exposing memory tools to LLM agents and IDEs. The server communicates via JSON-RPC 2.0 over stdin/stdout, following the MCP specification (protocol version `2024-11-05`).
 
 **Launch**
 
@@ -44,7 +44,7 @@ The following table lists every `mnemovela.*` tool exposed by the MCP server. Th
 | `mnemovela.query_memories` | Go, Python | List committed memory frames on a branch. |
 | `mnemovela.resolve_entity` | Go, Python | Resolve a text mention to a known entity. |
 | `mnemovela.resolve_entity_explained` | Go, Python | Resolve a text mention with explanation output. |
-| `mnemovela.search_memory` | Go, Python | Hybrid (keyword + vector) search across memory. |
+| `mnemovela.search_memory` | Go, Python | Hybrid (keyword + vector) search across memory. Supports optional `view` (`"current"` default / `"history"`) and `as_of` (ISO-8601) arguments. |
 | `mnemovela.upsert_entity` | Go, Python | Create or update a knowledge entity. |
 | `mnemovela.upsert_subject` | Go, Python | Create or update a subject (agent, user, system). |
 | `mnemovela.build_context` | **(Python)** | Build a retrieval-augmented context snippet for a query. |
@@ -76,7 +76,9 @@ Request:
     "arguments": {
       "query": "login form bug fix",
       "branch_name": "main",
-      "top_k": 5
+      "top_k": 5,
+      "view": "current",
+      "as_of": "2026-07-01T12:00:00Z"
     }
   }
 }
@@ -113,7 +115,7 @@ Register the stdio server in an MCP client configuration file (e.g., `mcp.json` 
 ```json
 {
   "mcpServers": {
-    "Mneme": {
+    "Mnemovela": {
       "command": "mnemovela-mcp-stdio",
       "env": {
         "Mnemovela_MCP_DATABASE_PATH": "/path/to/mnemovela-mcp.sqlite3"
@@ -128,7 +130,7 @@ For the Go runtime:
 ```json
 {
   "mcpServers": {
-    "Mneme-Go": {
+    "Mnemovela-Go": {
       "command": "go",
       "args": ["run", "./cmd/mnemovela-mcp-stdio"],
       "cwd": "/path/to/mnemovela-repo",

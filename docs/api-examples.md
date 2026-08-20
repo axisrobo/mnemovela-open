@@ -2,7 +2,7 @@
 
 ## Scope
 
-This document explains the current Python integration surface of the Mneme architecture in terms of package layering.
+This document explains the current Python integration surface of the Mnemovela architecture in terms of package layering.
 
 Use these rules first:
 
@@ -514,6 +514,100 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
             print(event.action, event.from_status, event.to_status, event.reviewer_id)
 ```
 
+## Manage Policy V2
+
+Policies persist as `memory_type="policy"` commits. `PolicyManager` resolves the
+effective set for a `(tenant_id, project_id, branch_name)` scope (defaults from
+`main` plus branch overrides), with sequence-aware revocation.
+
+```python
+from axisrobo.mnemovela import LocalMemoryService
+from axisrobo.mnemovela.governance.policy_frames import build_policy_frame
+from axisrobo.mnemovela.governance.policy_manager import PolicyManager
+
+with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
+    manager = PolicyManager(memory)
+    manager.create(
+        frame=build_policy_frame(
+            policy_type="role_binding",
+            policy_name="alice-editor",
+            policy_body={"subject_id": "human:alice", "role": "editor"},
+            tenant_id="t1",
+            project_id="p1",
+        ),
+        tenant_id="t1", project_id="p1", branch_name="main", actor="human:root",
+    )
+    print([item["policy_name"] for item in manager.list_policies(tenant_id="t1", project_id="p1", branch_name="main")])
+    # Revise supersedes the old policy in place (revoke old + create replacement).
+    manager.revise(
+        frame=build_policy_frame(
+            policy_type="role_binding",
+            policy_name="alice-editor",
+            policy_body={"subject_id": "human:alice", "role": "admin"},
+            tenant_id="t1", project_id="p1",
+        ),
+        policy_name="alice-editor",
+        tenant_id="t1", project_id="p1", branch_name="main", actor="human:root",
+    )
+```
+
+## Simulation Branch TTL
+
+Simulation branches carry `simulation_ttl_days` / `simulation_expires_at`; expired
+branches can be listed and archived without touching `main`.
+
+```python
+from axisrobo.mnemovela import LocalMemoryService
+
+with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
+    memory.create_simulation_branch("sim/probe", ttl_days=0)
+    expired = memory.list_expired_simulation_branches()
+    print([branch.branch_name for branch in expired])
+    archived = memory.expire_simulation_branches()
+    print([branch.branch_name for branch in archived])
+```
+
+## Run Maintenance
+
+`run_maintenance(scope=...)` orchestrates the maintenance runner over a scope
+(`nightly`, `retention`, `retention-state`, `consistency`, `simulation`,
+`index-refresh`) and returns structured task results.
+
+```python
+from axisrobo.mnemovela import LocalMemoryService
+
+with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
+    run = memory.run_maintenance(scope="consistency", branch_name="main")
+    print(run.scope, run.task_count)
+    for task in run.tasks:
+        print(task.scope, task.status, task.details)
+```
+
+## Tune Retrieval Fusion
+
+`hybrid_search` combines lexical / semantic / relation / structured signals with
+tunable weights. Pass a `FusionConfig` per query to rebalance without changing the
+baseline defaults.
+
+```python
+from axisrobo.mnemovela.querying.query import FusionConfig, SearchQuery
+
+with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
+    results = memory.hybrid_search(
+        SearchQuery(
+            query="alpha",
+            branch_name="main",
+            top_k=10,
+            fusion=FusionConfig(lexical_weight=1.0, relation_base=0.3),
+        ),
+        include_explanations=True,
+    )
+    print(results[0].score, results[0].explanation.score_breakdown)
+```
+
+The same `fusion` object is accepted over JSON-RPC `mnemovela.search_memory` and
+the REST `/api/v1/query/search` endpoint (Go and Python runtimes).
+
 ## Notes
 
 - `LocalMemoryService` is a thin wrapper over `LocalMemoryEngine`, so the same methods are available on both.
@@ -531,3 +625,5 @@ with LocalMemoryService.from_sqlite("./agentic-memory.db") as memory:
 - Use `list_review_queue(...)`, `review_contradiction(...)`, and `list_contradiction_review_events(...)` to manage evidence-level knowledge conflicts without mutating existing commits.
 - Use `run_maintenance(...)` instead of calling retention internals directly when you want operational orchestration.
 - Use `check_consistency(...)` to surface missing catalog records, malformed ontology assertions, and stale bindings after revert or squash.
+- Use `list_expired_simulation_branches(...)` / `expire_simulation_branches(...)` for TTL automation of simulation branches.
+- Use `PolicyManager` (`create` / `delete` / `revise` / `list_policies`) for governance; policy state is versioned as memory commits and revocable.

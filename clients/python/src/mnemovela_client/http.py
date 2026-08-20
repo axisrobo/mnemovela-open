@@ -6,7 +6,7 @@ import urllib.error
 import urllib.request
 from typing import Any
 
-from mnemovela_client.errors import MnemeError
+from mnemovela_client.errors import MnemovelaError
 
 # Full JSON-RPC method surface exposed as client.<name>(**params).
 _RPC_METHODS = (
@@ -20,7 +20,7 @@ _RPC_METHODS = (
 )
 
 
-class MnemeHttpClient:
+class MnemovelaHttpClient:
     """Synchronous JSON-RPC-over-HTTP client (full method surface, stdlib only)."""
 
     def __init__(self, base_url: str = "http://localhost:8000", timeout: float = 30.0):
@@ -36,18 +36,18 @@ class MnemeHttpClient:
             with urllib.request.urlopen(req, timeout=self._timeout) as resp:
                 body = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
-            raise MnemeError(e.code, f"HTTP {e.code}") from e
+            raise MnemovelaError(e.code, f"HTTP {e.code}") from e
         if body.get("error"):
             err = body["error"]
-            raise MnemeError(err.get("code", -32000), err.get("message", ""), err.get("data"))
+            raise MnemovelaError(err.get("code", -32000), err.get("message", ""), err.get("data"))
         return body.get("result")
 
 
-class AsyncMnemeHttpClient:
+class AsyncMnemovelaHttpClient:
     """Async JSON-RPC-over-HTTP client. Delegates to the sync client in a thread."""
 
     def __init__(self, base_url: str = "http://localhost:8000", timeout: float = 30.0):
-        self._sync = MnemeHttpClient(base_url, timeout)
+        self._sync = MnemovelaHttpClient(base_url, timeout)
 
     async def call(self, method: str, **params: Any) -> Any:
         return await asyncio.to_thread(self._sync.call, method, **params)
@@ -68,8 +68,8 @@ def _attach_methods() -> None:
 
     for name in _RPC_METHODS:
         rpc = f"mnemovela.{name}"
-        setattr(MnemeHttpClient, name, _make_sync(rpc))
-        setattr(AsyncMnemeHttpClient, name, _make_async(rpc))
+        setattr(MnemovelaHttpClient, name, _make_sync(rpc))
+        setattr(AsyncMnemovelaHttpClient, name, _make_async(rpc))
 
 
 _attach_methods()

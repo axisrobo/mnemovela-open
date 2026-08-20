@@ -85,7 +85,7 @@ class TestCliHttp(unittest.TestCase):
     def test_call_unknown_method_error(self):
         with serve_http() as addr:
             rc, out = _run(["--transport", "http", "--address", addr, "call", "mnemovela.nope"])
-            self.assertNotEqual(rc, 0)  # MnemeError -> non-zero
+            self.assertNotEqual(rc, 0)  # MnemovelaError -> non-zero
 
     def test_http_identity_params(self):
         with serve_http() as addr:

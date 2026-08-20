@@ -3,7 +3,7 @@
 `mnemovela-client` is a thin sync + async Python gRPC client for the
 [Mnemovela](https://github.com/axisrobo/mnemovela) cognition runtime. It ships
 self-contained gRPC stubs generated from `contracts/mnemovela.v1.proto`
-(`service mnemovela.v1.Mneme`, 17 RPCs) and wraps them with an ergonomic surface
+(`service mnemovela.v1.Mnemovela`, 17 RPCs) and wraps them with an ergonomic surface
 that returns plain dicts.
 
 Published to `Mnemovela-open` under Apache-2.0.
@@ -55,7 +55,7 @@ asyncio.run(main())
 ## Surface
 
 The client exposes one method per gRPC RPC. The full surface is the 17
-`mnemovela.v1.Mneme` RPCs: `commit_memory`, `add_episode`, `add_fact`,
+`mnemovela.v1.Mnemovela` RPCs: `commit_memory`, `add_episode`, `add_fact`,
 `invalidate_fact`, `upsert_subject`, `upsert_entity`, `search_memory`,
 `query_memories`, `query_facts`, `resolve_entity`, `resolve_entity_explained`,
 `extract_episode`, `create_branch`, `merge_branch`, `list_branches`,

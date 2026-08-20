@@ -9,7 +9,7 @@ from mnemovela_client._generated import mnemovela_v1_pb2 as pb
 from mnemovela_client._generated import mnemovela_v1_pb2_grpc as pb_grpc
 
 
-class FakeMneme(pb_grpc.MnemeServicer):
+class FakeMnemovela(pb_grpc.MnemovelaServicer):
     def AddEpisode(self, request, context):
         c = pb.Commit(commit_id="mem_1", branch_name=request.branch_name, memory_type="episode")
         c.payload["content"].string_value = request.content
@@ -96,7 +96,7 @@ class FakeMneme(pb_grpc.MnemeServicer):
 @contextlib.contextmanager
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
-    pb_grpc.add_MnemeServicer_to_server(FakeMneme(), server)
+    pb_grpc.add_MnemovelaServicer_to_server(FakeMnemovela(), server)
     port = server.add_insecure_port("localhost:0")
     server.start()
     try:

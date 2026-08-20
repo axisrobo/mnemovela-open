@@ -22,7 +22,7 @@ state, and project knowledge across sessions, and recalls them at task start.
    your PATH.
 
 2. **Configure your agent's MCP** (see platform configs below). The agent gets a
-   "Mnemovela" MCP server it can call for `mnemovela.search_memory(...)` etc.
+   "Mnemovela" MCP server it can call for `mneme.search_memory(...)` etc.
 
 3. **Load a companion skill** that tells the agent *when* and *how* to use Mnemovela
    — see the [universal skill](skills/mnemovela-agent-memory/SKILL.md). Without a skill,
@@ -111,18 +111,18 @@ Download the latest `mnemovela-mcp-stdio` for your platform from
 | `mnemovela-grpc` | gRPC server |
 
 All binaries start with an in-memory backend (no persistence). For persistence
-across restarts, set `Mnemovela_GO_PEBBLE_PATH=./mnemovela.pebble` before launching.
+across restarts, set `Mnemovela_GO_PEBBLE_PATH=./mneme.pebble` before launching.
 
 ## Example: a full session
 
 ```
 [Agent starts a task "add dark mode toggle"]
 
-Agent: mnemovela.search_memory(query="dark mode theme", top_k=5)
+Agent: mneme.search_memory(query="dark mode theme", top_k=5)
 → finds: "Previous attempt stalled on CSS variable conflicts"
 → finds: "Constraint: must support system preference detection"
 
-Agent: mnemovela.query_facts(subject_id="constraint:theme-system-preference")
+Agent: mneme.query_facts(subject_id="constraint:theme-system-preference")
 → fact: constraint:theme-system-preference = "requires @media (prefers-color-scheme)"
 
 Agent: mnemovela.build_context(query="dark mode UI patterns")
@@ -130,13 +130,13 @@ Agent: mnemovela.build_context(query="dark mode UI patterns")
 
 [Agent works, adding a theme toggle component...]
 
-Agent: mnemovela.capture_decision(decision_summary="Use CSS custom properties on :root", rationale="Least churn on existing components", alternatives="Tailwind dark: prefix, separate stylesheets")
+Agent: mneme.capture_decision(decision_summary="Use CSS custom properties on :root", rationale="Least churn on existing components", alternatives="Tailwind dark: prefix, separate stylesheets")
 
-Agent: mnemovela.add_fact(fact_id="fact:dark-mode-implements-css-vars", subject_id="module:theme-provider", predicate="implements", object_value="CSS custom properties approach")
+Agent: mneme.add_fact(fact_id="fact:dark-mode-implements-css-vars", subject_id="module:theme-provider", predicate="implements", object_value="CSS custom properties approach")
 
 [Agent completes]
 
-Agent: mnemovela.session_end(summary="Added dark mode toggle. Changed: ThemeProvider.tsx, styles/theme.css, Settings.tsx. Tests: 5/5 pass (npm run test -- Theme). Key decisions: CSS vars approach. Pitfalls: Flash-of-light on initial load — deferred to follow-up.")
+Agent: mneme.session_end(summary="Added dark mode toggle. Changed: ThemeProvider.tsx, styles/theme.css, Settings.tsx. Tests: 5/5 pass (npm run test -- Theme). Key decisions: CSS vars approach. Pitfalls: Flash-of-light on initial load — deferred to follow-up.")
 ```
 
 This gives the next session full context before a single file read. The

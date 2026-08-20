@@ -22,7 +22,7 @@ Write-Host "Building binaries for all platforms..."
 python scripts/build_open_binaries.py --all
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-$openDir = "D:\profile\paper-code\AXISRobo-MNEME-Open"
+$openDir = "D:\profile\paper-code\Mnemovela-open"
 Write-Host "Tagging Mnemovela-open $Tag..."
 git -C $openDir tag $Tag
 git -C $openDir push origin $Tag

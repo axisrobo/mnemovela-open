@@ -13,12 +13,12 @@ import (
 
 type grpcMethodSpec struct {
 	newReq func() proto.Message
-	call   func(ctx context.Context, stub pb.MnemeClient, req proto.Message) (proto.Message, error)
+	call   func(ctx context.Context, stub pb.MnemovelaClient, req proto.Message) (proto.Message, error)
 }
 
 type GRPCTransport struct {
 	conn *grpc.ClientConn
-	stub pb.MnemeClient
+	stub pb.MnemovelaClient
 }
 
 func NewGRPCTransport(addr string) (*GRPCTransport, error) {
@@ -26,7 +26,7 @@ func NewGRPCTransport(addr string) (*GRPCTransport, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &GRPCTransport{conn: conn, stub: pb.NewMnemeClient(conn)}, nil
+	return &GRPCTransport{conn: conn, stub: pb.NewMnemovelaClient(conn)}, nil
 }
 
 func (t *GRPCTransport) Close() error { return t.conn.Close() }
@@ -59,108 +59,108 @@ var grpcMethods = map[string]grpcMethodSpec{
 	// --- typed writes ---
 	"mnemovela.commit_memory": {
 		newReq: func() proto.Message { return &pb.CommitMemoryRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.CommitMemory(ctx, r.(*pb.CommitMemoryRequest))
 		},
 	},
 	"mnemovela.add_episode": {
 		newReq: func() proto.Message { return &pb.AddEpisodeRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.AddEpisode(ctx, r.(*pb.AddEpisodeRequest))
 		},
 	},
 	"mnemovela.add_fact": {
 		newReq: func() proto.Message { return &pb.AddFactRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.AddFact(ctx, r.(*pb.AddFactRequest))
 		},
 	},
 	"mnemovela.invalidate_fact": {
 		newReq: func() proto.Message { return &pb.InvalidateFactRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.InvalidateFact(ctx, r.(*pb.InvalidateFactRequest))
 		},
 	},
 	"mnemovela.upsert_subject": {
 		newReq: func() proto.Message { return &pb.UpsertSubjectRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.UpsertSubject(ctx, r.(*pb.UpsertSubjectRequest))
 		},
 	},
 	"mnemovela.upsert_entity": {
 		newReq: func() proto.Message { return &pb.UpsertEntityRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.UpsertEntity(ctx, r.(*pb.UpsertEntityRequest))
 		},
 	},
 	// --- queries ---
 	"mnemovela.search_memory": {
 		newReq: func() proto.Message { return &pb.SearchMemoryRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.SearchMemory(ctx, r.(*pb.SearchMemoryRequest))
 		},
 	},
 	"mnemovela.query_memories": {
 		newReq: func() proto.Message { return &pb.QueryMemoriesRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.QueryMemories(ctx, r.(*pb.QueryMemoriesRequest))
 		},
 	},
 	"mnemovela.query_facts": {
 		newReq: func() proto.Message { return &pb.QueryFactsRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.QueryFacts(ctx, r.(*pb.QueryFactsRequest))
 		},
 	},
 	// --- resolution ---
 	"mnemovela.resolve_entity": {
 		newReq: func() proto.Message { return &pb.ResolveEntityRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.ResolveEntity(ctx, r.(*pb.ResolveEntityRequest))
 		},
 	},
 	"mnemovela.resolve_entity_explained": {
 		newReq: func() proto.Message { return &pb.ResolveEntityExplainedRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.ResolveEntityExplained(ctx, r.(*pb.ResolveEntityExplainedRequest))
 		},
 	},
 	// --- extraction ---
 	"mnemovela.extract_episode": {
 		newReq: func() proto.Message { return &pb.ExtractEpisodeRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.ExtractEpisode(ctx, r.(*pb.ExtractEpisodeRequest))
 		},
 	},
 	// --- branching ---
 	"mnemovela.create_branch": {
 		newReq: func() proto.Message { return &pb.CreateBranchRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.CreateBranch(ctx, r.(*pb.CreateBranchRequest))
 		},
 	},
 	"mnemovela.merge_branch": {
 		newReq: func() proto.Message { return &pb.MergeBranchRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.MergeBranch(ctx, r.(*pb.MergeBranchRequest))
 		},
 	},
 	"mnemovela.list_branches": {
 		newReq: func() proto.Message { return &pb.ListBranchesRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.ListBranches(ctx, r.(*pb.ListBranchesRequest))
 		},
 	},
 	// --- maintenance ---
 	"mnemovela.set_retention_state": {
 		newReq: func() proto.Message { return &pb.SetRetentionStateRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.SetRetentionState(ctx, r.(*pb.SetRetentionStateRequest))
 		},
 	},
 	"mnemovela.verify_commit_index": {
 		newReq: func() proto.Message { return &pb.VerifyCommitIndexRequest{} },
-		call: func(ctx context.Context, s pb.MnemeClient, r proto.Message) (proto.Message, error) {
+		call: func(ctx context.Context, s pb.MnemovelaClient, r proto.Message) (proto.Message, error) {
 			return s.VerifyCommitIndex(ctx, r.(*pb.VerifyCommitIndexRequest))
 		},
 	},

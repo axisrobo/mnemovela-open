@@ -37,7 +37,7 @@ For Pebble persistence (survives restarts), add an env var:
       "command": ["mnemovela-mcp-stdio"],
       "enabled": true,
       "env": {
-        "Mnemovela_GO_PEBBLE_PATH": "./.mnemovela/mnemovela.pebble"
+        "Mnemovela_GO_PEBBLE_PATH": "./.mneme/mneme.pebble"
       }
     }
   }
@@ -68,7 +68,7 @@ With persistence:
     "Mnemovela": {
       "command": "mnemovela-mcp-stdio",
       "env": {
-        "Mnemovela_GO_PEBBLE_PATH": "./.mnemovela/mnemovela.pebble"
+        "Mnemovela_GO_PEBBLE_PATH": "./.mneme/mneme.pebble"
       }
     }
   }
@@ -94,9 +94,9 @@ With persistence:
 command = "mnemovela-mcp-stdio"
 
 [mcp."Mnemovela".env]
-Mnemovela_GO_PEBBLE_PATH = ".mnemovela/mnemovela.pebble"
+Mnemovela_GO_PEBBLE_PATH = ".mneme/mneme.pebble"
 ```
 
 To load the companion skill, include its content in your project's `AGENTS.md`
-or configure hooks in `~/.codex/hooks.json` that trigger `mnemovela.search_memory`
-at session-start and `mnemovela.session_end` at session-end.
+or configure hooks in `~/.codex/hooks.json` that trigger `mneme.search_memory`
+at session-start and `mneme.session_end` at session-end.

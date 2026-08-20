@@ -1,14 +1,18 @@
-# Mneme REST API
+# Mnemovela REST API
 
 ## Overview
 
-The Mneme REST API is a FastAPI service (`services/python-rest-api`) that provides an HTTP/JSON interface over the Mneme OSS memory engine. It is SQLite-backed by default. The service auto-seeds a multilingual demo dataset (Chinese and English) on the first cold start when the database is empty.
+The Mnemovela REST API is a FastAPI service (`services/python-rest-api`) that provides an HTTP/JSON interface over the Mnemovela OSS memory engine. It is SQLite-backed by default. The service auto-seeds a multilingual demo dataset (Chinese and English) on the first cold start when the database is empty.
 
 **Run locally:**
 
 ```
-uvicorn mneme_rest_api.main:app --app-dir services/python-rest-api/src --host 0.0.0.0 --port 8000
+MNEMOVELA_ALLOW_INSECURE=1 uvicorn mnemovela_rest_api.main:app --app-dir services/python-rest-api/src --host 0.0.0.0 --port 8000
 ```
+
+The REST server is fail-closed without an authorizer. `MNEMOVELA_ALLOW_INSECURE=1`
+enables insecure-dev mode for local development; enterprise deployments must provide
+an authorizer instead.
 
 All endpoints are mounted under the base path `/api/v1`. The REST API is a Python application shell over the engine: it routes HTTP requests to the OSS `axisrobo.mnemovela` Python library.
 
@@ -20,13 +24,13 @@ All endpoints are mounted under the base path `/api/v1`. The REST API is a Pytho
 | `GET` | `/api/v1/live` | Liveness check |
 | `GET` | `/api/v1/ready` | Readiness check (probes the storage layer) |
 | `GET` | `/api/v1/metrics` | Runtime request/error counts and uptime |
-| `POST` | `/api/v1/query/search` | Hybrid search over Mneme memory |
+| `POST` | `/api/v1/query/search` | Hybrid search over Mnemovela memory |
 | `POST` | `/api/v1/query/timeline` | Chronological timeline query |
 | `POST` | `/api/v1/query/context` | Build task context from visible memories |
 | `POST` | `/api/v1/query/entity/evolve` | Evolve entity understanding from recent episodes |
 | `GET` | `/api/v1/query/connectors/status` | Connector sync status |
 | `POST` | `/api/v1/visualizations/graph` | Graph projection for query results |
-| `POST` | `/api/v1/jsonrpc` | JSON-RPC 2.0 over HTTP (full Mneme method set) |
+| `POST` | `/api/v1/jsonrpc` | JSON-RPC 2.0 over HTTP (full Mnemovela method set) |
 | `POST` | `/api/v1/memory/episode` | Add an episode memory |
 | `POST` | `/api/v1/memory/fact` | Add a temporal fact |
 | `POST` | `/api/v1/memory/commit` | Append a typed memory commit |
@@ -37,13 +41,30 @@ All endpoints are mounted under the base path `/api/v1`. The REST API is a Pytho
 | `POST` | `/api/v1/branches/merge` | Merge a source branch into a target branch |
 | `POST` | `/api/v1/extract` | Extract derived commits from a stored episode |
 | `POST` | `/api/v1/commits/retention` | Set the retention state of a commit |
+| `POST` | `/api/v1/query/contradictions` | List contradiction review records |
+| `POST` | `/api/v1/query/contradictions/review` | Apply a review action to a contradiction |
+| `POST` | `/api/v1/branches/compare` | Compare two branches (commit counts + types) |
+| `POST` | `/api/v1/lifecycle/retention` | List commits by retention state |
+| `POST` | `/api/v1/lifecycle/dispose` | Run disposal over tombstoned commits past grace |
+| `GET` | `/api/v1/governance/policy/list` | List resolved policy-v2 entities for a scope |
+| `POST` | `/api/v1/governance/policy/create` | Create a policy-v2 entity as a memory commit |
+| `POST` | `/api/v1/governance/policy/delete` | Revoke a policy-v2 entity |
+| `POST` | `/api/v1/governance/policy/revise` | Revise a policy-v2 entity (supersede) |
+| `POST` | `/api/v1/governance/policy/simulate` | Simulate a policy-v2 access decision |
+| `GET` | `/api/v1/quality/summary` | Quality harness case count + latest report status |
+| `GET` | `/api/v1/quality/cases` | Per-case quality harness results |
+| `POST` | `/api/v1/maintenance/consistency` | Run a consistency report over a branch or all branches |
+| `POST` | `/api/v1/maintenance/run` | Run a maintenance scope (retention / consistency / simulation / nightly / ...) |
+| `POST` | `/api/v1/lifecycle/simulations/expired` | List expired simulation branches |
+| `POST` | `/api/v1/lifecycle/simulations/expire` | Archive expired simulation branches (TTL) |
 
 All endpoints are confirmed present in the router source files:
 - `routers/health.py` — `/live`, `/ready`, `/health`, `/metrics`
-- `routers/query.py` — `/search`, `/timeline`, `/context`, `/entity/evolve`, `/connectors/status`
+- `routers/query.py` — `/search`, `/timeline`, `/context`, `/entity/evolve`, `/connectors/status`, `/contradictions`, `/contradictions/review`
 - `routers/visualization.py` — `/graph`
 - `routers/rpc.py` — `/jsonrpc`
 - `routers/write.py` — `/memory/episode`, `/memory/fact`, `/memory/commit`, `/memory/fact/invalidate`, `/subjects`, `/entities`, `/branches`, `/branches/merge`, `/extract`, `/commits/retention`
+- `routers/ops_console.py` — `/branches/compare`, `/lifecycle/retention`, `/lifecycle/dispose`, `/governance/policy/*`, `/quality/*`, `/maintenance/consistency`, `/maintenance/run`, `/lifecycle/simulations/*`
 
 ## Request / response models
 
@@ -71,6 +92,8 @@ All endpoints are confirmed present in the router source files:
 | `top_k` | `int` | `20` | Number of results to return |
 | `candidate_limit` | `int \| null` | `null` | Max candidates per mode |
 | `include_explanations` | `bool` | `false` | Include explanation breakdowns |
+| `view` | `str` | `"current"` | Temporal search view: `"current"` (default) or `"history"` |
+| `as_of` | `str \| null` | `null` | ISO-8601 date-time; with `view: "current"`, return the value valid at that instant |
 | `tenant_id` | `str` | `"default"` | Tenant namespace |
 | `project_id` | `str` | `"default"` | Project namespace |
 | `principal_subject_ids` | `list[str]` | `[]` | Authorization subject IDs |
@@ -188,7 +211,7 @@ The response includes `nodes` and `edges` arrays suitable for rendering:
 
 ## JSON-RPC over HTTP
 
-In addition to the query and write REST routes, the service exposes the full Mneme JSON-RPC method set over HTTP at `POST /api/v1/jsonrpc`. The same endpoint is also served by the Go HTTP server, so a single JSON-RPC-over-HTTP contract works against either runtime.
+In addition to the query and write REST routes, the service exposes the full Mnemovela JSON-RPC method set over HTTP at `POST /api/v1/jsonrpc`. The same endpoint is also served by the Go HTTP server, so a single JSON-RPC-over-HTTP contract works against either runtime.
 
 The request body is a standard JSON-RPC 2.0 request object, and the response is the corresponding JSON-RPC 2.0 response envelope. This transport exposes every `mnemovela.*` method — including `build_context`, the `capture_*` session methods, and the `reconcile_*` maintenance methods — not just the query and write routes described above. JSON-RPC-level failures are returned as a JSON-RPC `error` object with HTTP status `200` (the HTTP layer only reports transport-level problems). See [`./jsonrpc.md`](./jsonrpc.md) for the complete method reference.
 
@@ -245,7 +268,18 @@ curl -s -X POST http://localhost:8000/api/v1/branches \
 
 ## Contract status
 
-The OpenAPI contract at `contracts/mnemovela.rest.v1-draft.openapi.json` documents the health, query, and graph endpoints (`/api/v1/health`, `/api/v1/query/search`, `/api/v1/query/timeline`, `/api/v1/visualizations/graph`) and now also covers the JSON-RPC-over-HTTP endpoint (`/api/v1/jsonrpc`) and all ten write endpoints (`/api/v1/memory/episode`, `/api/v1/memory/fact`, `/api/v1/memory/commit`, `/api/v1/memory/fact/invalidate`, `/api/v1/subjects`, `/api/v1/entities`, `/api/v1/branches`, `/api/v1/branches/merge`, `/api/v1/extract`, `/api/v1/commits/retention`). The remaining health/liveness and derived query endpoints (`/live`, `/ready`, `/metrics`, `/query/context`, `/query/entity/evolve`, `/query/connectors/status`) exist in the Python service router source but are not yet described in the v1-draft contract.
+The OpenAPI contract at `contracts/mnemovela.rest.v1.openapi.json` is a live
+dump of the Python REST service schema (32 paths), covering health/liveness
+(`/api/v1/{live,ready,health,metrics}`), all query endpoints
+(`/query/search`, `/query/timeline`, `/query/context`, `/query/entity/evolve`,
+`/query/connectors/status`, `/query/contradictions`, `/query/contradictions/review`,
+`/branches/compare`), the graph visualization endpoint, the JSON-RPC-over-HTTP
+endpoint (`/api/v1/jsonrpc`), the write endpoints (`/memory/*`, `/subjects`,
+`/entities`, `/branches`, `/branches/merge`, `/extract`, `/commits/retention`,
+`/lifecycle/*`), the governance endpoints (`/governance/policy/simulate|list|create|delete`),
+and the quality endpoints (`/quality/summary`, `/quality/cases`).
+
+Regenerate with `py -3.13 scripts/generate_rest_openapi.py`.
 
 ## Edition notes
 
@@ -254,4 +288,4 @@ The OpenAPI contract at `contracts/mnemovela.rest.v1-draft.openapi.json` documen
 ## See also
 
 - [./README.md](./README.md)
-- [OpenAPI contract](../../contracts/mnemovela.rest.v1-draft.openapi.json)
+- [OpenAPI contract](../../contracts/mnemovela.rest.v1.openapi.json)

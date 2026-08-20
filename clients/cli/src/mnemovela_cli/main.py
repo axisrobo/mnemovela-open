@@ -5,7 +5,7 @@ import json
 import sys
 from typing import Any
 
-from mnemovela_client import AsyncMnemeHttpClient, MnemeClient, MnemeError, MnemeHttpClient  # noqa: F401
+from mnemovela_client import AsyncMnemovelaHttpClient, MnemovelaClient, MnemovelaError, MnemovelaHttpClient  # noqa: F401
 
 
 def _print(obj: Any) -> None:
@@ -44,7 +44,7 @@ _COMMAND_RPC = {
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="mnemovela", description="Mnemovela command-line client (gRPC or JSON-RPC/HTTP)")
+    p = argparse.ArgumentParser(prog="mneme", description="Mnemovela command-line client (gRPC or JSON-RPC/HTTP)")
     p.add_argument("--transport", choices=["grpc", "http"], default="grpc")
     p.add_argument("--address", default="", help="server address (default localhost:9090 grpc, http://localhost:8080 http)")
     p.add_argument("--tenant", default="")
@@ -138,7 +138,7 @@ def _params(args) -> dict[str, Any]:
     return p
 
 
-def _dispatch_grpc(args, client: MnemeClient) -> Any:
+def _dispatch_grpc(args, client: MnemovelaClient) -> Any:
     ident = _identity(args)
     c = args.command
     if c == "add-episode":
@@ -203,7 +203,7 @@ def _parse_call_params(items: list[str]) -> dict[str, Any]:
     return params
 
 
-def _dispatch_http(args, client: MnemeHttpClient) -> Any:
+def _dispatch_http(args, client: MnemovelaHttpClient) -> Any:
     if args.command == "call":
         params = _identity(args)
         params.update(_parse_call_params(args.param))
@@ -216,13 +216,13 @@ def main(argv: list[str] | None = None) -> int:
     address = args.address or ("http://localhost:8080" if args.transport == "http" else "localhost:9090")
     try:
         if args.transport == "http":
-            client = MnemeHttpClient(address)
+            client = MnemovelaHttpClient(address)
             _print(_dispatch_http(args, client))
         else:
-            with MnemeClient(address) as client:
+            with MnemovelaClient(address) as client:
                 _print(_dispatch_grpc(args, client))
         return 0
-    except MnemeError as err:
+    except MnemovelaError as err:
         print(f"error: {err}", file=sys.stderr)
         return 1
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Mneme Go runtime is a zero-dependency, embeddable memory engine that provides CRUD, search, branch-based isolation, fact management, entity resolution, and context assembly. Add it to any Go project:
+The Mnemovela Go runtime is a zero-dependency, embeddable memory engine that provides CRUD, search, branch-based isolation, fact management, entity resolution, and context assembly. Add it to any Go project:
 
 ```bash
 go get github.com/axisrobo/mnemovela/go

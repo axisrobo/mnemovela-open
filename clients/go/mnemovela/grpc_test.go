@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-type fakeServer struct{ pb.UnimplementedMnemeServer }
+type fakeServer struct{ pb.UnimplementedMnemovelaServer }
 
 func (fakeServer) AddEpisode(_ context.Context, req *pb.AddEpisodeRequest) (*pb.AddEpisodeResponse, error) {
 	return &pb.AddEpisodeResponse{Commit: &pb.Commit{CommitId: "mem_1", BranchName: req.BranchName, MemoryType: "episode"}}, nil
@@ -25,7 +25,7 @@ func startFakeGRPC(t *testing.T) (addr string, stop func()) {
 		t.Fatal(err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterMnemeServer(s, fakeServer{})
+	pb.RegisterMnemovelaServer(s, fakeServer{})
 	go s.Serve(lis)
 	return lis.Addr().String(), s.Stop
 }
