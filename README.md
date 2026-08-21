@@ -111,6 +111,26 @@ binary:
 | **gRPC** | typed, strongly-consistent surface (17 RPCs) | `:9090` | Python gRPC, Go gRPC, CLI |
 | **REST** | dashboard/web UI usage | `GET/POST /api/v1/...` | any HTTP client |
 
+## Adoption
+
+Sustained consumers of the Mnemovela contract against this SDK surface (as of
+2026-08-21, core `v0.15.0`):
+
+- **Web console** — the Mnemovela Angular web app consumes `mnemovela.rest.v1`
+  through `clients`-compatible REST endpoints; contract-level specs pin those
+  endpoints and the live-backend e2e smoke exercises them on every push.
+  Interface stayed churn-free across `v0.13` → `v0.15` (32 component/service
+  specs green).
+- **Coding Agent Continuity pilot** — `examples/coding-agent-continuity/`
+  drives admission, context assembly, and revision against a live engine and
+  keeps a regression test mirroring the flow.
+- **Quickstarts** — `examples/` exercise the Python, Go, and TypeScript clients
+  against a running server.
+
+These are first-party consumers; the open SDK `1.0` gate additionally requires a
+stable-minor track record with sustained use (see the core
+`docs/status-and-roadmap.md` § Path to 1.0).
+
 ## License
 
 Source content is **Apache-2.0** (`LICENSE`). Prebuilt binaries are distributed
