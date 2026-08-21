@@ -43,6 +43,10 @@ const (
 	Mnemovela_SetLegalHold_FullMethodName           = "/mnemovela.v1.Mnemovela/SetLegalHold"
 	Mnemovela_IsLegalHold_FullMethodName            = "/mnemovela.v1.Mnemovela/IsLegalHold"
 	Mnemovela_ExecuteDisposal_FullMethodName        = "/mnemovela.v1.Mnemovela/ExecuteDisposal"
+	Mnemovela_PolicyList_FullMethodName             = "/mnemovela.v1.Mnemovela/PolicyList"
+	Mnemovela_PolicyCreate_FullMethodName           = "/mnemovela.v1.Mnemovela/PolicyCreate"
+	Mnemovela_PolicyDelete_FullMethodName           = "/mnemovela.v1.Mnemovela/PolicyDelete"
+	Mnemovela_PolicyRevise_FullMethodName           = "/mnemovela.v1.Mnemovela/PolicyRevise"
 )
 
 // MnemovelaClient is the client API for Mnemovela service.
@@ -87,6 +91,13 @@ type MnemovelaClient interface {
 	// ExecuteDisposal physically deletes tombstoned commits past their grace
 	// period, skipping legal-held commits.
 	ExecuteDisposal(ctx context.Context, in *ExecuteDisposalRequest, opts ...grpc.CallOption) (*ExecuteDisposalResponse, error)
+	// --- policy v2 (governance) ---
+	// These mirror the mnemovela.policy.{list,create,delete,revise} JSON-RPC
+	// methods and the EE mnemovela_ee_ops.v1.EEOps Policy* RPCs.
+	PolicyList(ctx context.Context, in *PolicyListRequest, opts ...grpc.CallOption) (*PolicyListResponse, error)
+	PolicyCreate(ctx context.Context, in *PolicyCreateRequest, opts ...grpc.CallOption) (*PolicyCreateResponse, error)
+	PolicyDelete(ctx context.Context, in *PolicyDeleteRequest, opts ...grpc.CallOption) (*PolicyDeleteResponse, error)
+	PolicyRevise(ctx context.Context, in *PolicyReviseRequest, opts ...grpc.CallOption) (*PolicyReviseResponse, error)
 }
 
 type mnemovelaClient struct {
@@ -337,6 +348,46 @@ func (c *mnemovelaClient) ExecuteDisposal(ctx context.Context, in *ExecuteDispos
 	return out, nil
 }
 
+func (c *mnemovelaClient) PolicyList(ctx context.Context, in *PolicyListRequest, opts ...grpc.CallOption) (*PolicyListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PolicyListResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_PolicyList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemovelaClient) PolicyCreate(ctx context.Context, in *PolicyCreateRequest, opts ...grpc.CallOption) (*PolicyCreateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PolicyCreateResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_PolicyCreate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemovelaClient) PolicyDelete(ctx context.Context, in *PolicyDeleteRequest, opts ...grpc.CallOption) (*PolicyDeleteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PolicyDeleteResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_PolicyDelete_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemovelaClient) PolicyRevise(ctx context.Context, in *PolicyReviseRequest, opts ...grpc.CallOption) (*PolicyReviseResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PolicyReviseResponse)
+	err := c.cc.Invoke(ctx, Mnemovela_PolicyRevise_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MnemovelaServer is the server API for Mnemovela service.
 // All implementations must embed UnimplementedMnemovelaServer
 // for forward compatibility.
@@ -379,6 +430,13 @@ type MnemovelaServer interface {
 	// ExecuteDisposal physically deletes tombstoned commits past their grace
 	// period, skipping legal-held commits.
 	ExecuteDisposal(context.Context, *ExecuteDisposalRequest) (*ExecuteDisposalResponse, error)
+	// --- policy v2 (governance) ---
+	// These mirror the mnemovela.policy.{list,create,delete,revise} JSON-RPC
+	// methods and the EE mnemovela_ee_ops.v1.EEOps Policy* RPCs.
+	PolicyList(context.Context, *PolicyListRequest) (*PolicyListResponse, error)
+	PolicyCreate(context.Context, *PolicyCreateRequest) (*PolicyCreateResponse, error)
+	PolicyDelete(context.Context, *PolicyDeleteRequest) (*PolicyDeleteResponse, error)
+	PolicyRevise(context.Context, *PolicyReviseRequest) (*PolicyReviseResponse, error)
 	mustEmbedUnimplementedMnemovelaServer()
 }
 
@@ -460,6 +518,18 @@ func (UnimplementedMnemovelaServer) IsLegalHold(context.Context, *IsLegalHoldReq
 }
 func (UnimplementedMnemovelaServer) ExecuteDisposal(context.Context, *ExecuteDisposalRequest) (*ExecuteDisposalResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExecuteDisposal not implemented")
+}
+func (UnimplementedMnemovelaServer) PolicyList(context.Context, *PolicyListRequest) (*PolicyListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PolicyList not implemented")
+}
+func (UnimplementedMnemovelaServer) PolicyCreate(context.Context, *PolicyCreateRequest) (*PolicyCreateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PolicyCreate not implemented")
+}
+func (UnimplementedMnemovelaServer) PolicyDelete(context.Context, *PolicyDeleteRequest) (*PolicyDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PolicyDelete not implemented")
+}
+func (UnimplementedMnemovelaServer) PolicyRevise(context.Context, *PolicyReviseRequest) (*PolicyReviseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PolicyRevise not implemented")
 }
 func (UnimplementedMnemovelaServer) mustEmbedUnimplementedMnemovelaServer() {}
 func (UnimplementedMnemovelaServer) testEmbeddedByValue()                   {}
@@ -914,6 +984,78 @@ func _Mnemovela_ExecuteDisposal_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mnemovela_PolicyList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PolicyListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).PolicyList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_PolicyList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).PolicyList(ctx, req.(*PolicyListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemovela_PolicyCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PolicyCreateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).PolicyCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_PolicyCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).PolicyCreate(ctx, req.(*PolicyCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemovela_PolicyDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PolicyDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).PolicyDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_PolicyDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).PolicyDelete(ctx, req.(*PolicyDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemovela_PolicyRevise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PolicyReviseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemovelaServer).PolicyRevise(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Mnemovela_PolicyRevise_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemovelaServer).PolicyRevise(ctx, req.(*PolicyReviseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Mnemovela_ServiceDesc is the grpc.ServiceDesc for Mnemovela service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1016,6 +1158,22 @@ var Mnemovela_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ExecuteDisposal",
 			Handler:    _Mnemovela_ExecuteDisposal_Handler,
+		},
+		{
+			MethodName: "PolicyList",
+			Handler:    _Mnemovela_PolicyList_Handler,
+		},
+		{
+			MethodName: "PolicyCreate",
+			Handler:    _Mnemovela_PolicyCreate_Handler,
+		},
+		{
+			MethodName: "PolicyDelete",
+			Handler:    _Mnemovela_PolicyDelete_Handler,
+		},
+		{
+			MethodName: "PolicyRevise",
+			Handler:    _Mnemovela_PolicyRevise_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

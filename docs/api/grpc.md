@@ -73,6 +73,15 @@ All RPCs belong to the `mnemovela.v1.Mnemovela` service.
 | `IsLegalHold` | `IsLegalHoldRequest` | `IsLegalHoldResponse` | Report whether a commit is under legal hold |
 | `ExecuteDisposal` | `ExecuteDisposalRequest` | `ExecuteDisposalResponse` | Physically delete tombstoned commits past grace, skipping legal holds |
 
+### Governance (Policy V2)
+
+| RPC | Request | Response | Description |
+|-----|---------|----------|-------------|
+| `PolicyList` | `PolicyListRequest` | `PolicyListResponse` | List resolved policy frames for a tenant/project/branch (optional `policy_type` filter) |
+| `PolicyCreate` | `PolicyCreateRequest` | `PolicyCreateResponse` | Persist a policy frame on a branch; returns the commit |
+| `PolicyDelete` | `PolicyDeleteRequest` | `PolicyDeleteResponse` | Tombstone a named policy with a revocation frame; returns the commit |
+| `PolicyRevise` | `PolicyReviseRequest` | `PolicyReviseResponse` | Tombstone the named policy and re-create it with the new frame; returns the commit |
+
 All RPCs are confirmed present in `contracts/mnemovela.v1.proto` and implemented by the Go server at `go/server/grpc/server.go`.
 
 ## Messages
@@ -112,6 +121,16 @@ All RPCs are confirmed present in `contracts/mnemovela.v1.proto` and implemented
 **`SetRetentionStateRequest`** — `commit_id`, `retention_state`, `tenant_id`, `project_id`, `principal_subject_ids`.
 
 **`VerifyCommitIndexResponse`** — `issues` (repeated `IndexIssue`: `commit_id`, `kind`, `detail`).
+
+**`PolicyListRequest`** — `tenant_id`, `project_id`, `branch_name`, optional `policy_type`.
+
+**`PolicyListResponse`** — `policies` (repeated `PolicyListEntry`: `policy_name`, `policy_type`, `policy_body` (map<string, Value>), `branch_scope`), `error` (empty on success).
+
+**`PolicyCreateRequest`** — `tenant_id`, `project_id`, `branch_name`, `policy_name`, `policy_type`, `policy_body` (map<string, Value>).
+
+**`PolicyDeleteRequest`** — `tenant_id`, `project_id`, `branch_name`, `policy_name`.
+
+**`PolicyReviseRequest`** — `tenant_id`, `project_id`, `branch_name`, `policy_name`, `policy_type`, `policy_body` (map<string, Value>).
 
 ## Example
 

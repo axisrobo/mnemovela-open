@@ -157,6 +157,26 @@ class MnemovelaStub:
                 request_serializer=mnemovela__v1__pb2.ExecuteDisposalRequest.SerializeToString,
                 response_deserializer=mnemovela__v1__pb2.ExecuteDisposalResponse.FromString,
                 _registered_method=True)
+        self.PolicyList = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/PolicyList',
+                request_serializer=mnemovela__v1__pb2.PolicyListRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.PolicyListResponse.FromString,
+                _registered_method=True)
+        self.PolicyCreate = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/PolicyCreate',
+                request_serializer=mnemovela__v1__pb2.PolicyCreateRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.PolicyCreateResponse.FromString,
+                _registered_method=True)
+        self.PolicyDelete = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/PolicyDelete',
+                request_serializer=mnemovela__v1__pb2.PolicyDeleteRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.PolicyDeleteResponse.FromString,
+                _registered_method=True)
+        self.PolicyRevise = channel.unary_unary(
+                '/mnemovela.v1.Mnemovela/PolicyRevise',
+                request_serializer=mnemovela__v1__pb2.PolicyReviseRequest.SerializeToString,
+                response_deserializer=mnemovela__v1__pb2.PolicyReviseResponse.FromString,
+                _registered_method=True)
 
 
 class MnemovelaServicer:
@@ -327,6 +347,33 @@ class MnemovelaServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def PolicyList(self, request, context):
+        """--- policy v2 (governance) ---
+        These mirror the mnemovela.policy.{list,create,delete,revise} JSON-RPC
+        methods and the EE mnemovela_ee_ops.v1.EEOps Policy* RPCs.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PolicyCreate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PolicyDelete(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PolicyRevise(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MnemovelaServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -449,6 +496,26 @@ def add_MnemovelaServicer_to_server(servicer, server):
                     servicer.ExecuteDisposal,
                     request_deserializer=mnemovela__v1__pb2.ExecuteDisposalRequest.FromString,
                     response_serializer=mnemovela__v1__pb2.ExecuteDisposalResponse.SerializeToString,
+            ),
+            'PolicyList': grpc.unary_unary_rpc_method_handler(
+                    servicer.PolicyList,
+                    request_deserializer=mnemovela__v1__pb2.PolicyListRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.PolicyListResponse.SerializeToString,
+            ),
+            'PolicyCreate': grpc.unary_unary_rpc_method_handler(
+                    servicer.PolicyCreate,
+                    request_deserializer=mnemovela__v1__pb2.PolicyCreateRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.PolicyCreateResponse.SerializeToString,
+            ),
+            'PolicyDelete': grpc.unary_unary_rpc_method_handler(
+                    servicer.PolicyDelete,
+                    request_deserializer=mnemovela__v1__pb2.PolicyDeleteRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.PolicyDeleteResponse.SerializeToString,
+            ),
+            'PolicyRevise': grpc.unary_unary_rpc_method_handler(
+                    servicer.PolicyRevise,
+                    request_deserializer=mnemovela__v1__pb2.PolicyReviseRequest.FromString,
+                    response_serializer=mnemovela__v1__pb2.PolicyReviseResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1102,6 +1169,114 @@ class Mnemovela:
             '/mnemovela.v1.Mnemovela/ExecuteDisposal',
             mnemovela__v1__pb2.ExecuteDisposalRequest.SerializeToString,
             mnemovela__v1__pb2.ExecuteDisposalResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PolicyList(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/PolicyList',
+            mnemovela__v1__pb2.PolicyListRequest.SerializeToString,
+            mnemovela__v1__pb2.PolicyListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PolicyCreate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/PolicyCreate',
+            mnemovela__v1__pb2.PolicyCreateRequest.SerializeToString,
+            mnemovela__v1__pb2.PolicyCreateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PolicyDelete(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/PolicyDelete',
+            mnemovela__v1__pb2.PolicyDeleteRequest.SerializeToString,
+            mnemovela__v1__pb2.PolicyDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PolicyRevise(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mnemovela.v1.Mnemovela/PolicyRevise',
+            mnemovela__v1__pb2.PolicyReviseRequest.SerializeToString,
+            mnemovela__v1__pb2.PolicyReviseResponse.FromString,
             options,
             channel_credentials,
             insecure,
