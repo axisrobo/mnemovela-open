@@ -68,7 +68,7 @@ try {
 } finally { Pop-Location }
 
 # --- 5. Create the GitHub release --------------------------------------------
-$notes = "Prebuilt Mnemovela embedded server binaries for $Tag.`n`n- mnemovela-http: JSON-RPC-over-HTTP + REST`n- mnemovela-grpc: gRPC`n- mnemovela-jsonrpc-stdio: JSON-RPC over stdio`n- mnemovela-mcp-stdio: MCP server over stdio`n`nBuilt with CGO_ENABLED=0, embedded backends only.`n`nPlatforms: windows/amd64, linux/amd64, darwin/amd64, darwin/arm64.`n`nSee BINARY-LICENSE.md for distribution terms."
+$notes = "Prebuilt Mnemovela embedded server binaries for $Tag.`n`n- mnemovela-http: JSON-RPC-over-HTTP + REST`n- mnemovela-grpc: gRPC`n- mnemovela-jsonrpc-stdio: JSON-RPC over stdio`n- mnemovela-mcp-stdio: MCP server over stdio`n`nBuilt with CGO_ENABLED=0, embedded backends only.`n`nPlatforms: windows/amd64, linux/amd64, darwin/amd64, darwin/arm64.`n`nAssets are named `<binary>-<platform>-<arch>` (e.g. `mnemovela-http-linux-amd64`); `checksums-<platform>-<arch>.txt` per platform.`n`nSee BINARY-LICENSE.md for distribution terms."
 $releaseDoc = Join-Path $repoRoot "docs\RELEASE-$Tag.md"
 if (Test-Path $releaseDoc) {
     $notes = [System.IO.File]::ReadAllText((Resolve-Path $releaseDoc)) + "`n`n---`n`n" + $notes
@@ -92,17 +92,33 @@ try {
 $body = @{ tag_name = $Tag; name = $Tag; body = $notes } | ConvertTo-Json -Depth 3
 $release = Invoke-RestMethod -Method Post -Headers $headers -ContentType "application/json; charset=utf-8" -Uri $uri -Body ([System.Text.Encoding]::UTF8.GetBytes($body))
 
-# Upload binary assets.
-$binaries = Get-ChildItem -Recurse (Join-Path $repoRoot "dist\open") -File -ErrorAction SilentlyContinue
-foreach ($bin in $binaries) {
-    $relPath = $bin.FullName.Substring($bin.DirectoryName.Length + 1)
-    $assetUri = "$uri/$($release.id)/assets?name=$($bin.Name)"
-    $assetBody = [System.IO.File]::ReadAllBytes($bin.FullName)
-    try {
-        Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $token"; Accept = "application/vnd.github+json"; "Content-Type" = "application/octet-stream" } -Uri $assetUri -Body $assetBody | Out-Null
-        Write-Host "  uploaded $($bin.Name)"
-    } catch {
-        Write-Host "  FAILED upload $($bin.Name): $($_.Exception.Message)" -ForegroundColor Yellow
+# Upload binary assets (platform-prefixed names so all platforms coexist).
+# dist/open layout: dist/open/<platform-arch>/<binary>[.exe] + checksums.txt.
+$platDirs = Get-ChildItem -Directory (Join-Path $repoRoot "dist\open") -ErrorAction SilentlyContinue
+foreach ($dir in $platDirs) {
+    $plat = $dir.Name
+    $bins = Get-ChildItem $dir.FullName -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -match "^(mnemovela-|checksums)" }
+    foreach ($bin in $bins) {
+        $full = $bin.Name
+        $base = $full
+        if ($full -like "*.exe") { $base = $full.Substring(0, $full.Length - 4) }
+        $assetName = ""
+        if ($full -eq "checksums.txt") {
+            $assetName = "checksums-" + $plat + ".txt"
+        } elseif ($full -like "*.exe") {
+            $assetName = $base + "-" + $plat + ".exe"
+        } else {
+            $assetName = $base + "-" + $plat
+        }
+        $name = [System.Uri]::EscapeDataString($assetName)
+        $assetUri = $release.upload_url -replace "\{\?name,label\}", "" + "?name=" + $name
+        $assetBody = [System.IO.File]::ReadAllBytes($bin.FullName)
+        try {
+            Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $token"; Accept = "application/vnd.github+json"; "Content-Type" = "application/octet-stream" } -Uri $assetUri -Body $assetBody | Out-Null
+            Write-Host "  uploaded ${assetName}"
+        } catch {
+            Write-Host "  FAILED upload ${assetName}: $($_.Exception.Message)" -ForegroundColor Yellow
+        }
     }
 }
 
