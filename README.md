@@ -69,9 +69,9 @@ from this repository's releases.
    pip install ./clients/python
    ```
    ```python
-   from mnemovela_client import MnemeClient  # gRPC
-   from mnemovela_client import MnemeHttpClient  # HTTP (full method surface)
-   client = MnemeHttpClient("http://127.0.0.1:8080")
+   from mnemovela_client import MnemovelaClient  # gRPC
+   from mnemovela_client import MnemovelaHttpClient  # HTTP (full method surface)
+   client = MnemovelaHttpClient("http://127.0.0.1:8080")
    client.add_episode(branch_name="main", content="hello")
    client.search_memory(branch_name="main", query="hello")
    ```

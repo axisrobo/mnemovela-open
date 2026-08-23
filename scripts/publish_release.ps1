@@ -111,7 +111,7 @@ foreach ($dir in $platDirs) {
             $assetName = $base + "-" + $plat
         }
         $name = [System.Uri]::EscapeDataString($assetName)
-        $assetUri = $release.upload_url -replace "\{\?name,label\}", "" + "?name=" + $name
+        $assetUri = $release.upload_url.Replace("{?name,label}", "") + "?name=" + $name
         $assetBody = [System.IO.File]::ReadAllBytes($bin.FullName)
         try {
             Invoke-RestMethod -Method Post -Headers @{ Authorization = "Bearer $token"; Accept = "application/vnd.github+json"; "Content-Type" = "application/octet-stream" } -Uri $assetUri -Body $assetBody | Out-Null
