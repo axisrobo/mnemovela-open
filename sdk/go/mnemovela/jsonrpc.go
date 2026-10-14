@@ -14,11 +14,23 @@ type JSONRPCTransport struct {
 	url    string
 	client *http.Client
 	id     atomic.Int64
+	tokens TokenSource
 }
 
 func NewJSONRPCTransport(baseURL string) *JSONRPCTransport {
 	return &JSONRPCTransport{url: strings.TrimRight(baseURL, "/") + "/api/v1/jsonrpc", client: http.DefaultClient}
 }
+
+// NewJSONRPCTransportWithToken builds a JSON-RPC transport that presents a
+// bearer token on every call.
+func NewJSONRPCTransportWithToken(baseURL string, ts TokenSource) *JSONRPCTransport {
+	t := NewJSONRPCTransport(baseURL)
+	t.tokens = ts
+	return t
+}
+
+// SetTokenSource sets (or clears) the credential source.
+func (t *JSONRPCTransport) SetTokenSource(ts TokenSource) { t.tokens = ts }
 
 func (t *JSONRPCTransport) Close() error { return nil }
 
@@ -32,6 +44,15 @@ func (t *JSONRPCTransport) Invoke(ctx context.Context, method string, params map
 		return nil, err
 	}
 	httpReq.Header.Set("content-type", "application/json")
+	if t.tokens != nil {
+		tok, err := t.tokens.Token(ctx)
+		if err != nil {
+			return nil, err
+		}
+		if tok != "" {
+			httpReq.Header.Set("Authorization", "Bearer "+tok)
+		}
+	}
 	resp, err := t.client.Do(httpReq)
 	if err != nil {
 		return nil, err
