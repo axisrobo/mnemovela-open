@@ -1,4 +1,4 @@
-module github.com/axisrobo/mnemovela-open/clients/go
+module github.com/axisrobo/mnemovela-open/sdk/go
 
 go 1.25.0
 

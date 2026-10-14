@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/axisrobo/mnemovela-open/clients/go/mnemovela"
+	"github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
 )
 
 type cmdSpec struct {

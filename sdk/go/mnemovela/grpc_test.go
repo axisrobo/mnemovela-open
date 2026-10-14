@@ -6,7 +6,7 @@ import (
 	"net"
 	"testing"
 
-	pb "github.com/axisrobo/mnemovela-open/clients/go/internal/mnemovelav1"
+	pb "github.com/axisrobo/mnemovela-open/sdk/go/internal/mnemovelav1"
 	"google.golang.org/grpc"
 )
 

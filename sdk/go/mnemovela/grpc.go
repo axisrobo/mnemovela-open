@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	pb "github.com/axisrobo/mnemovela-open/clients/go/internal/mnemovelav1"
+	pb "github.com/axisrobo/mnemovela-open/sdk/go/internal/mnemovelav1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/encoding/protojson"
