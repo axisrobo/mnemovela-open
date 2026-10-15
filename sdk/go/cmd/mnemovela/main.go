@@ -10,6 +10,8 @@ import (
 	"strings"
 
 	"github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
+	grpctransport "github.com/axisrobo/mnemovela-open/sdk/go/mnemovela/transport/grpc"
+	jsonrpctransport "github.com/axisrobo/mnemovela-open/sdk/go/mnemovela/transport/jsonrpc"
 )
 
 type cmdSpec struct {
@@ -73,9 +75,9 @@ func run(args []string, out io.Writer) int {
 	var err error
 	switch *transport {
 	case "grpc":
-		tr, err = mnemovela.NewGRPCTransport(addr)
+		tr, err = grpctransport.New(addr)
 	case "http":
-		tr = mnemovela.NewJSONRPCTransport(addr)
+		tr = jsonrpctransport.New(addr)
 	default:
 		fmt.Fprintf(out, "unknown transport %q (use grpc or http)\n", *transport)
 		return 2

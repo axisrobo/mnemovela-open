@@ -1,10 +1,11 @@
-package mnemovela
+package grpc
 
 import (
 	"context"
 	"encoding/json"
 
 	pb "github.com/axisrobo/mnemovela-open/sdk/go/internal/mnemovelav1"
+	mnemovela "github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
@@ -17,24 +18,24 @@ type grpcMethodSpec struct {
 	call   func(ctx context.Context, stub pb.MnemovelaClient, req proto.Message) (proto.Message, error)
 }
 
-type GRPCTransport struct {
+type Transport struct {
 	conn   *grpc.ClientConn
 	stub   pb.MnemovelaClient
-	tokens TokenSource
+	tokens mnemovela.TokenSource
 }
 
-func NewGRPCTransport(addr string) (*GRPCTransport, error) {
+func New(addr string) (*Transport, error) {
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
-	return &GRPCTransport{conn: conn, stub: pb.NewMnemovelaClient(conn)}, nil
+	return &Transport{conn: conn, stub: pb.NewMnemovelaClient(conn)}, nil
 }
 
 // NewGRPCTransportWithToken builds a gRPC transport that presents a bearer
 // token (as `authorization` metadata) on every call.
-func NewGRPCTransportWithToken(addr string, ts TokenSource) (*GRPCTransport, error) {
-	t, err := NewGRPCTransport(addr)
+func NewWithToken(addr string, ts mnemovela.TokenSource) (*Transport, error) {
+	t, err := New(addr)
 	if err != nil {
 		return nil, err
 	}
@@ -43,14 +44,14 @@ func NewGRPCTransportWithToken(addr string, ts TokenSource) (*GRPCTransport, err
 }
 
 // SetTokenSource sets (or clears) the credential source.
-func (t *GRPCTransport) SetTokenSource(ts TokenSource) { t.tokens = ts }
+func (t *Transport) SetTokenSource(ts mnemovela.TokenSource) { t.tokens = ts }
 
-func (t *GRPCTransport) Close() error { return t.conn.Close() }
+func (t *Transport) Close() error { return t.conn.Close() }
 
-func (t *GRPCTransport) Invoke(ctx context.Context, method string, params map[string]any) (json.RawMessage, error) {
+func (t *Transport) Invoke(ctx context.Context, method string, params map[string]any) (json.RawMessage, error) {
 	spec, ok := grpcMethods[method]
 	if !ok {
-		return nil, &MnemeError{Code: -32601, Message: "method not supported over gRPC: " + method}
+		return nil, &mnemovela.MnemeError{Code: -32601, Message: "method not supported over gRPC: " + method}
 	}
 	if params == nil {
 		params = map[string]any{}
@@ -58,7 +59,7 @@ func (t *GRPCTransport) Invoke(ctx context.Context, method string, params map[st
 	if t.tokens != nil {
 		tok, err := t.tokens.Token(ctx)
 		if err != nil {
-			return nil, &MnemeError{Code: -32000, Message: err.Error()}
+			return nil, &mnemovela.MnemeError{Code: -32000, Message: err.Error()}
 		}
 		if tok != "" {
 			ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+tok)
@@ -67,11 +68,11 @@ func (t *GRPCTransport) Invoke(ctx context.Context, method string, params map[st
 	reqJSON, _ := json.Marshal(params)
 	req := spec.newReq()
 	if err := protojson.Unmarshal(reqJSON, req); err != nil {
-		return nil, &MnemeError{Code: -32602, Message: err.Error()}
+		return nil, &mnemovela.MnemeError{Code: -32602, Message: err.Error()}
 	}
 	resp, err := spec.call(ctx, t.stub, req)
 	if err != nil {
-		return nil, &MnemeError{Code: -32000, Message: err.Error()}
+		return nil, &mnemovela.MnemeError{Code: -32000, Message: err.Error()}
 	}
 	out, err := protojson.MarshalOptions{UseProtoNames: true}.Marshal(resp)
 	if err != nil {

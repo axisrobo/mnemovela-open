@@ -1,10 +1,12 @@
-package mnemovela
+package jsonrpc
 
 import (
 	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	mnemovela "github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
 )
 
 func TestJSONRPCAuthHeader(t *testing.T) {
@@ -16,8 +18,8 @@ func TestJSONRPCAuthHeader(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := New(NewJSONRPCTransportWithToken(srv.URL, StaticTokenSource("tok-1")))
-	if _, err := c.CommitMemory(context.Background(), P{"branch_name": "main", "memory_type": "event"}); err != nil {
+	c := mnemovela.New(NewWithToken(srv.URL, mnemovela.StaticTokenSource("tok-1")))
+	if _, err := c.CommitMemory(context.Background(), mnemovela.P{"branch_name": "main", "memory_type": "event"}); err != nil {
 		t.Fatalf("CommitMemory: %v", err)
 	}
 	if gotAuth != "Bearer tok-1" {
@@ -34,8 +36,8 @@ func TestJSONRPCNoAuthWhenUnset(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := New(NewJSONRPCTransport(srv.URL))
-	_, _ = c.CommitMemory(context.Background(), P{"branch_name": "main", "memory_type": "event"})
+	c := mnemovela.New(New(srv.URL))
+	_, _ = c.CommitMemory(context.Background(), mnemovela.P{"branch_name": "main", "memory_type": "event"})
 	if gotAuth != "" {
 		t.Fatalf("auth = %q, want empty", gotAuth)
 	}

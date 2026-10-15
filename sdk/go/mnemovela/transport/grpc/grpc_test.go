@@ -1,4 +1,4 @@
-package mnemovela
+package grpc
 
 import (
 	"context"
@@ -7,10 +7,13 @@ import (
 	"testing"
 
 	pb "github.com/axisrobo/mnemovela-open/sdk/go/internal/mnemovelav1"
+	mnemovela "github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
 	"google.golang.org/grpc"
 )
 
-type fakeServer struct{ pb.UnimplementedMnemovelaServer }
+type fakeServer struct {
+	pb.UnimplementedMnemovelaServer
+}
 
 func (fakeServer) AddEpisode(_ context.Context, req *pb.AddEpisodeRequest) (*pb.AddEpisodeResponse, error) {
 	return &pb.AddEpisodeResponse{Commit: &pb.Commit{CommitId: "mem_1", BranchName: req.BranchName, MemoryType: "episode"}}, nil
@@ -20,26 +23,27 @@ func (fakeServer) ListBranches(context.Context, *pb.ListBranchesRequest) (*pb.Li
 }
 
 func startFakeGRPC(t *testing.T) (addr string, stop func()) {
+	t.Helper()
 	lis, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
 		t.Fatal(err)
 	}
 	s := grpc.NewServer()
 	pb.RegisterMnemovelaServer(s, fakeServer{})
-	go s.Serve(lis)
+	go func() { _ = s.Serve(lis) }()
 	return lis.Addr().String(), s.Stop
 }
 
 func TestGRPCAddEpisode(t *testing.T) {
 	addr, stop := startFakeGRPC(t)
 	defer stop()
-	tr, err := NewGRPCTransport(addr)
+	tr, err := New(addr)
 	if err != nil {
 		t.Fatal(err)
 	}
-	c := New(tr)
+	c := mnemovela.New(tr)
 	defer c.Close()
-	raw, err := c.AddEpisode(context.Background(), P{"branch_name": "main", "content": "hi"})
+	raw, err := c.AddEpisode(context.Background(), mnemovela.P{"branch_name": "main", "content": "hi"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,11 +58,11 @@ func TestGRPCAddEpisode(t *testing.T) {
 func TestGRPCUnsupportedMethod(t *testing.T) {
 	addr, stop := startFakeGRPC(t)
 	defer stop()
-	tr, _ := NewGRPCTransport(addr)
-	c := New(tr)
+	tr, _ := New(addr)
+	c := mnemovela.New(tr)
 	defer c.Close()
 	_, err := c.BuildContext(context.Background(), nil) // not in proto
-	if _, ok := err.(*MnemeError); !ok {
+	if _, ok := err.(*mnemovela.MnemeError); !ok {
 		t.Fatalf("expected MnemeError for unsupported method, got %v", err)
 	}
 }
