@@ -13,7 +13,7 @@ result so callers unmarshal into their own shapes.
 ## Install
 
 ```
-go get github.com/axisrobo/mnemovela-open/clients/go
+go get github.com/axisrobo/mnemovela-open/sdk/go
 ```
 
 ## Quickstart (JSON-RPC over HTTP)
@@ -26,7 +26,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/axisrobo/mnemovela-open/clients/go/mnemovela"
+	"github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
 )
 
 func main() {

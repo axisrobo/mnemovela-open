@@ -17,7 +17,7 @@ py -3.13 -m pip install mnemovela-client
 From a source checkout (with dev tooling to regenerate stubs):
 
 ```powershell
-py -3.13 -m pip install -e "clients/python[dev]"
+py -3.13 -m pip install -e "sdk/python[dev]"
 ```
 
 ## Quickstart

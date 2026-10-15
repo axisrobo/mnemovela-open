@@ -11,7 +11,7 @@
 #   go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11
 #   go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.6.2
 #
-# Run from clients/go:
+# Run from sdk/go:
 #   pwsh -File scripts/gen_stubs.ps1
 
 $ErrorActionPreference = "Stop"
@@ -29,7 +29,7 @@ New-Item -ItemType Directory -Force -Path $tmp | Out-Null
 # stubs are emitted into THIS module's internal/mnemovelav1 package (never modify
 # the shared contract in place).
 $proto = Get-Content $srcProto -Raw
-$proto = $proto -replace 'option go_package = ".*";', 'option go_package = "github.com/axisrobo/mnemovela-open/clients/go/internal/mnemovelav1;mnemovelav1";'
+$proto = $proto -replace 'option go_package = ".*";', 'option go_package = "github.com/axisrobo/mnemovela-open/sdk/go/internal/mnemovelav1;mnemovelav1";'
 Set-Content -Path (Join-Path $tmp "mnemovela_v1.proto") -Value $proto -NoNewline
 
 Set-Content -Path (Join-Path $tmp "buf.yaml") -Value "version: v2`n"
