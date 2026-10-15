@@ -1,0 +1,508 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mnemovela.local/contracts/mnemovela.jsonrpc.v1.schema.json",
+  "title": "Mnemovela JSON-RPC V1",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/success_response"
+    },
+    {
+      "$ref": "#/$defs/error_response"
+    }
+  ],
+  "$defs": {
+    "request": {
+      "type": "object",
+      "required": [
+        "jsonrpc",
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "jsonrpc": {
+          "const": "2.0"
+        },
+        "id": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "mnemovela.add_episode",
+            "mnemovela.add_fact",
+            "mnemovela.admission_decide",
+            "mnemovela.build_context",
+            "mnemovela.capture_constraint",
+            "mnemovela.capture_decision",
+            "mnemovela.capture_error",
+            "mnemovela.capture_tool_call",
+            "mnemovela.check_consistency",
+            "mnemovela.commit_memory",
+            "mnemovela.create_branch",
+            "mnemovela.delete_commit",
+            "mnemovela.disposition_evidence",
+            "mnemovela.evolve_entity",
+            "mnemovela.expire_simulation_branches",
+            "mnemovela.extract_episode",
+            "mnemovela.get_context",
+            "mnemovela.ingest",
+            "mnemovela.invalidate_fact",
+            "mnemovela.list_branches",
+            "mnemovela.list_contradictions",
+            "mnemovela.list_expired_simulation_branches",
+            "mnemovela.list_review_queue",
+            "mnemovela.merge_branch",
+            "mnemovela.policy.create",
+            "mnemovela.policy.delete",
+            "mnemovela.policy.list",
+            "mnemovela.policy.revise",
+            "mnemovela.query_facts",
+            "mnemovela.query_memories",
+            "mnemovela.reconcile_forgetting",
+            "mnemovela.reconcile_retention",
+            "mnemovela.recover_commit",
+            "mnemovela.resolve_entity",
+            "mnemovela.resolve_entity_explained",
+            "mnemovela.revert_commit",
+            "mnemovela.review_contradiction",
+            "mnemovela.revise",
+            "mnemovela.revision_blast_radius",
+            "mnemovela.run_maintenance",
+            "mnemovela.search_memory",
+            "mnemovela.session_end",
+            "mnemovela.session_start",
+            "mnemovela.squash_branch",
+            "mnemovela.sync_connector",
+            "mnemovela.upsert_entity",
+            "mnemovela.upsert_subject"
+          ]
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "mnemovela.search_memory"
+              }
+            },
+            "required": [
+              "method"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "properties": {
+                  "view": {
+                    "type": "string",
+                    "enum": [
+                      "current",
+                      "history"
+                    ],
+                    "default": "current"
+                  },
+                  "as_of": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "mnemovela.admission_decide"
+              }
+            },
+            "required": [
+              "method"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "$ref": "#/$defs/admission_decide_params"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "mnemovela.revise"
+              }
+            },
+            "required": [
+              "method"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "$ref": "#/$defs/revise_params"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "mnemovela.revision_blast_radius"
+              }
+            },
+            "required": [
+              "method"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "$ref": "#/$defs/revision_blast_radius_params"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "admission_decide_params": {
+      "type": "object",
+      "required": [
+        "memory_type",
+        "text"
+      ],
+      "properties": {
+        "memory_type": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "source_trust": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "tenant_id": {
+          "type": "string"
+        },
+        "project_id": {
+          "type": "string"
+        }
+      }
+    },
+    "admission_decision": {
+      "type": "object",
+      "required": [
+        "action",
+        "memory_type",
+        "scope",
+        "sensitivity",
+        "duplicate",
+        "suggested_branch",
+        "reasons"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "accept",
+            "quarantine",
+            "reject"
+          ]
+        },
+        "memory_type": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "ttl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sensitivity": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "duplicate": {
+          "type": "boolean"
+        },
+        "suggested_branch": {
+          "type": "string",
+          "enum": [
+            "working",
+            "quarantine",
+            "canonical"
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/admission_reason"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "admission_reason": {
+      "type": "object",
+      "required": [
+        "rule",
+        "severity",
+        "message"
+      ],
+      "properties": {
+        "rule": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "blocker",
+            "warn"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "sensitivity_level": {
+          "type": "string"
+        },
+        "suggested_branch": {
+          "type": "string"
+        },
+        "duplicate": {
+          "type": "boolean"
+        },
+        "ttl": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "revise_params": {
+      "type": "object",
+      "required": [
+        "branch_name",
+        "relation",
+        "predecessor_ids",
+        "reason",
+        "memory_type",
+        "payload"
+      ],
+      "properties": {
+        "branch_name": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string",
+          "enum": [
+            "supersede",
+            "correct",
+            "refute",
+            "confirm",
+            "merge",
+            "split"
+          ]
+        },
+        "predecessor_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "memory_type": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "tenant_id": {
+          "type": "string"
+        },
+        "project_id": {
+          "type": "string"
+        }
+      }
+    },
+    "revision_blast_radius_params": {
+      "type": "object",
+      "required": [
+        "commit_id"
+      ],
+      "properties": {
+        "commit_id": {
+          "type": "string"
+        },
+        "branch_name": {
+          "type": "string"
+        }
+      }
+    },
+    "revision_blast_radius_result": {
+      "type": "object",
+      "required": [
+        "predecessor_id",
+        "superseded_by",
+        "dependents",
+        "conflict_scope",
+        "affected_commit_count"
+      ],
+      "properties": {
+        "predecessor_id": {
+          "type": "string"
+        },
+        "superseded_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/blast_radius_dependent"
+          }
+        },
+        "conflict_scope": {
+          "type": "string",
+          "enum": [
+            "leaf",
+            "branch",
+            "cross_branch"
+          ]
+        },
+        "affected_commit_count": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "blast_radius_dependent": {
+      "type": "object",
+      "required": [
+        "commit_id",
+        "via",
+        "reason"
+      ],
+      "properties": {
+        "commit_id": {
+          "type": "string"
+        },
+        "via": {
+          "type": "string",
+          "enum": [
+            "derived_from",
+            "source_episode_id",
+            "parent"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "success_response": {
+      "type": "object",
+      "required": [
+        "jsonrpc",
+        "id",
+        "result"
+      ],
+      "properties": {
+        "jsonrpc": {
+          "const": "2.0"
+        },
+        "id": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "result": {}
+      },
+      "additionalProperties": false
+    },
+    "error_response": {
+      "type": "object",
+      "required": [
+        "jsonrpc",
+        "id",
+        "error"
+      ],
+      "properties": {
+        "jsonrpc": {
+          "const": "2.0"
+        },
+        "id": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "error": {
+          "type": "object",
+          "required": [
+            "code",
+            "message"
+          ],
+          "properties": {
+            "code": {
+              "type": "integer"
+            },
+            "message": {
+              "type": "string"
+            },
+            "data": {}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mnemovela.local/contracts/mnemovela.mcp.v1.schema.json",
+  "title": "Mnemovela MCP V1 Tool Contract",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "tools"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "mnemovela.mcp.v1"
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tool"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "tool": {
+      "type": "object",
+      "required": [
+        "name",
+        "input_schema"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": [
+            "mnemovela.add_episode",
+            "mnemovela.add_fact",
+            "mnemovela.admission_decide",
+            "mnemovela.build_context",
+            "mnemovela.capture_constraint",
+            "mnemovela.capture_decision",
+            "mnemovela.capture_error",
+            "mnemovela.capture_tool_call",
+            "mnemovela.check_consistency",
+            "mnemovela.commit_memory",
+            "mnemovela.create_branch",
+            "mnemovela.delete_commit",
+            "mnemovela.disposition_evidence",
+            "mnemovela.evolve_entity",
+            "mnemovela.expire_simulation_branches",
+            "mnemovela.extract_episode",
+            "mnemovela.get_context",
+            "mnemovela.ingest",
+            "mnemovela.invalidate_fact",
+            "mnemovela.list_branches",
+            "mnemovela.list_contradictions",
+            "mnemovela.list_expired_simulation_branches",
+            "mnemovela.list_review_queue",
+            "mnemovela.merge_branch",
+            "mnemovela.policy.create",
+            "mnemovela.policy.delete",
+            "mnemovela.policy.list",
+            "mnemovela.policy.revise",
+            "mnemovela.query_facts",
+            "mnemovela.query_memories",
+            "mnemovela.reconcile_forgetting",
+            "mnemovela.reconcile_retention",
+            "mnemovela.recover_commit",
+            "mnemovela.resolve_entity",
+            "mnemovela.resolve_entity_explained",
+            "mnemovela.revert_commit",
+            "mnemovela.review_contradiction",
+            "mnemovela.revise",
+            "mnemovela.revision_blast_radius",
+            "mnemovela.run_maintenance",
+            "mnemovela.search_memory",
+            "mnemovela.session_end",
+            "mnemovela.session_start",
+            "mnemovela.squash_branch",
+            "mnemovela.sync_connector",
+            "mnemovela.upsert_entity",
+            "mnemovela.upsert_subject"
+          ],
+          "pattern": "^mnemovela\\.[a-z_]+"
+        },
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

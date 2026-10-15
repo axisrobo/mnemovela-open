@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axisrobo.github.io/Mnemovela/mnemovela.retention_policy.v1.schema.json",
+  "title": "Mnemovela Retention Policy v1",
+  "type": "object",
+  "required": ["version", "default_policy"],
+  "properties": {
+    "version": {"type": "string", "const": "retention_policy_v1"},
+    "default_policy": {
+      "type": "object",
+      "required": ["hot_ttl_days", "warm_ttl_days", "cold_ttl_days"],
+      "properties": {
+        "hot_ttl_days": {"type": "integer", "default": 30},
+        "warm_ttl_days": {"type": "integer", "default": 90},
+        "cold_ttl_days": {"type": "integer", "default": 365}
+      }
+    },
+    "memory_type_policies": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "type": "object",
+          "properties": {
+            "hot_ttl_days": {"type": "integer"},
+            "warm_ttl_days": {"type": "integer"},
+            "cold_ttl_days": {"type": "integer"}
+          }
+        }
+      }
+    },
+    "access_recency_boost_days": {"type": "integer", "default": 7}
+  }
+}

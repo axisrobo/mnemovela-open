@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axisrobo.github.io/Mnemovela/mnemovela.forgetting_policy.v1.schema.json",
+  "title": "Mnemovela Forgetting Policy v1",
+  "type": "object",
+  "required": ["version"],
+  "properties": {
+    "version": {"type": "string", "const": "forgetting_policy_v1"},
+    "salience_eviction": {
+      "type": "object",
+      "properties": {
+        "min_salience": {"type": "number", "default": 0.1},
+        "tombstone_grace_days": {"type": "integer", "default": 30}
+      }
+    },
+    "ttl_expiry": {
+      "type": "object",
+      "properties": {
+        "enabled": {"type": "boolean", "default": true},
+        "default_ttl_days": {"type": "integer"}
+      }
+    },
+    "contradiction_forgetting": {
+      "type": "object",
+      "properties": {
+        "enabled": {"type": "boolean", "default": true},
+        "min_confidence_delta": {"type": "number", "default": 0.3}
+      }
+    },
+    "recovery_window_days": {"type": "integer", "default": 90}
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mnemovela.axisrobo/contracts/mnemovela.extraction.v1.schema.json",
+  "title": "Mnemovela Extraction Contract v1",
+  "description": "Language-neutral schema for the episode extraction pipeline: the candidate union returned by an ExtractionProvider, the extract_episode request/response, and the deterministic offline extractor's structured-episode input convention. Both the Python and Go runtimes implement these semantics; the contract compares semantic outcomes, not generated ids.",
+  "$defs": {
+    "CandidateEntity": {
+      "type": "object",
+      "required": ["local_key", "mention", "entity_type"],
+      "properties": {
+        "local_key": {"type": "string", "minLength": 1, "description": "Unique key within this result; referenced by facts and frames."},
+        "mention": {"type": "string", "minLength": 1},
+        "entity_type": {"type": "string", "minLength": 1},
+        "canonical_name": {"type": ["string", "null"]},
+        "aliases": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1, "default": 1},
+        "metadata": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "CandidateFact": {
+      "type": "object",
+      "required": ["subject_ref", "predicate"],
+      "properties": {
+        "subject_ref": {"type": "string", "minLength": 1, "description": "A candidate entity local_key or an existing entity id."},
+        "predicate": {"type": "string", "minLength": 1},
+        "object_ref": {"type": "string", "minLength": 1, "description": "Object as an entity reference (local_key or entity id)."},
+        "object_value": {"type": "string", "minLength": 1, "description": "Object as a literal value."},
+        "valid_from": {"type": ["string", "null"]},
+        "valid_to": {"type": ["string", "null"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1, "default": 1},
+        "fact_id": {"type": ["string", "null"]},
+        "metadata": {"type": "object"}
+      },
+      "oneOf": [
+        {"required": ["object_ref"]},
+        {"required": ["object_value"]}
+      ],
+      "additionalProperties": false
+    },
+    "CandidateOntologyAssertion": {
+      "type": "object",
+      "required": ["entity_ref", "predicate", "object_value"],
+      "properties": {
+        "entity_ref": {"type": "string", "minLength": 1},
+        "predicate": {"type": "string", "minLength": 1},
+        "object_value": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1, "default": 1},
+        "metadata": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "CandidateFrameEntityRef": {
+      "type": "object",
+      "required": ["entity_ref", "entity_role"],
+      "properties": {
+        "entity_ref": {"type": "string", "minLength": 1},
+        "entity_role": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1, "default": 1}
+      },
+      "additionalProperties": false
+    },
+    "CandidateFrame": {
+      "type": "object",
+      "required": ["memory_type", "payload"],
+      "properties": {
+        "memory_type": {"type": "string", "enum": ["episode", "fact", "event", "knowledge", "experience", "simulation", "emotion", "procedure", "intention", "belief", "mission", "preference"]},
+        "payload": {"type": "object"},
+        "entity_role_refs": {"type": "array", "items": {"$ref": "#/$defs/CandidateFrameEntityRef"}},
+        "ontology_assertions": {"type": "array", "items": {"$ref": "#/$defs/CandidateOntologyAssertion"}},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1, "default": 1},
+        "metadata": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "ExtractionResult": {
+      "type": "object",
+      "description": "The validated candidate union returned by a provider. Malformed output is quarantined.",
+      "properties": {
+        "candidate_entities": {"type": "array", "items": {"$ref": "#/$defs/CandidateEntity"}},
+        "candidate_facts": {"type": "array", "items": {"$ref": "#/$defs/CandidateFact"}},
+        "candidate_ontology_assertions": {"type": "array", "items": {"$ref": "#/$defs/CandidateOntologyAssertion"}},
+        "candidate_frames": {"type": "array", "items": {"$ref": "#/$defs/CandidateFrame"}},
+        "provider_metadata": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "ExtractEpisodeRequest": {
+      "type": "object",
+      "required": ["branch_name", "episode_commit_id", "provider"],
+      "properties": {
+        "branch_name": {"type": "string"},
+        "episode_commit_id": {"type": "string"},
+        "provider": {"type": "string", "description": "Provider id; only \"offline\" is contract-tested."}
+      },
+      "additionalProperties": false
+    },
+    "ExtractionRun": {
+      "type": "object",
+      "description": "Result of extract_episode (not persisted). Re-running with the same episode and provider returns the existing run.",
+      "required": ["run_id", "episode_commit_id", "branch_name", "provider_id", "fingerprint", "status", "derived_commit_ids"],
+      "properties": {
+        "run_id": {"type": "string"},
+        "episode_commit_id": {"type": "string"},
+        "branch_name": {"type": "string"},
+        "provider_id": {"type": "string"},
+        "fingerprint": {"type": "string"},
+        "status": {"type": "string", "enum": ["extracted", "quarantined", "failed"]},
+        "derived_commit_ids": {"type": "array", "items": {"type": "string"}},
+        "error": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "OfflineEpisodeConvention": {
+      "type": "object",
+      "description": "Structured-episode input convention for the deterministic offline extractor: the episode commit payload carries an `extraction` block matching ExtractionResult.",
+      "properties": {
+        "content": {"type": "string"},
+        "episode_type": {"type": "string"},
+        "extraction": {"$ref": "#/$defs/ExtractionResult"}
+      }
+    }
+  }
+}

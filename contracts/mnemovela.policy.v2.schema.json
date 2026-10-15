@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axisrobo.github.io/Mnemovela/mnemovela.policy.v2.schema.json",
+  "title": "Mnemovela Policy V2",
+  "type": "object",
+  "properties": {
+    "role_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["subject_id", "role", "tenant_id", "project_id"],
+        "properties": {
+          "subject_id": {"type": "string"},
+          "role": {"type": "string"},
+          "tenant_id": {"type": "string"},
+          "project_id": {"type": "string"}
+        }
+      }
+    },
+    "delegation_grants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["grantor_subject_id", "grantee_subject_id", "actions", "expires_at"],
+        "properties": {
+          "grantor_subject_id": {"type": "string"},
+          "grantee_subject_id": {"type": "string"},
+          "actions": {"type": "array", "items": {"type": "string"}},
+          "expires_at": {"type": "string"}
+        }
+      }
+    },
+    "resource_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["resource_type", "resource_id", "actions", "subject_ids"],
+        "properties": {
+          "resource_type": {"type": "string"},
+          "resource_id": {"type": "string"},
+          "actions": {"type": "array", "items": {"type": "string"}},
+          "subject_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

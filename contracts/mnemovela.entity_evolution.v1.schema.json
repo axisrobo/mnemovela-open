@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axisrobo.github.io/Mnemovela/mnemovela.entity_evolution.v1.schema.json",
+  "title": "Mnemovela Entity Evolution v1",
+  "type": "object",
+  "properties": {
+    "policy": {
+      "type": "object",
+      "required": ["min_episodes_before_refresh", "max_version_history"],
+      "properties": {
+        "auto_summary_regenerate": {"type": "boolean", "default": true},
+        "min_episodes_before_refresh": {"type": "integer", "default": 3},
+        "max_version_history": {"type": "integer", "default": 20}
+      }
+    },
+    "entity_version": {
+      "type": "object",
+      "required": ["entity_id", "version", "summary", "valid_from"],
+      "properties": {
+        "entity_id": {"type": "string"},
+        "entity_type": {"type": "string"},
+        "canonical_name": {"type": "string"},
+        "version": {"type": "integer", "minimum": 1},
+        "summary": {"type": "string"},
+        "valid_from": {"type": "string"},
+        "valid_to": {"type": "string"},
+        "source_episode_ids": {"type": "array", "items": {"type": "string"}},
+        "replaced_version": {"type": "integer"}
+      }
+    },
+    "entity_evolution_result": {
+      "type": "object",
+      "required": ["versions_created", "entities_reviewed", "audit"],
+      "properties": {
+        "versions_created": {"type": "integer"},
+        "entities_reviewed": {"type": "integer"},
+        "merges_detected": {"type": "integer"},
+        "audit": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entity_id": {"type": "string"},
+              "action": {"type": "string", "enum": ["version_created", "skipped_below_threshold", "skipped_no_episodes"]},
+              "reason": {"type": "string"},
+              "version": {"type": "integer"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

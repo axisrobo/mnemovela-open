@@ -1,0 +1,3748 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Mnemovela REST API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/live": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Service liveness",
+        "operationId": "live_api_v1_live_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Live Api V1 Live Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ready": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Service readiness",
+        "operationId": "ready_api_v1_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Service health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Api V1 Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/metrics": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Service metrics",
+        "operationId": "metrics_api_v1_metrics_get",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Format"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/query/search": {
+      "post": {
+        "tags": [
+          "query"
+        ],
+        "summary": "Hybrid search over Mnemovela memory",
+        "operationId": "search_api_v1_query_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/query/timeline": {
+      "post": {
+        "tags": [
+          "query"
+        ],
+        "summary": "Chronological timeline query",
+        "operationId": "timeline_api_v1_query_timeline_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TimelineRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimelineResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/query/context": {
+      "post": {
+        "tags": [
+          "query"
+        ],
+        "summary": "Build task context from visible memories",
+        "operationId": "build_context_api_v1_query_context_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContextRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContextResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/query/contradictions": {
+      "post": {
+        "tags": [
+          "query"
+        ],
+        "summary": "List the contradiction review queue",
+        "operationId": "list_contradictions_api_v1_query_contradictions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContradictionsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Contradictions Api V1 Query Contradictions Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/query/contradictions/review": {
+      "post": {
+        "tags": [
+          "query"
+        ],
+        "summary": "Apply a review action to a contradiction",
+        "operationId": "review_contradiction_api_v1_query_contradictions_review_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewContradictionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Review Contradiction Api V1 Query Contradictions Review Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/query/entity/evolve": {
+      "post": {
+        "tags": [
+          "query"
+        ],
+        "summary": "Evolve entity understanding from recent episodes",
+        "operationId": "evolve_entity_api_v1_query_entity_evolve_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntityEvolutionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityEvolutionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/query/connectors/status": {
+      "get": {
+        "tags": [
+          "query"
+        ],
+        "summary": "Get connector sync status",
+        "operationId": "connectors_status_api_v1_query_connectors_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Connectors Status Api V1 Query Connectors Status Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/visualizations/graph": {
+      "post": {
+        "tags": [
+          "visualizations"
+        ],
+        "summary": "Graph projection for query results",
+        "operationId": "graph_api_v1_visualizations_graph_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GraphRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jsonrpc": {
+      "post": {
+        "tags": [
+          "jsonrpc"
+        ],
+        "summary": "JSON-RPC 2.0 over HTTP (full Mnemovela method set)",
+        "operationId": "jsonrpc_http_api_v1_jsonrpc_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Jsonrpc Http Api V1 Jsonrpc Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/memory/episode": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Add Episode",
+        "operationId": "add_episode_api_v1_memory_episode_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddEpisodeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/memory/fact": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Add Fact",
+        "operationId": "add_fact_api_v1_memory_fact_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFactRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/memory/commit": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Commit",
+        "operationId": "commit_api_v1_memory_commit_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommitRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/memory/fact/invalidate": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Invalidate Fact",
+        "operationId": "invalidate_fact_api_v1_memory_fact_invalidate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvalidateFactRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Upsert Subject",
+        "operationId": "upsert_subject_api_v1_subjects_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertSubjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/entities": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Upsert Entity",
+        "operationId": "upsert_entity_api_v1_entities_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertEntityRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/branches": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Create Branch",
+        "operationId": "create_branch_api_v1_branches_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBranchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/branches/merge": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Merge Branch",
+        "operationId": "merge_branch_api_v1_branches_merge_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MergeBranchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/extract": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Extract Episode",
+        "operationId": "extract_episode_api_v1_extract_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractEpisodeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/commits/retention": {
+      "post": {
+        "tags": [
+          "write"
+        ],
+        "summary": "Set Retention State",
+        "operationId": "set_retention_state_api_v1_commits_retention_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetRetentionStateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lifecycle/retention": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "List commits by retention state",
+        "operationId": "list_retention_api_v1_lifecycle_retention_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetentionListRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetentionListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lifecycle/dispose": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Run disposal over tombstoned commits past grace",
+        "operationId": "dispose_api_v1_lifecycle_dispose_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisposalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Dispose Api V1 Lifecycle Dispose Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/governance/policy/simulate": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Simulate a policy-v2 access decision with explanation",
+        "operationId": "simulate_policy_api_v1_governance_policy_simulate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicySimulateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicySimulateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/governance/policy/list": {
+      "get": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "List resolved policy-v2 entities for a scope",
+        "operationId": "policy_list_api_v1_governance_policy_list_get",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "default",
+              "title": "Tenant Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "default",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "branch_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "main",
+              "title": "Branch Name"
+            }
+          },
+          {
+            "name": "policy_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Policy Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/governance/policy/create": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Create a policy-v2 entity as a memory commit",
+        "operationId": "policy_create_api_v1_governance_policy_create_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Policy Create Api V1 Governance Policy Create Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/governance/policy/delete": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Revoke a policy-v2 entity via a revocation commit",
+        "operationId": "policy_delete_api_v1_governance_policy_delete_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Policy Delete Api V1 Governance Policy Delete Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/governance/policy/revise": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Revise a policy-v2 entity (revoke old + create new at same scope)",
+        "operationId": "policy_revise_api_v1_governance_policy_revise_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyReviseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Policy Revise Api V1 Governance Policy Revise Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quality/summary": {
+      "get": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Quality harness case count and latest report status",
+        "operationId": "quality_summary_api_v1_quality_summary_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualitySummaryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quality/cases": {
+      "get": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Per-case quality harness results from the latest report",
+        "operationId": "quality_cases_api_v1_quality_cases_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityCasesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/maintenance/consistency": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Run a consistency report over a branch or all branches",
+        "operationId": "consistency_report_api_v1_maintenance_consistency_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsistencyReportResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lifecycle/simulations/expired": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "List expired simulation branches",
+        "operationId": "simulation_expired_api_v1_lifecycle_simulations_expired_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationBranchesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lifecycle/simulations/expire": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Archive expired simulation branches (TTL expiry)",
+        "operationId": "simulation_expire_api_v1_lifecycle_simulations_expire_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationArchiveResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/maintenance/run": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Run a maintenance scope (retention / consistency / simulation / nightly / ...)",
+        "operationId": "run_maintenance_api_v1_maintenance_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaintenanceRunResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/branches/compare": {
+      "post": {
+        "tags": [
+          "ops-console"
+        ],
+        "summary": "Compare commit counts and memory types across two branches",
+        "operationId": "compare_branches_api_v1_branches_compare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BranchCompareRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BranchCompareResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddEpisodeRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "episode_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Episode Type"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "observed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observed At"
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "AddEpisodeRequest"
+      },
+      "AddFactRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "fact_id": {
+            "type": "string",
+            "title": "Fact Id"
+          },
+          "subject_id": {
+            "type": "string",
+            "title": "Subject Id"
+          },
+          "predicate": {
+            "type": "string",
+            "title": "Predicate"
+          },
+          "object_value": {
+            "type": "string",
+            "title": "Object Value"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_to": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid To"
+          },
+          "confidence": {
+            "type": "number",
+            "title": "Confidence",
+            "default": 1.0
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fact_id",
+          "subject_id",
+          "predicate",
+          "object_value"
+        ],
+        "title": "AddFactRequest"
+      },
+      "BranchCompareRequest": {
+        "properties": {
+          "branch_a": {
+            "type": "string",
+            "title": "Branch A"
+          },
+          "branch_b": {
+            "type": "string",
+            "title": "Branch B"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 1000
+          }
+        },
+        "type": "object",
+        "required": [
+          "branch_a",
+          "branch_b"
+        ],
+        "title": "BranchCompareRequest"
+      },
+      "BranchCompareResponse": {
+        "properties": {
+          "a": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "A"
+          },
+          "b": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "B"
+          },
+          "shared_memory_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Shared Memory Types"
+          },
+          "divergence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Divergence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "a",
+          "b",
+          "shared_memory_types",
+          "divergence"
+        ],
+        "title": "BranchCompareResponse"
+      },
+      "CommitRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "memory_type": {
+            "type": "string",
+            "title": "Memory Type"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata"
+          },
+          "owner_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Subject Id"
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          }
+        },
+        "type": "object",
+        "required": [
+          "memory_type"
+        ],
+        "title": "CommitRequest"
+      },
+      "CommitSummary": {
+        "properties": {
+          "commit_id": {
+            "type": "string",
+            "title": "Commit Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "title": "Sequence"
+          },
+          "memory_type": {
+            "type": "string",
+            "title": "Memory Type"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "retention_state": {
+            "type": "string",
+            "title": "Retention State"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata"
+          },
+          "frame": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FrameProjection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "commit_id",
+          "sequence",
+          "memory_type",
+          "branch_name",
+          "created_at",
+          "retention_state",
+          "payload",
+          "metadata"
+        ],
+        "title": "CommitSummary"
+      },
+      "ConsistencyIssueModel": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "severity": {
+            "type": "string",
+            "title": "Severity"
+          },
+          "branch_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Name"
+          },
+          "commit_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Commit Id"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "severity",
+          "message"
+        ],
+        "title": "ConsistencyIssueModel"
+      },
+      "ConsistencyReportResponse": {
+        "properties": {
+          "branch_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch Name"
+          },
+          "checked_branch_count": {
+            "type": "integer",
+            "title": "Checked Branch Count"
+          },
+          "checked_commit_count": {
+            "type": "integer",
+            "title": "Checked Commit Count"
+          },
+          "issue_count": {
+            "type": "integer",
+            "title": "Issue Count"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/ConsistencyIssueModel"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "checked_branch_count",
+          "checked_commit_count",
+          "issue_count"
+        ],
+        "title": "ConsistencyReportResponse"
+      },
+      "ContextRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "budget": {
+            "type": "integer",
+            "title": "Budget",
+            "default": 1200
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 20
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          },
+          "principal_subject_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Principal Subject Ids"
+          },
+          "context_version": {
+            "type": "integer",
+            "title": "Context Version",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "ContextRequest"
+      },
+      "ContextResponse": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "budget": {
+            "type": "integer",
+            "title": "Budget"
+          },
+          "partitions": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Partitions"
+          },
+          "exclusions": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Exclusions"
+          },
+          "budget_report": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Budget Report"
+          },
+          "explanations": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Explanations"
+          },
+          "sections": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sections"
+          },
+          "omitted": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Omitted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query",
+          "budget"
+        ],
+        "title": "ContextResponse"
+      },
+      "ContradictionsRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "commit_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Commit Id"
+          }
+        },
+        "type": "object",
+        "title": "ContradictionsRequest"
+      },
+      "CreateBranchRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name"
+          },
+          "from_branch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Branch",
+            "default": "main"
+          }
+        },
+        "type": "object",
+        "required": [
+          "branch_name"
+        ],
+        "title": "CreateBranchRequest"
+      },
+      "DisposalRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "grace_days": {
+            "type": "integer",
+            "title": "Grace Days",
+            "default": 30
+          }
+        },
+        "type": "object",
+        "title": "DisposalRequest"
+      },
+      "EntityEvolutionRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "min_episodes_before_refresh": {
+            "type": "integer",
+            "title": "Min Episodes Before Refresh",
+            "default": 3
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 50
+          }
+        },
+        "type": "object",
+        "title": "EntityEvolutionRequest"
+      },
+      "EntityEvolutionResponse": {
+        "properties": {
+          "versions_created": {
+            "type": "integer",
+            "title": "Versions Created"
+          },
+          "entities_reviewed": {
+            "type": "integer",
+            "title": "Entities Reviewed"
+          },
+          "merges_detected": {
+            "type": "integer",
+            "title": "Merges Detected"
+          },
+          "audit": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Audit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "versions_created",
+          "entities_reviewed",
+          "merges_detected",
+          "audit"
+        ],
+        "title": "EntityEvolutionResponse"
+      },
+      "ExtractEpisodeRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "episode_commit_id": {
+            "type": "string",
+            "title": "Episode Commit Id"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "default": "offline"
+          }
+        },
+        "type": "object",
+        "required": [
+          "episode_commit_id"
+        ],
+        "title": "ExtractEpisodeRequest"
+      },
+      "FrameProjection": {
+        "properties": {
+          "frame_schema_version": {
+            "type": "string",
+            "title": "Frame Schema Version"
+          },
+          "projection_status": {
+            "type": "string",
+            "title": "Projection Status"
+          },
+          "normalized_frame": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Normalized Frame"
+          },
+          "analysis_fields": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Analysis Fields"
+          },
+          "validation_issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Validation Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "frame_schema_version",
+          "projection_status",
+          "normalized_frame",
+          "analysis_fields"
+        ],
+        "title": "FrameProjection"
+      },
+      "GraphEdge": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "target": {
+            "type": "string",
+            "title": "Target"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source",
+          "target",
+          "label",
+          "kind"
+        ],
+        "title": "GraphEdge"
+      },
+      "GraphNode": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "kind"
+        ],
+        "title": "GraphNode"
+      },
+      "GraphRequest": {
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "snapshot_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Id"
+          },
+          "subject_scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Scope"
+          },
+          "owner_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Subject Id"
+          },
+          "participant_subject_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Participant Subject Ids"
+          },
+          "entity_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Entity Ids"
+          },
+          "object_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Object Ids"
+          },
+          "object_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Object Types"
+          },
+          "cognitive_profile_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cognitive Profile Id"
+          },
+          "memory_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Memory Types"
+          },
+          "epistemic_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epistemic Status"
+          },
+          "contradiction_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contradiction Status"
+          },
+          "retention_states": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retention States"
+          },
+          "modes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Modes"
+          },
+          "top_k": {
+            "type": "integer",
+            "title": "Top K",
+            "default": 20
+          },
+          "candidate_limit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Limit"
+          },
+          "relation_hops": {
+            "type": "integer",
+            "title": "Relation Hops",
+            "default": 1
+          },
+          "fusion": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fusion"
+          },
+          "include_explanations": {
+            "type": "boolean",
+            "title": "Include Explanations",
+            "default": true
+          },
+          "view": {
+            "type": "string",
+            "title": "View",
+            "default": "current"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          },
+          "principal_subject_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Principal Subject Ids"
+          }
+        },
+        "type": "object",
+        "title": "GraphRequest"
+      },
+      "GraphResponse": {
+        "properties": {
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/GraphNode"
+            },
+            "type": "array",
+            "title": "Nodes"
+          },
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/GraphEdge"
+            },
+            "type": "array",
+            "title": "Edges"
+          }
+        },
+        "type": "object",
+        "title": "GraphResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InvalidateFactRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "fact_id": {
+            "type": "string",
+            "title": "Fact Id"
+          },
+          "invalidated_at": {
+            "type": "string",
+            "title": "Invalidated At"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fact_id",
+          "invalidated_at"
+        ],
+        "title": "InvalidateFactRequest"
+      },
+      "MaintenanceRunResponse": {
+        "properties": {
+          "scope": {
+            "type": "string",
+            "title": "Scope"
+          },
+          "task_count": {
+            "type": "integer",
+            "title": "Task Count"
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/MaintenanceTaskResultModel"
+            },
+            "type": "array",
+            "title": "Tasks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scope",
+          "task_count"
+        ],
+        "title": "MaintenanceRunResponse"
+      },
+      "MaintenanceTaskResultModel": {
+        "properties": {
+          "scope": {
+            "type": "string",
+            "title": "Scope"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scope",
+          "status"
+        ],
+        "title": "MaintenanceTaskResultModel"
+      },
+      "MergeBranchRequest": {
+        "properties": {
+          "source_branch": {
+            "type": "string",
+            "title": "Source Branch"
+          },
+          "target_branch": {
+            "type": "string",
+            "title": "Target Branch",
+            "default": "main"
+          },
+          "strategy": {
+            "type": "string",
+            "title": "Strategy",
+            "default": "manual"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source_branch"
+        ],
+        "title": "MergeBranchRequest"
+      },
+      "PolicyCreateRequest": {
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "policy_type": {
+            "type": "string",
+            "title": "Policy Type"
+          },
+          "policy_name": {
+            "type": "string",
+            "title": "Policy Name"
+          },
+          "policy_body": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Policy Body"
+          },
+          "actor": {
+            "type": "string",
+            "title": "Actor",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_type",
+          "policy_name"
+        ],
+        "title": "PolicyCreateRequest"
+      },
+      "PolicyDeleteRequest": {
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "policy_name": {
+            "type": "string",
+            "title": "Policy Name"
+          },
+          "actor": {
+            "type": "string",
+            "title": "Actor",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_name"
+        ],
+        "title": "PolicyDeleteRequest"
+      },
+      "PolicyItem": {
+        "properties": {
+          "policy_name": {
+            "type": "string",
+            "title": "Policy Name"
+          },
+          "policy_type": {
+            "type": "string",
+            "title": "Policy Type"
+          },
+          "policy_body": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Policy Body"
+          },
+          "branch_scope": {
+            "type": "string",
+            "title": "Branch Scope",
+            "default": "default"
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_name",
+          "policy_type"
+        ],
+        "title": "PolicyItem"
+      },
+      "PolicyListResponse": {
+        "properties": {
+          "policies": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyItem"
+            },
+            "type": "array",
+            "title": "Policies"
+          }
+        },
+        "type": "object",
+        "title": "PolicyListResponse"
+      },
+      "PolicyReviseRequest": {
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "policy_type": {
+            "type": "string",
+            "title": "Policy Type"
+          },
+          "policy_name": {
+            "type": "string",
+            "title": "Policy Name"
+          },
+          "policy_body": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Policy Body"
+          },
+          "actor": {
+            "type": "string",
+            "title": "Actor",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "policy_type",
+          "policy_name"
+        ],
+        "title": "PolicyReviseRequest"
+      },
+      "PolicySimulateRequest": {
+        "properties": {
+          "subject_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Subject Ids"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "resource_type": {
+            "type": "string",
+            "title": "Resource Type",
+            "default": "memory"
+          },
+          "resource_id": {
+            "type": "string",
+            "title": "Resource Id",
+            "default": ""
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "title": "PolicySimulateRequest"
+      },
+      "PolicySimulateResponse": {
+        "properties": {
+          "allowed": {
+            "type": "boolean",
+            "title": "Allowed"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "policy_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "allowed",
+          "reason"
+        ],
+        "title": "PolicySimulateResponse"
+      },
+      "QualityCaseResult": {
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "title": "Case Id"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "missing_terms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Terms"
+          },
+          "forbidden_terms_present": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Forbidden Terms Present"
+          },
+          "missing_source_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Source Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "case_id",
+          "category",
+          "status"
+        ],
+        "title": "QualityCaseResult"
+      },
+      "QualityCasesResponse": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QualityCaseResult"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total"
+        ],
+        "title": "QualityCasesResponse"
+      },
+      "QualitySummaryResponse": {
+        "properties": {
+          "total_cases": {
+            "type": "integer",
+            "title": "Total Cases"
+          },
+          "pass_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pass Rate"
+          },
+          "report_present": {
+            "type": "boolean",
+            "title": "Report Present"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "passed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Passed"
+          },
+          "failed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_cases",
+          "report_present",
+          "status"
+        ],
+        "title": "QualitySummaryResponse"
+      },
+      "RetentionItem": {
+        "properties": {
+          "commit_id": {
+            "type": "string",
+            "title": "Commit Id"
+          },
+          "memory_type": {
+            "type": "string",
+            "title": "Memory Type"
+          },
+          "retention_state": {
+            "type": "string",
+            "title": "Retention State"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "commit_id",
+          "memory_type",
+          "retention_state",
+          "created_at",
+          "summary"
+        ],
+        "title": "RetentionItem"
+      },
+      "RetentionListRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "retention_state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retention State"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 200
+          }
+        },
+        "type": "object",
+        "title": "RetentionListRequest"
+      },
+      "RetentionListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RetentionItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "dispositions": {
+            "type": "integer",
+            "title": "Dispositions",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "RetentionListResponse"
+      },
+      "ReviewContradictionRequest": {
+        "properties": {
+          "contradiction_id": {
+            "type": "string",
+            "title": "Contradiction Id"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "reviewer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewer Id"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "resolution": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contradiction_id",
+          "action"
+        ],
+        "title": "ReviewContradictionRequest"
+      },
+      "SearchExplanationSummary": {
+        "properties": {
+          "matched_modes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Matched Modes"
+          },
+          "score_breakdown": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Score Breakdown"
+          },
+          "score_detail": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Score Detail"
+          },
+          "matched_filters": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Matched Filters"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "lineage": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Lineage"
+          }
+        },
+        "type": "object",
+        "title": "SearchExplanationSummary"
+      },
+      "SearchRequest": {
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "snapshot_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Id"
+          },
+          "subject_scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Scope"
+          },
+          "owner_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Subject Id"
+          },
+          "participant_subject_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Participant Subject Ids"
+          },
+          "entity_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Entity Ids"
+          },
+          "object_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Object Ids"
+          },
+          "object_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Object Types"
+          },
+          "cognitive_profile_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cognitive Profile Id"
+          },
+          "memory_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Memory Types"
+          },
+          "epistemic_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epistemic Status"
+          },
+          "contradiction_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contradiction Status"
+          },
+          "retention_states": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retention States"
+          },
+          "modes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Modes"
+          },
+          "top_k": {
+            "type": "integer",
+            "title": "Top K",
+            "default": 20
+          },
+          "candidate_limit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Limit"
+          },
+          "relation_hops": {
+            "type": "integer",
+            "title": "Relation Hops",
+            "default": 1
+          },
+          "fusion": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fusion"
+          },
+          "include_explanations": {
+            "type": "boolean",
+            "title": "Include Explanations",
+            "default": false
+          },
+          "view": {
+            "type": "string",
+            "title": "View",
+            "default": "current"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          },
+          "principal_subject_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Principal Subject Ids"
+          }
+        },
+        "type": "object",
+        "title": "SearchRequest"
+      },
+      "SearchResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResultItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "SearchResponse"
+      },
+      "SearchResultItem": {
+        "properties": {
+          "commit": {
+            "$ref": "#/components/schemas/CommitSummary"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "matched_modes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Matched Modes"
+          },
+          "explanation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SearchExplanationSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "frame": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FrameProjection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "commit",
+          "score"
+        ],
+        "title": "SearchResultItem"
+      },
+      "SetRetentionStateRequest": {
+        "properties": {
+          "commit_id": {
+            "type": "string",
+            "title": "Commit Id"
+          },
+          "retention_state": {
+            "type": "string",
+            "title": "Retention State"
+          }
+        },
+        "type": "object",
+        "required": [
+          "commit_id",
+          "retention_state"
+        ],
+        "title": "SetRetentionStateRequest"
+      },
+      "SimulationArchiveResponse": {
+        "properties": {
+          "archived": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Archived"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "SimulationArchiveResponse"
+      },
+      "SimulationBranchesResponse": {
+        "properties": {
+          "branches": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Branches"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "SimulationBranchesResponse"
+      },
+      "TimelinePoint": {
+        "properties": {
+          "commit_id": {
+            "type": "string",
+            "title": "Commit Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "title": "Sequence"
+          },
+          "memory_type": {
+            "type": "string",
+            "title": "Memory Type"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "commit_id",
+          "sequence",
+          "memory_type",
+          "branch_name",
+          "created_at",
+          "label"
+        ],
+        "title": "TimelinePoint"
+      },
+      "TimelineRequest": {
+        "properties": {
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name",
+            "default": "main"
+          },
+          "snapshot_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Id"
+          },
+          "subject_scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Scope"
+          },
+          "owner_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Subject Id"
+          },
+          "participant_subject_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Participant Subject Ids"
+          },
+          "entity_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Entity Ids"
+          },
+          "object_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Object Ids"
+          },
+          "object_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Object Types"
+          },
+          "memory_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Memory Types"
+          },
+          "epistemic_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epistemic Status"
+          },
+          "contradiction_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contradiction Status"
+          },
+          "retention_states": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retention States"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 100
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": "default"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id",
+            "default": "default"
+          },
+          "principal_subject_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Principal Subject Ids"
+          }
+        },
+        "type": "object",
+        "title": "TimelineRequest"
+      },
+      "TimelineResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TimelinePoint"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "TimelineResponse"
+      },
+      "UpsertEntityRequest": {
+        "properties": {
+          "entity_id": {
+            "type": "string",
+            "title": "Entity Id"
+          },
+          "entity_type": {
+            "type": "string",
+            "title": "Entity Type"
+          },
+          "canonical_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonical Name"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "entity_id",
+          "entity_type"
+        ],
+        "title": "UpsertEntityRequest"
+      },
+      "UpsertSubjectRequest": {
+        "properties": {
+          "subject_id": {
+            "type": "string",
+            "title": "Subject Id"
+          },
+          "subject_type": {
+            "type": "string",
+            "title": "Subject Type"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subject_id",
+          "subject_type"
+        ],
+        "title": "UpsertSubjectRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

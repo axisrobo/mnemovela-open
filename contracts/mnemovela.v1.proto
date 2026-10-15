@@ -1,0 +1,553 @@
+syntax = "proto3";
+
+package mnemovela.v1;
+
+option go_package = "github.com/axisrobo/mnemovela/go/api/mnemovela/v1;Mnemovelav1";
+
+// Mnemovela is the core memory-operation service. Every method corresponds to a
+// stable operation in the mnemovela.memory.v1-draft contract.
+
+service Mnemovela {
+  // --- typed writes ---
+  rpc CommitMemory   (CommitMemoryRequest)   returns (CommitMemoryResponse);
+  rpc AddEpisode     (AddEpisodeRequest)     returns (AddEpisodeResponse);
+  rpc AddFact        (AddFactRequest)        returns (AddFactResponse);
+  rpc InvalidateFact (InvalidateFactRequest) returns (InvalidateFactResponse);
+  rpc UpsertSubject  (UpsertSubjectRequest)  returns (UpsertSubjectResponse);
+  rpc UpsertEntity   (UpsertEntityRequest)   returns (UpsertEntityResponse);
+
+  // --- queries ---
+  rpc SearchMemory   (SearchMemoryRequest)   returns (SearchMemoryResponse);
+  rpc QueryMemories  (QueryMemoriesRequest)  returns (QueryMemoriesResponse);
+  rpc QueryFacts     (QueryFactsRequest)     returns (QueryFactsResponse);
+
+  // --- resolution ---
+  rpc ResolveEntity          (ResolveEntityRequest)          returns (ResolveEntityResponse);
+  rpc ResolveEntityExplained (ResolveEntityExplainedRequest) returns (ResolveEntityExplainedResponse);
+
+  // --- extraction ---
+  rpc ExtractEpisode (ExtractEpisodeRequest) returns (ExtractEpisodeResponse);
+
+  // --- branching ---
+  rpc CreateBranch  (CreateBranchRequest)  returns (CreateBranchResponse);
+  rpc MergeBranch   (MergeBranchRequest)   returns (MergeBranchResponse);
+  rpc ListBranches  (ListBranchesRequest)  returns (ListBranchesResponse);
+
+  // --- maintenance ---
+  rpc SetRetentionState  (SetRetentionStateRequest)  returns (SetRetentionStateResponse);
+  rpc VerifyCommitIndex  (VerifyCommitIndexRequest)  returns (VerifyCommitIndexResponse);
+
+  // --- admission & revision ---
+  rpc Admit  (AdmitRequest)  returns (AdmitResponse);
+  rpc Revise (ReviseRequest) returns (ReviseResponse);
+
+  // --- lifecycle (physical delete / disposition / legal hold / disposal) ---
+  // These mirror the mnemovela.delete_commit / disposition_evidence /
+  // set_legal_hold / is_legal_hold / execute_disposal JSON-RPC methods.
+
+  // DeleteCommit physically deletes a commit and its derived chain, returning
+  // disposition evidence.
+  rpc DeleteCommit(DeleteCommitRequest) returns (DeleteCommitResponse);
+
+  // DispositionEvidence returns the recorded disposition evidence for a commit.
+  rpc DispositionEvidence(DispositionEvidenceRequest) returns (DispositionEvidenceResponse);
+
+  // SetLegalHold marks or unmarks a commit as excluded from disposal.
+  rpc SetLegalHold(SetLegalHoldRequest) returns (SetLegalHoldResponse);
+
+  // IsLegalHold reports whether a commit is under legal hold.
+  rpc IsLegalHold(IsLegalHoldRequest) returns (IsLegalHoldResponse);
+
+  // ExecuteDisposal physically deletes tombstoned commits past their grace
+  // period, skipping legal-held commits.
+  rpc ExecuteDisposal(ExecuteDisposalRequest) returns (ExecuteDisposalResponse);
+
+  // --- policy v2 (governance) ---
+  // These mirror the mnemovela.policy.{list,create,delete,revise} JSON-RPC
+  // methods and the EE mnemovela_ee_ops.v1.EEOps Policy* RPCs.
+  rpc PolicyList  (PolicyListRequest)   returns (PolicyListResponse);
+  rpc PolicyCreate (PolicyCreateRequest) returns (PolicyCreateResponse);
+  rpc PolicyDelete (PolicyDeleteRequest) returns (PolicyDeleteResponse);
+  rpc PolicyRevise (PolicyReviseRequest) returns (PolicyReviseResponse);
+}
+
+// --- shared types ---
+
+message Commit {
+  int32           sequence            = 1;
+  string          commit_id           = 2;
+  string          branch_name         = 3;
+  string          memory_type         = 4;
+  string          retention_state     = 5;
+  string          created_at          = 6;
+  string          tenant_id           = 7;
+  map<string, Value> payload          = 8;
+  map<string, Value> metadata         = 9;
+  repeated string parent_commit_ids   = 10;
+  repeated EntityLink entity_links    = 11;
+  repeated OntologyAssertion ontology_assertions = 12;
+  string          owner_subject_id    = 13;
+  string          project_id          = 14;
+}
+
+message EntityLink {
+  string entity_id   = 1;
+  string entity_role = 2;
+  double confidence  = 3;
+}
+
+message OntologyAssertion {
+  string entity_id    = 1;
+  string predicate    = 2;
+  string object_value = 3;
+  double confidence   = 4;
+}
+
+message ExtractionRun {
+  string          run_id              = 1;
+  string          episode_commit_id   = 2;
+  string          branch_name         = 3;
+  string          provider_id         = 4;
+  string          fingerprint         = 5;
+  string          status              = 6;   // "extracted" | "quarantined"
+  repeated string derived_commit_ids  = 7;
+  string          error               = 8;   // only when quarantined
+}
+
+// google.protobuf.Value-like wrapper for arbitrary JSON.
+message Value {
+  oneof kind {
+    string string_value  = 1;
+    double number_value  = 2;
+    bool   bool_value    = 3;
+    Struct struct_value  = 4;
+    List   list_value    = 5;
+  }
+  message Struct { map<string, Value> fields = 1; }
+  message List   { repeated Value values    = 1; }
+}
+
+// --- request / response messages ---
+
+message CommitMemoryRequest {
+  string          branch_name         = 1;
+  string          memory_type         = 2;
+  map<string, Value> payload          = 3;
+  map<string, Value> metadata         = 4;
+  string          owner_subject_id    = 5;
+  string          tenant_id           = 6;
+  repeated EntityLink entity_links    = 7;
+  repeated OntologyAssertion ontology_assertions = 8;
+  string          project_id          = 9;
+  repeated string principal_subject_ids = 10;
+  string          session_id          = 11;
+}
+message CommitMemoryResponse { Commit commit = 1; }
+
+message AddEpisodeRequest {
+  string          branch_name         = 1;
+  string          content             = 2;
+  string          episode_type        = 3;
+  string          source              = 4;
+  string          observed_at         = 5;
+  string          tenant_id           = 6;
+  string          project_id          = 7;
+  repeated string principal_subject_ids = 8;
+  string          session_id          = 9;
+}
+message AddEpisodeResponse { Commit commit = 1; }
+
+message AddFactRequest {
+  string          branch_name         = 1;
+  string          fact_id             = 2;
+  string          subject_id          = 3;
+  string          predicate           = 4;
+  string          object_value        = 5;
+  string          valid_from          = 6;
+  string          valid_to            = 7;
+  double          confidence          = 8;
+  string          tenant_id           = 9;
+  repeated EntityLink entity_links    = 10;
+  string          project_id          = 11;
+  repeated string principal_subject_ids = 12;
+  string          session_id          = 13;
+}
+message AddFactResponse { Commit commit = 1; }
+
+message InvalidateFactRequest {
+  string branch_name         = 1;
+  string fact_id             = 2;
+  string invalidated_at      = 3;
+  string reason              = 4;
+  string tenant_id           = 5;
+  string project_id          = 6;
+  repeated string principal_subject_ids = 7;
+}
+message InvalidateFactResponse { Commit commit = 1; }
+
+message UpsertSubjectRequest {
+  string subject_id   = 1;
+  string subject_type = 2;
+  string display_name = 3;
+  string tenant_id    = 4;
+  string project_id   = 5;
+  repeated string principal_subject_ids = 6;
+}
+message UpsertSubjectResponse { string subject_id = 1; }
+
+message UpsertEntityRequest {
+  string          entity_id       = 1;
+  string          entity_type     = 2;
+  string          canonical_name  = 3;
+  map<string, Value> metadata     = 4;
+  string          tenant_id       = 5;
+  string          project_id      = 6;
+  repeated string principal_subject_ids = 7;
+}
+message UpsertEntityResponse { string entity_id = 1; }
+
+message SearchMemoryRequest {
+  string          branch_name = 1;
+  string          query       = 2;
+  int32           top_k       = 3;
+  repeated string entity_ids  = 4;
+  string          tenant_id   = 5;
+  string          project_id  = 6;
+  repeated string principal_subject_ids = 7;
+  // Temporal view. "current" (the default) keeps only the currently-valid member
+  // of each temporal identity group: facts explicitly invalidated by an
+  // invalidate_fact commit are excluded, revision commits (supersede/refute/split)
+  // shadow their predecessors, and late-arriving evidence never shadows a newer
+  // valid_from. "history" returns every matching commit untouched (no grouping
+  // dedup). Empty defaults to "current"; any other value is invalid.
+  string view = 8;
+  // Optional ISO-8601 point-in-time filter (applies to the current view only):
+  // restricts members to those valid at that instant. Ignored for view="history".
+  string as_of = 9;
+  // Optional bounded relation expansion depth (0 = disabled). Expands results
+  // along relation edges (lineage/parent, subject, entity, ontology nodes).
+  int32 relation_hops = 10;
+}
+message SearchMemoryResponse {
+  repeated SearchResult results = 1;
+  message SearchResult {
+    Commit commit              = 1;
+    double score               = 2;
+    repeated string matched_modes = 3;
+  }
+}
+
+message QueryMemoriesRequest {
+  string          branch_name  = 1;
+  repeated string entity_ids   = 2;
+  int32           limit        = 3;
+  string          tenant_id    = 4;
+  string          project_id   = 5;
+  repeated string principal_subject_ids = 6;
+}
+message QueryMemoriesResponse { repeated Commit commits = 1; }
+
+message QueryFactsRequest {
+  string branch_name         = 1;
+  string fact_id             = 2;
+  string subject_id          = 3;
+  string predicate           = 4;
+  string true_at             = 5;
+  bool   include_invalidated = 6;
+  int32  limit               = 7;
+  string tenant_id           = 8;
+  string project_id          = 9;
+  repeated string principal_subject_ids = 10;
+}
+message QueryFactsResponse {
+  repeated FactItem facts = 1;
+  message FactItem {
+    string fact_id          = 1;
+    string subject_id       = 2;
+    string predicate        = 3;
+    string object_value     = 4;
+    double confidence       = 5;
+    string valid_from       = 6;
+    string valid_to         = 7;
+    string source_commit_id = 8;
+    string branch_name      = 9;
+  }
+}
+
+message ResolveEntityRequest {
+  string mention     = 1;
+  string entity_type = 2;
+  string tenant_id   = 3;
+  string project_id  = 4;
+  repeated string principal_subject_ids = 5;
+}
+message ResolveEntityResponse {
+  string entity_id      = 1;
+  string entity_type    = 2;
+  string canonical_name = 3;
+}
+
+message ResolveEntityExplainedRequest {
+  string mention     = 1;
+  string entity_type = 2;
+  string tenant_id   = 3;
+  string project_id  = 4;
+  repeated string principal_subject_ids = 5;
+}
+message ResolveEntityExplainedResponse {
+  bool   matched       = 1;
+  string match_type    = 2;
+  string matched_value = 3;
+  double confidence    = 4;
+  ResolveEntityResponse entity = 5;
+}
+
+message ExtractEpisodeRequest {
+  string branch_name        = 1;
+  string episode_commit_id  = 2;
+  string provider           = 3;
+  string tenant_id          = 4;
+  string project_id         = 5;
+  repeated string principal_subject_ids = 6;
+}
+message ExtractEpisodeResponse { ExtractionRun run = 1; }
+
+message CreateBranchRequest {
+  string branch_name = 1;
+  string from_branch = 2;
+  string tenant_id   = 3;
+  string project_id  = 4;
+  repeated string principal_subject_ids = 5;
+}
+message CreateBranchResponse {
+  string branch_name        = 1;
+  string parent_branch_name = 2;
+  int32  head_sequence      = 3;
+}
+
+message MergeBranchRequest {
+  string source_branch = 1;
+  string target_branch = 2;
+  string strategy      = 3;
+  string tenant_id     = 4;
+  string project_id    = 5;
+  repeated string principal_subject_ids = 6;
+}
+message MergeBranchResponse { Commit commit = 1; }
+
+message ListBranchesRequest {
+  string tenant_id  = 1;
+  string project_id = 2;
+  repeated string principal_subject_ids = 3;
+}
+message ListBranchesResponse {
+  repeated Branch branches = 1;
+  message Branch {
+    string branch_name         = 1;
+    string parent_branch_name  = 2;
+    int32  head_sequence       = 3;
+    string head_commit_id      = 4;
+  }
+}
+
+message SetRetentionStateRequest {
+  string commit_id        = 1;
+  string retention_state  = 2;
+  string tenant_id        = 3;
+  string project_id       = 4;
+  repeated string principal_subject_ids = 5;
+}
+message SetRetentionStateResponse { Commit commit = 1; }
+
+message VerifyCommitIndexRequest {
+  string commit_id  = 1;
+  string tenant_id  = 2;
+  string project_id = 3;
+  repeated string principal_subject_ids = 4;
+}
+message VerifyCommitIndexResponse {
+  repeated IndexIssue issues = 1;
+  message IndexIssue {
+    string commit_id = 1;
+    string kind      = 2;
+    string detail    = 3;
+  }
+}
+
+message AdmitRequest {
+  string memory_type = 1;
+  string text = 2;
+  string source_id = 3;
+  string subject_id = 4;
+  string tenant_id = 5;
+  string project_id = 6;
+  string source_trust = 7;
+  map<string, string> payload = 8;   // optional key/value attributes
+}
+message AdmitResponse {
+  string action = 1;              // accept | quarantine | reject
+  string memory_type = 2;
+  string ttl = 3;
+  string sensitivity = 4;
+  bool duplicate = 5;
+  string suggested_branch = 6;
+  repeated AdmitReason reasons = 7;
+}
+message AdmitReason {
+  string rule = 1;
+  string severity = 2;
+  string message = 3;
+}
+
+message ReviseRequest {
+  string branch_name = 1;
+  string relation = 2;             // supersede|correct|refute|confirm|merge|split
+  repeated string predecessor_ids = 3;
+  string reason = 4;
+  string memory_type = 5;
+  map<string, string> payload = 6;
+  string tenant_id = 7;
+  string project_id = 8;
+  repeated string principal_subject_ids = 9;
+}
+message ReviseResponse { Commit commit = 1; }
+
+// --- lifecycle messages ---
+
+message DeleteCommitRequest {
+  string commit_id = 1;
+  string actor = 2;
+  string reason = 3;
+}
+
+message DeleteCommitResponse {
+  DispositionEvidence evidence = 1;
+  string error = 2; // empty on success
+}
+
+message DispositionEvidenceRequest {
+  string commit_id = 1;
+}
+
+message DispositionEvidenceResponse {
+  DispositionEvidence evidence = 1;
+  bool found = 2;
+  string error = 3; // empty on success
+}
+
+message DispositionEvidence {
+  string evidence_id = 1;
+  string commit_id = 2;
+  string deleted_at = 3;
+  string actor = 4;
+  string reason = 5;
+  DispositionCoverage coverage = 6;
+  string source_digest = 7;
+  map<string, string> metadata = 8;
+}
+
+message DispositionCoverage {
+  bool payload = 1;
+  bool lexical = 2;
+  bool embedding = 3;
+  bool relation = 4;
+  repeated string derived = 5;
+}
+
+message SetLegalHoldRequest {
+  string commit_id = 1;
+  bool on = 2;
+  string reason = 3;
+}
+
+message SetLegalHoldResponse {
+  bool ok = 1;
+  string error = 2; // empty on success
+}
+
+message IsLegalHoldRequest {
+  string commit_id = 1;
+}
+
+message IsLegalHoldResponse {
+  bool held = 1;
+  string error = 2; // empty on success
+}
+
+message ExecuteDisposalRequest {
+  string branch_name = 1;
+  int32 grace_days = 2;
+  int32 max_commits = 3;
+}
+
+message ExecuteDisposalResponse {
+  int32 disposed = 1;
+  int32 skipped_legal_hold = 2;
+  int32 commits_reviewed = 3;
+  repeated DisposedCommit disposed_commits = 4;
+  string error = 5; // empty on success
+}
+
+message DisposedCommit {
+  string commit_id = 1;
+  string evidence_id = 2;
+}
+
+message PolicyListRequest {
+  string tenant_id   = 1;
+  string project_id  = 2;
+  string branch_name = 3;
+  string policy_type = 4;
+}
+
+message PolicyListResponse {
+  repeated PolicyListEntry policies = 1;
+  string error = 2; // empty on success
+}
+
+message PolicyListEntry {
+  string policy_name  = 1;
+  string policy_type  = 2;
+  map<string, Value> policy_body = 3;
+  string branch_scope = 4;
+}
+
+message PolicyCreateRequest {
+  string tenant_id  = 1;
+  string project_id = 2;
+  string branch_name = 3;
+  string policy_name = 4;
+  string policy_type = 5;
+  map<string, Value> policy_body = 6;
+}
+
+message PolicyCreateResponse {
+  Commit commit = 1;
+  string error = 2; // empty on success
+}
+
+message PolicyDeleteRequest {
+  string tenant_id  = 1;
+  string project_id = 2;
+  string branch_name = 3;
+  string policy_name = 4;
+}
+
+message PolicyDeleteResponse {
+  Commit commit = 1;
+  string error = 2; // empty on success
+}
+
+message PolicyReviseRequest {
+  string tenant_id  = 1;
+  string project_id = 2;
+  string branch_name = 3;
+  string policy_name = 4;
+  string policy_type = 5;
+  map<string, Value> policy_body = 6;
+}
+
+message PolicyReviseResponse {
+  Commit commit = 1;
+  string error = 2; // empty on success
+}

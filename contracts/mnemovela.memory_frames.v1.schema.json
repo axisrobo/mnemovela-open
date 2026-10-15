@@ -1,0 +1,458 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mnemovela.local/contracts/mnemovela.memory_frames.v1.schema.json",
+  "title": "Mnemovela Memory Frame Contract Draft",
+  "type": "object",
+  "required": ["contract_version", "memory_type", "frame"],
+  "properties": {
+    "contract_version": {
+      "const": "mnemovela.memory_frames.v1"
+    },
+    "memory_type": {
+      "type": "string",
+      "enum": [
+        "event",
+        "knowledge",
+        "experience",
+        "simulation",
+        "emotion",
+        "procedure",
+        "intention",
+        "belief",
+        "mission",
+        "preference",
+        "workspace_state",
+        "decision",
+        "constraint",
+        "relationship"
+      ]
+    },
+    "frame_schema_version": {
+      "type": "string",
+      "default": "v1"
+    },
+    "frame": {
+      "$ref": "#/$defs/frames"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {"if": {"properties": {"memory_type": {"const": "event"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/event_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "knowledge"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/knowledge_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "experience"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/experience_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "simulation"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/simulation_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "emotion"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/emotion_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "procedure"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/procedure_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "intention"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/intention_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "belief"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/belief_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "mission"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/mission_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "preference"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/preference_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "workspace_state"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/workspace_state_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "decision"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/decision_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "constraint"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/constraint_frame"}}}},
+    {"if": {"properties": {"memory_type": {"const": "relationship"}}}, "then": {"properties": {"frame": {"$ref": "#/$defs/relationship_frame"}}}}
+  ],
+  "$defs": {
+    "json_map": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subject_link": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "entity_link": {
+      "type": "object",
+      "required": ["entity_id"],
+      "properties": {
+        "entity_id": {"type": "string", "minLength": 1},
+        "entity_role": {"type": "string"},
+        "confidence": {"type": "number"},
+        "metadata": {"$ref": "#/$defs/json_map"}
+      }
+    },
+    "object_link": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "ontology_assertion": {
+      "type": "object",
+      "required": ["predicate", "object_value"],
+      "properties": {
+        "entity_id": {"type": "string"},
+        "predicate": {"type": "string", "minLength": 1},
+        "object_value": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number"},
+        "metadata": {"$ref": "#/$defs/json_map"}
+      },
+      "additionalProperties": true
+    },
+    "shared_fields": {
+      "type": "object",
+      "required": ["tenant_id", "project_id", "visibility_scope"],
+      "properties": {
+        "tenant_id": {"type": "string", "minLength": 1},
+        "project_id": {"type": "string", "minLength": 1},
+        "visibility_scope": {"type": "string", "minLength": 1},
+        "subject_scope": {"type": "string"},
+        "epistemic_status": {"type": "string"},
+        "owner_subject_id": {"type": "string"},
+        "participant_subject_ids": {"$ref": "#/$defs/string_array"},
+        "subject_links": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/subject_link"}
+        },
+        "entity_links": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/entity_link"}
+        },
+        "object_links": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/object_link"}
+        },
+        "ontology_assertions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/ontology_assertion"}
+        },
+        "metadata": {"$ref": "#/$defs/json_map"},
+        "provenance_state": {
+          "type": "string",
+          "enum": ["extracted", "inferred", "ambiguous", "reviewed"],
+          "default": "extracted"
+        }
+      }
+    },
+    "frames": {
+      "anyOf": [
+        {"$ref": "#/$defs/event_frame"},
+        {"$ref": "#/$defs/knowledge_frame"},
+        {"$ref": "#/$defs/experience_frame"},
+        {"$ref": "#/$defs/simulation_frame"},
+        {"$ref": "#/$defs/emotion_frame"},
+        {"$ref": "#/$defs/procedure_frame"},
+        {"$ref": "#/$defs/intention_frame"},
+        {"$ref": "#/$defs/belief_frame"},
+        {"$ref": "#/$defs/mission_frame"},
+        {"$ref": "#/$defs/preference_frame"},
+        {"$ref": "#/$defs/workspace_state_frame"},
+        {"$ref": "#/$defs/decision_frame"},
+        {"$ref": "#/$defs/constraint_frame"},
+        {"$ref": "#/$defs/relationship_frame"}
+      ]
+    },
+    "event_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["what"],
+          "properties": {
+            "who": {"$ref": "#/$defs/string_array"},
+            "what": {"type": "string", "minLength": 1},
+            "when": {"type": ["string", "null"]},
+            "where": {"type": ["string", "null"]},
+            "why": {"type": ["string", "null"]},
+            "how": {"type": ["string", "null"]},
+            "how_much": {"type": ["object", "null"], "additionalProperties": true},
+            "process": {"$ref": "#/$defs/json_map"},
+            "meaning": {"$ref": "#/$defs/json_map"},
+            "state_transition": {"$ref": "#/$defs/json_map"},
+            "evidence": {"type": "array", "items": {"$ref": "#/$defs/json_map"}},
+            "role_bindings": {"type": "array", "items": {"$ref": "#/$defs/json_map"}},
+            "teleology": {"$ref": "#/$defs/json_map"},
+            "intensity": {"$ref": "#/$defs/json_map"},
+            "granularity": {"type": "string"},
+            "transparency": {"type": "string"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "knowledge_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["concept"],
+          "properties": {
+            "concept": {"type": "string", "minLength": 1},
+            "ontology_type": {"type": ["string", "null"]},
+            "claims": {"$ref": "#/$defs/string_array"},
+            "attributes": {"$ref": "#/$defs/json_map"},
+            "axioms": {"type": "array", "items": {"$ref": "#/$defs/json_map"}},
+            "context": {"$ref": "#/$defs/json_map"},
+            "modality": {"type": "string"},
+            "confidence": {"type": "number"},
+            "supported_by": {"$ref": "#/$defs/string_array"},
+            "dynamics": {"$ref": "#/$defs/json_map"},
+            "intent": {"$ref": "#/$defs/json_map"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "experience_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "properties": {
+            "event_commit_id": {"type": ["string", "null"]},
+            "perspective_subject_id": {"type": ["string", "null"]},
+            "observations": {"$ref": "#/$defs/string_array"},
+            "salience_map": {"type": ["object", "null"], "additionalProperties": true},
+            "interpretation": {"type": ["string", "null"]},
+            "outcome": {"type": ["string", "null"]},
+            "reward": {"type": ["number", "null"]},
+            "lesson": {"type": "string"},
+            "environment_context": {"type": ["object", "null"], "additionalProperties": true},
+            "confidence": {"type": "number"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "simulation_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "properties": {
+            "subject_id": {"type": ["string", "null"]},
+            "focus_object_ids": {"$ref": "#/$defs/string_array"},
+            "initial_state": {"type": ["object", "null"], "additionalProperties": true},
+            "operators": {"$ref": "#/$defs/string_array"},
+            "possible_outcomes": {"type": "array", "items": {"$ref": "#/$defs/json_map"}},
+            "selected_outcome": {"type": ["string", "null"]},
+            "utility_score": {"type": ["number", "null"]},
+            "confidence": {"type": "number"},
+            "horizon": {"type": ["string", "null"]},
+            "branch_ttl_days": {"type": ["integer", "null"]},
+            "non_factual": {"type": "boolean"},
+            "derived_from_commit_ids": {"$ref": "#/$defs/string_array"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "emotion_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "properties": {
+            "linked_event_commit_id": {"type": ["string", "null"]},
+            "source_commit_ids": {"$ref": "#/$defs/string_array"},
+            "emotion_vector": {"$ref": "#/$defs/json_map"},
+            "threat_score": {"type": ["number", "null"]},
+            "attachment_score": {"type": ["number", "null"]},
+            "reward_score": {"type": ["number", "null"]},
+            "decay_resistance": {"type": ["number", "null"]},
+            "labels": {"$ref": "#/$defs/string_array"},
+            "triggers": {"type": "array", "items": {"$ref": "#/$defs/json_map"}}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "procedure_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["name", "trigger_pattern"],
+          "properties": {
+            "name": {"type": "string", "minLength": 1},
+            "trigger_pattern": {"type": "string", "minLength": 1},
+            "state_pattern": {"type": ["object", "null"], "additionalProperties": true},
+            "preconditions": {"$ref": "#/$defs/string_array"},
+            "action_steps": {"type": "array", "items": {"$ref": "#/$defs/json_map"}},
+            "linked_knowledge_ids": {"$ref": "#/$defs/string_array"},
+            "efficiency_rating": {"type": ["number", "null"]},
+            "automation_level": {"type": ["number", "null"]},
+            "success_criteria": {"$ref": "#/$defs/string_array"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "intention_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["subject_id", "target_state", "motivation_level"],
+          "properties": {
+            "subject_id": {"type": "string", "minLength": 1},
+            "target_state": {"$ref": "#/$defs/json_map"},
+            "motivation_level": {"type": "number"},
+            "priority": {"type": ["number", "null"]},
+            "deadline": {"type": ["string", "null"]},
+            "success_criteria": {"$ref": "#/$defs/string_array"},
+            "derived_from_simulation_ids": {"$ref": "#/$defs/string_array"},
+            "linked_object_ids": {"$ref": "#/$defs/string_array"},
+            "status": {"type": ["string", "null"]},
+            "commitment_level": {"type": ["number", "null"]}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "belief_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["subject_id", "schema_name"],
+          "properties": {
+            "subject_id": {"type": "string", "minLength": 1},
+            "schema_name": {"type": "string", "minLength": 1},
+            "belief_statements": {"$ref": "#/$defs/string_array"},
+            "prior_state": {"type": ["object", "null"], "additionalProperties": true},
+            "confidence": {"type": "number"},
+            "prior_strength": {"type": ["number", "null"]},
+            "supporting_commit_ids": {"$ref": "#/$defs/string_array"},
+            "bias_tags": {"$ref": "#/$defs/string_array"},
+            "applicability": {"$ref": "#/$defs/string_array"},
+            "update_strategy": {"type": ["string", "null"]}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "mission_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["mission_id", "title"],
+          "properties": {
+            "mission_id": {"type": "string", "minLength": 1},
+            "title": {"type": "string", "minLength": 1},
+            "current_stage_index": {"type": "integer"},
+            "current_stage_label": {"type": ["string", "null"]},
+            "current_state": {"type": "string"},
+            "stage_event_commit_ids": {"$ref": "#/$defs/string_array"},
+            "next_intention_id": {"type": ["string", "null"]},
+            "success_criteria": {"$ref": "#/$defs/string_array"},
+            "role_structure": {"type": ["object", "null"], "additionalProperties": true},
+            "recurrence_pattern": {"type": ["string", "null"]},
+            "deadline": {"type": ["string", "null"]},
+            "progress": {"type": ["number", "null"]},
+            "blockers": {"$ref": "#/$defs/string_array"},
+            "active_context": {"type": ["object", "null"], "additionalProperties": true}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "preference_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["subject_id"],
+          "properties": {
+            "subject_id": {"type": "string", "minLength": 1},
+            "target_id": {"type": ["string", "null"]},
+            "cognitive_style": {"type": ["object", "null"], "additionalProperties": true},
+            "interaction_style": {"type": ["object", "null"], "additionalProperties": true},
+            "sensory_preferences": {"type": ["object", "null"], "additionalProperties": true},
+            "execution_style": {"type": ["object", "null"], "additionalProperties": true},
+            "language_style": {"$ref": "#/$defs/json_map"},
+            "value_weights": {"type": ["object", "null"], "additionalProperties": true},
+            "update_rate": {"type": ["number", "null"]},
+            "formation_experience_ids": {"$ref": "#/$defs/string_array"},
+            "confidence": {"type": "number"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "workspace_state_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "workflow_id": {"type": "string"},
+            "task_id": {"type": "string"},
+            "status": {"type": "string", "enum": ["pending", "running", "blocked", "completed", "failed", "cancelled"]},
+            "progress": {"type": "object", "additionalProperties": true},
+            "blockers": {"$ref": "#/$defs/string_array"},
+            "next_actions": {"$ref": "#/$defs/string_array"},
+            "responsible_subject_ids": {"$ref": "#/$defs/string_array"},
+            "last_actor_subject_id": {"type": "string"},
+            "session_id": {"type": "string"},
+            "run_id": {"type": "string"},
+            "expires_at": {"type": "string"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "decision_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["chosen_option"],
+          "properties": {
+            "chosen_option": {"type": "string", "minLength": 1},
+            "rationale": {"type": "string"},
+            "alternatives": {"$ref": "#/$defs/string_array"},
+            "approver_subject_id": {"type": "string"},
+            "context": {"$ref": "#/$defs/json_map"},
+            "confidence": {"type": "number"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "constraint_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["constraint_type", "description"],
+          "properties": {
+            "constraint_type": {"type": "string", "minLength": 1},
+            "description": {"type": "string", "minLength": 1},
+            "scope": {"type": "string"},
+            "limit_description": {"type": "string"},
+            "source_id": {"type": "string"},
+            "enforcement": {"type": "string"},
+            "effective_from": {"type": "string"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "relationship_frame": {
+      "allOf": [
+        {"$ref": "#/$defs/shared_fields"},
+        {
+          "type": "object",
+          "required": ["subject_ref", "relationship_type", "object_ref"],
+          "properties": {
+            "subject_ref": {"type": "string", "minLength": 1},
+            "relationship_type": {"type": "string", "minLength": 1},
+            "object_ref": {"type": "string", "minLength": 1},
+            "direction": {"type": "string"},
+            "strength": {"type": "number"},
+            "since": {"type": "string"},
+            "confidence": {"type": "number"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

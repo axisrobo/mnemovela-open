@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mnemovela.local/contracts/mnemovela.memory.v1.schema.json",
+  "title": "Mnemovela Memory Operation Fixture V1",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "name",
+    "steps"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "mnemovela.memory.v1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": [
+        "id",
+        "method",
+        "params"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "mnemovela.add_episode",
+            "mnemovela.add_fact",
+            "mnemovela.admission_decide",
+            "mnemovela.build_context",
+            "mnemovela.capture_constraint",
+            "mnemovela.capture_decision",
+            "mnemovela.capture_error",
+            "mnemovela.capture_tool_call",
+            "mnemovela.check_consistency",
+            "mnemovela.commit_memory",
+            "mnemovela.create_branch",
+            "mnemovela.delete_commit",
+            "mnemovela.disposition_evidence",
+            "mnemovela.evolve_entity",
+            "mnemovela.expire_simulation_branches",
+            "mnemovela.extract_episode",
+            "mnemovela.get_context",
+            "mnemovela.ingest",
+            "mnemovela.invalidate_fact",
+            "mnemovela.list_branches",
+            "mnemovela.list_contradictions",
+            "mnemovela.list_expired_simulation_branches",
+            "mnemovela.list_review_queue",
+            "mnemovela.merge_branch",
+            "mnemovela.policy.create",
+            "mnemovela.policy.delete",
+            "mnemovela.policy.list",
+            "mnemovela.policy.revise",
+            "mnemovela.query_facts",
+            "mnemovela.query_memories",
+            "mnemovela.reconcile_forgetting",
+            "mnemovela.reconcile_retention",
+            "mnemovela.recover_commit",
+            "mnemovela.resolve_entity",
+            "mnemovela.resolve_entity_explained",
+            "mnemovela.revert_commit",
+            "mnemovela.review_contradiction",
+            "mnemovela.revise",
+            "mnemovela.revision_blast_radius",
+            "mnemovela.run_maintenance",
+            "mnemovela.search_memory",
+            "mnemovela.session_end",
+            "mnemovela.session_start",
+            "mnemovela.squash_branch",
+            "mnemovela.sync_connector",
+            "mnemovela.upsert_entity",
+            "mnemovela.upsert_subject"
+          ]
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "expect": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

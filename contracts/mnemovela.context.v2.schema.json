@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mnemovela.local/contracts/mnemovela.context.v2.schema.json",
+  "title": "Mnemovela Context Bundle v2",
+  "description": "v2 removes the deprecated derived fields sections/omitted (RFC 2026-08-21-context-v2-remove-deprecated-derived-fields). Consumers derive sections from partitions and omitted from exclusions.",
+  "type": "object",
+  "required": ["query", "budget", "partitions", "exclusions", "budget_report", "explanations"],
+  "properties": {
+    "query": {
+      "type": "string"
+    },
+    "budget": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "purpose": {
+      "type": ["string", "null"]
+    },
+    "partitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/partition"
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/exclusion"
+      }
+    },
+    "budget_report": {
+      "$ref": "#/$defs/budget_report"
+    },
+    "explanations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/explanation"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "partition": {
+      "type": "object",
+      "required": ["partition", "items", "used", "budget_ratio"],
+      "properties": {
+        "partition": {
+          "type": "string",
+          "enum": ["identity", "current_work", "experience", "constraints", "knowledge", "uncertainty", "general"]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/item"
+          }
+        },
+        "used": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "budget_ratio": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "item": {
+      "type": "object",
+      "required": ["text", "source_id", "reason"],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "access": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "exclusion": {
+      "type": "object",
+      "required": ["source_id", "reason", "category"],
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["budget_exceeded", "stale", "permission", "conflict", "low_signal"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "budget_report": {
+      "type": "object",
+      "required": ["allocated", "used", "unused", "per_partition"],
+      "properties": {
+        "allocated": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "used": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unused": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "per_partition": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "explanation": {
+      "type": "object",
+      "required": ["source_id", "included", "reason", "partition"],
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "included": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "partition": {
+          "type": "string",
+          "enum": ["identity", "current_work", "experience", "constraints", "knowledge", "uncertainty", "general"]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
