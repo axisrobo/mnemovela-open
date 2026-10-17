@@ -6,8 +6,8 @@ import (
 	"net"
 	"testing"
 
-	pb "github.com/axisvela/mnemovela-open/sdk/go/internal/mnemovelav1"
-	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/mnemovela"
+	pb "github.com/axisvela/mnemovela-open/sdk/go/v3/internal/mnemovelav1"
+	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/v3/mnemovela"
 	"google.golang.org/grpc"
 )
 

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/mnemovela"
+	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/v3/mnemovela"
 )
 
 type fakeTransport struct {

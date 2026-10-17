@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/mnemovela"
+	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/v3/mnemovela"
 )
 
 func TestJSONRPCAuthHeader(t *testing.T) {

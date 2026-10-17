@@ -12,7 +12,7 @@ import (
 	"strings"
 	"sync/atomic"
 
-	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/mnemovela"
+	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/v3/mnemovela"
 )
 
 // Transport speaks JSON-RPC 2.0 over HTTP.

@@ -9,9 +9,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/axisvela/mnemovela-open/sdk/go/mnemovela"
-	grpctransport "github.com/axisvela/mnemovela-open/sdk/go/mnemovela/transport/grpc"
-	jsonrpctransport "github.com/axisvela/mnemovela-open/sdk/go/mnemovela/transport/jsonrpc"
+	"github.com/axisvela/mnemovela-open/sdk/go/v3/mnemovela"
+	grpctransport "github.com/axisvela/mnemovela-open/sdk/go/v3/mnemovela/transport/grpc"
+	jsonrpctransport "github.com/axisvela/mnemovela-open/sdk/go/v3/mnemovela/transport/jsonrpc"
 )
 
 type cmdSpec struct {
