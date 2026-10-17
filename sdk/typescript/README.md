@@ -1,9 +1,9 @@
-# @axisrobo/mnemovela-client (TypeScript)
+# @axisvela/mnemovela-client (TypeScript)
 
 Thin client for a running Mnemovela server over JSON-RPC/HTTP. Browser + Node 18+, no runtime deps.
 
 ```ts
-import { MnemeClient } from "@axisrobo/mnemovela-client";
+import { MnemeClient } from "@axisvela/mnemovela-client";
 
 const client = new MnemeClient("http://localhost:8000");
 await client.addEpisode({ branch_name: "main", content: "hello" });

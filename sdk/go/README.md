@@ -1,6 +1,6 @@
 # Mnemovela Go Client (`mnemovela`)
 
-A standalone Go client for a running [Mnemovela](https://github.com/axisrobo/mnemovela-open) server.
+A standalone Go client for a running [Mnemovela](https://github.com/axisvela/mnemovela-open) server.
 It speaks BOTH transports behind a single `Transport` interface:
 
 - **JSON-RPC over HTTP** (`JSONRPCTransport`) — full method surface, posts to `/api/v1/jsonrpc`.
@@ -13,7 +13,7 @@ result so callers unmarshal into their own shapes.
 ## Install
 
 ```
-go get github.com/axisrobo/mnemovela-open/sdk/go
+go get github.com/axisvela/mnemovela-open/sdk/go
 ```
 
 ## Quickstart (JSON-RPC over HTTP)
@@ -26,7 +26,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
+	"github.com/axisvela/mnemovela-open/sdk/go/mnemovela"
 )
 
 func main() {

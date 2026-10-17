@@ -1,5 +1,5 @@
 {
-  "name": "@axisrobo/mnemovela-client",
+  "name": "@axisvela/mnemovela-client",
   "version": "0.1.0",
   "description": "Thin TypeScript client for the Mnemovela cognition runtime (JSON-RPC over HTTP)",
   "type": "module",

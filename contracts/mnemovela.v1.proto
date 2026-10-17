@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mnemovela.v1;
 
-option go_package = "github.com/axisrobo/mnemovela/go/api/mnemovela/v1;Mnemovelav1";
+option go_package = "github.com/axisvela/mnemovela/go/api/mnemovela/v1;Mnemovelav1";
 
 // Mnemovela is the core memory-operation service. Every method corresponds to a
 // stable operation in the mnemovela.memory.v1-draft contract.

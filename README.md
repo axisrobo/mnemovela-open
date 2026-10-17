@@ -1,7 +1,7 @@
 # Mnemovela-open
 
 Open (Apache-2.0) client SDKs, examples, API reference, and prebuilt binaries
-for **[Mnemovela](https://github.com/axisrobo/mnemovela)**.
+for **[Mnemovela](https://github.com/axisvela/mnemovela)**.
 
 ## What is Mnemovela?
 
@@ -52,7 +52,7 @@ from this repository's releases.
 ## Getting started
 
 1. **Get a server binary.** Download a prebuilt server binary from the [latest
-   GitHub release](https://github.com/axisrobo/mnemovela-open/releases) for your platform.
+   GitHub release](https://github.com/axisvela/mnemovela-open/releases) for your platform.
    (See [local build](#building-from-source) if you prefer to build from the
    engine source.)
 2. **Start the server:**
@@ -78,7 +78,7 @@ from this repository's releases.
 
    **Go (gRPC + HTTP):**
    ```go
-   import "github.com/axisrobo/mnemovela-open/clients/go/mnemovela"
+   import "github.com/axisvela/mnemovela-open/clients/go/mnemovela"
    t := mnemovela.NewJSONRPCTransport("http://localhost:8080")
    c := mnemovela.New(t)
    raw, _ := c.AddEpisode(ctx, mnemovela.P{"branch_name":"main","content":"hi"})
@@ -86,7 +86,7 @@ from this repository's releases.
 
    **TypeScript (HTTP):**
    ```typescript
-   import { MnemeClient } from "@axisrobo/mnemovela-client";
+   import { MnemeClient } from "@axisvela/mnemovela-client";
    const client = new MnemeClient("http://127.0.0.1:8080");
    await client.addEpisode({ branch_name: "main", content: "hello" });
    ```

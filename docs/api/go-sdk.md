@@ -5,11 +5,11 @@
 The Mnemovela Go runtime is a zero-dependency, embeddable memory engine that provides CRUD, search, branch-based isolation, fact management, entity resolution, and context assembly. Add it to any Go project:
 
 ```bash
-go get github.com/axisrobo/mnemovela/go
+go get github.com/axisvela/mnemovela/go
 ```
 
 ```go
-import "github.com/axisrobo/mnemovela/go/core"
+import "github.com/axisvela/mnemovela/go/core"
 ```
 
 ## Quick start
@@ -21,7 +21,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/axisrobo/mnemovela/go/core"
+    "github.com/axisvela/mnemovela/go/core"
 )
 
 func main() {
@@ -130,12 +130,12 @@ type StoreConfig struct {
 | Backend | Registration | Description |
 |---|---|---|
 | `"memory"` | OSS default (init-time registration in `go/core/defaults.go`) | In-process map-based store; no persistence |
-| `"pebble"` | OSS: blank-import `"github.com/axisrobo/mnemovela/go/backend/pebble"` | Embedded persistent store using Pebble (CockroachDB's LSM) |
-| `"postgres"` | Enterprise Edition (`github.com/axisrobo/mnemovela-ee/go`) | PostgreSQL-backed scalable store |
+| `"pebble"` | OSS: blank-import `"github.com/axisvela/mnemovela/go/backend/pebble"` | Embedded persistent store using Pebble (CockroachDB's LSM) |
+| `"postgres"` | Enterprise Edition (`github.com/axisvela/mnemovela-ee/go`) | PostgreSQL-backed scalable store |
 
 ```go
 // Enabling the pebble backend via blank import:
-import _ "github.com/axisrobo/mnemovela/go/backend/pebble"
+import _ "github.com/axisvela/mnemovela/go/backend/pebble"
 ```
 
 ## Writing
@@ -576,7 +576,7 @@ Event types: `EventCommitStored`, `EventEntityUpserted`, `EventFactStored`, `Eve
 
 ### Enterprise Edition
 
-The Enterprise Edition module (`github.com/axisrobo/mnemovela-ee/go`) provides additional registrations that are not in OSS:
+The Enterprise Edition module (`github.com/axisvela/mnemovela-ee/go`) provides additional registrations that are not in OSS:
 
 | Category | OSS defaults | EE additions |
 |---|---|---|

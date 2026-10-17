@@ -149,7 +149,7 @@ grpcurl -plaintext \
 ```go
 import (
     "context"
-    Mnemovelav1 "github.com/axisrobo/mnemovela/go/api/mnemovela/v1"
+    Mnemovelav1 "github.com/axisvela/mnemovela/go/api/mnemovela/v1"
     "google.golang.org/grpc"
     "google.golang.org/grpc/credentials/insecure"
 )

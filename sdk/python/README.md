@@ -1,7 +1,7 @@
 # Mnemovela Python Client
 
 `mnemovela-client` is a thin sync + async Python gRPC client for the
-[Mnemovela](https://github.com/axisrobo/mnemovela) cognition runtime. It ships
+[Mnemovela](https://github.com/axisvela/mnemovela) cognition runtime. It ships
 self-contained gRPC stubs generated from `contracts/mnemovela.v1.proto`
 (`service mnemovela.v1.Mnemovela`, 17 RPCs) and wraps them with an ergonomic surface
 that returns plain dicts.

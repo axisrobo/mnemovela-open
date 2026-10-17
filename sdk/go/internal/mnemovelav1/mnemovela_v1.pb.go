@@ -5612,7 +5612,7 @@ const file_mnemovela_v1_proto_rawDesc = "" +
 	"PolicyList\x12\x1f.mnemovela.v1.PolicyListRequest\x1a .mnemovela.v1.PolicyListResponse\x12U\n" +
 	"\fPolicyCreate\x12!.mnemovela.v1.PolicyCreateRequest\x1a\".mnemovela.v1.PolicyCreateResponse\x12U\n" +
 	"\fPolicyDelete\x12!.mnemovela.v1.PolicyDeleteRequest\x1a\".mnemovela.v1.PolicyDeleteResponse\x12U\n" +
-	"\fPolicyRevise\x12!.mnemovela.v1.PolicyReviseRequest\x1a\".mnemovela.v1.PolicyReviseResponseBLZJgithub.com/axisrobo/mnemovela-open/sdk/go/internal/mnemovelav1;mnemovelav1b\x06proto3"
+	"\fPolicyRevise\x12!.mnemovela.v1.PolicyReviseRequest\x1a\".mnemovela.v1.PolicyReviseResponseBLZJgithub.com/axisvela/mnemovela-open/sdk/go/internal/mnemovelav1;mnemovelav1b\x06proto3"
 
 var (
 	file_mnemovela_v1_proto_rawDescOnce sync.Once

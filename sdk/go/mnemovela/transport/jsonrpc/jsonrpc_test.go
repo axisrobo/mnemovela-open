@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	mnemovela "github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
+	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/mnemovela"
 )
 
 func fakeRPCServer() *httptest.Server {

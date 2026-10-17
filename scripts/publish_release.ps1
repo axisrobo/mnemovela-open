@@ -122,4 +122,4 @@ foreach ($dir in $platDirs) {
     }
 }
 
-Write-Host "Done. Verify at https://github.com/axisrobo/mnemovela-open/releases/tag/$Tag"
+Write-Host "Done. Verify at https://github.com/axisvela/mnemovela-open/releases/tag/$Tag"

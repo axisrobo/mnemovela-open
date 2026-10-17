@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"io"
 
-	mnemovela "github.com/axisrobo/mnemovela-open/sdk/go/mnemovela"
+	mnemovela "github.com/axisvela/mnemovela-open/sdk/go/mnemovela"
 )
 
 // ProtocolVersion is the MCP protocol version this adapter speaks.
